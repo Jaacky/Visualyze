@@ -23,8 +23,9 @@ Dataset.prototype.getYearSet = function(date, conversion) {
         return year == d.year();
     }
     var converter = function(d) {
-        d.date = parseInt(moment(d.date).format('DDD'));
-        return d;
+        var pt = JSON.parse(JSON.stringify(d));
+        pt.date = parseInt(moment(pt.date).format('DDD'));
+        return pt;
     }
     if (conversion) {
         return loop(this.data, condition, converter);
@@ -39,8 +40,9 @@ Dataset.prototype.getMonthSet = function(date, conversion) {
         return month == d.month();
     }
     var converter = function(d) {
-        d.date = parseInt(moment(d.date).format('D'));
-        return d;
+        var pt = JSON.parse(JSON.stringify(d));
+        pt.date = parseInt(moment(pt.date).format('D'));
+        return pt;
     }
     if (conversion) {
         return loop(this.data, condition, converter);
@@ -55,8 +57,9 @@ Dataset.prototype.getWeekSet = function(current, conversion) {
         return week == d.week();
     }
     var converter = function(d) {
-        d.date = parseInt(moment(d.date).format('d')) + 1; // Adding 1 because week starts at 0
-        return d;
+        var pt = JSON.parse(JSON.stringify(d));
+        pt.date = parseInt(moment(pt.date).format('d')) + 1; // Adding 1 because week starts at 0
+        return pt;
     }
     if (conversion) {
         return loop(this.data, condition, converter);
