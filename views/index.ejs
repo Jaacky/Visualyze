@@ -1,8 +1,13 @@
 <!DOCTYPE html>  
 <html lang="en">  
   <head>
-    <%- include('header.ejs') %>
+    <%- include('partials/header.ejs') %>
   </head>
+
+  <script>
+    var data =<%- JSON.stringify(data_points) %>;
+    console.log(data);
+  </script>
 
   <body>
    <div>
