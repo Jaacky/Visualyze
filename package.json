@@ -1,0 +1,18 @@
+{
+  "name": "Visualyze",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./bin/www_visualyze"
+  },
+  "devDependencies": {
+    "debug": "*",
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
+    "express-session": "*",
+    "helmet": "^2.1.1",
+    "moment": "*",
+    "pg-promise": "^5.3.5"
+  }
+}
