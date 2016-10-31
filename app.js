@@ -1,6 +1,5 @@
 var express = require('express'),
-    path = require('path'),
-    pgp = require("pg-promise")();
+    path = require('path');
 
 var config = require("./config.js")();
 var app = express();
@@ -11,27 +10,14 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 /*
     Routes used
 */
 var routes = require('./routes/');
 app.use('/', routes);
 
-var cn = {
-    host: config.db.host,
-    port: config.db.port,
-    database: config.db.name,
-};
-
-var db = pgp(cn);
-
-db.any("select * from users")
-    .then(function(data) {
-        console.log(data);
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
