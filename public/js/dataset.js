@@ -8,7 +8,9 @@ function loop(data, condition, converter) {
         var dataDate = moment(data[i].date);
         if (condition(dataDate)) {
             if (!converter) {
-                dataset.push(data[i]);
+                var pt = JSON.parse(JSON.stringify(data[i]));
+                pt.date = moment(pt.date).startOf("day").toDate();
+                dataset.push(pt);
             } else {
                 dataset.push(converter(data[i]));
             }
@@ -45,14 +47,14 @@ Dataset.prototype.getMonthSet = function(date, conversion) {
         return pt;
     }
     if (conversion) {
-        return loop(this.data, condition, converter);
+        return loop(this.getYearSet(date, false), condition, converter);
     } else {
         return loop(this.data, condition, false);
     }
 }
 
-Dataset.prototype.getWeekSet = function(current, conversion) {
-    var week = current.week();
+Dataset.prototype.getWeekSet = function(date, conversion) {
+    var week = date.week();
     var condition = function(d) {
         return week == d.week();
     }
@@ -62,7 +64,7 @@ Dataset.prototype.getWeekSet = function(current, conversion) {
         return pt;
     }
     if (conversion) {
-        return loop(this.data, condition, converter);
+        return loop(this.getMonthSet(date, false), condition, converter);
     } else {
         return loop(this.data, condition, false);
     }
