@@ -1,19 +1,32 @@
 <!DOCTYPE html>  
 <html lang="en">  
-  <head>
-    <%- include('partials/header.ejs') %>
-  </head>
+    <head>
+        <%- include('partials/header.ejs') %>
+        <script src="/js/dataset.js"></script>
+        <script src="/js/graph.js"></script>
+    </head>
 
-  <script>
-    var data =<%- JSON.stringify(data_points) %>;
-    console.log(data);
-  </script>
+    <body>
+        <div>
+            <h2> User id: <%= user.email %> </h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-2 col-sm-8">
+                <div id="graph-container"></div>
+            </div>
+        </div>
+    </body>
 
-  <body>
-   <div>
-    <h2> User id: <%= user.email %> </h2>
-    </div>
+    <script>
+        var ds = new Dataset(<%- JSON.stringify(data_points) %>);
+        var current = moment();
+        // console.log(ds.getWeekSet(current, true));
+        var points = ds.getWeekSet(current);
+        var xmax = current.endOf("week").toDate();
+        // var xmin = current.startOf("week").subtract(1, "days").toDate();
+        var xmin = current.startOf("week").toDate();
+        var options = { "time": "week", "xmax": xmax, "xmin": xmin };
+        var g = new scatterPlot("graph-container", points, options);
+    </script>
 
-    <h1>Hi</h1>
-  </body>
 </html>  

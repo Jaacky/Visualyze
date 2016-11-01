@@ -1,3 +1,7 @@
 h1 {
     font-size: 15;
 }
+
+#graph-container {
+    width: 100%;
+}
