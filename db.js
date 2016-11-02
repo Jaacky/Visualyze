@@ -9,7 +9,7 @@ var cn = {
 
 var db = pgp(cn);
 
-var getUser = function(email, cb) {
+const getUser = function(email, cb) {
     db.one('SELECT * FROM users WHERE email = $1', [email])
         .then(function(data) {
             cb(data);
@@ -19,7 +19,7 @@ var getUser = function(email, cb) {
         });
 }
 
-var getAllUsers = function(cb) {
+const getAllUsers = function(cb) {
     db.any("select * from users")
         .then(function(data) {
             cb(data);
@@ -45,7 +45,7 @@ var getAllUsers = function(cb) {
 //         });
 // }
 
-var getGraph = function(email, graph_id, cb) {
+const getGraph = function(email, graph_id, cb) {
     
     var queryString = "SELECT graphs.colour, data_points.value, data_points.date "
                 + "FROM graphs INNER JOIN data_points ON "
@@ -62,8 +62,24 @@ var getGraph = function(email, graph_id, cb) {
         });
 }
 
+const addPoint = function(graph_id, value, date, cb) {
+    
+    var queryString = "INSERT INTO data_points(graph, value, date) "
+                + "VALUES($1, $2, $3)";
+    var insertPoint = new pgp.ParameterizedQuery(queryString);
+
+    db.none(insertPoint, [graph_id, value, date])
+        .then(function(data) {
+            cb(data);
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+} 
+
 module.exports = {
     "getUser": getUser,
     "getAllUsers": getAllUsers,
-    "getGraph": getGraph
+    "getGraph": getGraph,
+    "addPoint": addPoint,
 }
