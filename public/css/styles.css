@@ -5,3 +5,49 @@ h1 {
 #graph-container {
     width: 100%;
 }
+
+.btn-graph-time {
+    background-color: white;
+    border: 1px solid black;
+}
+
+.date > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.date #backward {
+    margin-top: 10px;
+    margin-right: 15px;
+}
+
+.date #forward {
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.date, .options-group {
+    text-align: center;
+}
+
+.options-group .btn {
+    opacity: 0.65;
+}
+
+.options-group .btn.active {
+    opacity: 1;
+}
+
+.options-group>.btn:first-child:not(:last-child) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.options-group>.btn:not(:first-child):not(:last-child) {
+	border-radius: 0;
+}
+
+.options-group>.btn:last-child:not(:first-child) {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
