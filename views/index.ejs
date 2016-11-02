@@ -11,6 +11,22 @@
             <h2> User id: <%= user.email %> </h2>
         </div>
         <div class="row">
+            <div class="col-md-12">
+                <form action="/graph/addPoint" method="post">
+                    <input type="text" id="datepicker", name="date" required>
+                    <input type="number" id="value", name="value" placeholder="Value" required>
+                    <input type="string" id="id" name="id" value="1" hidden required>
+                    <button class="btn btn-default" type="submit">Add</button>
+                </form>
+            </div>
+            <div id="graph-time-options" class="col-md-12 options-group">
+                <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
+            </div>
+            <div class="date">
+                <button id="backward" class="btn btn-default">&lt;</button>
+                <h3 id="date">Sunday duh</h3>
+                <button id="forward" class="btn btn-default">&gt;</button>
+            </div>
             <div class="col-sm-offset-2 col-sm-8">
                 <div id="graph-container"></div>
             </div>
@@ -18,12 +34,18 @@
     </body>
 
     <script>
+        var picker = new Pikaday({
+            field: document.getElementById('datepicker'),
+            format: "MMMM D, YYYY"
+        });
+        picker.setMoment(moment());
+    </script>
+
+    <script>
         var ds = new Dataset(<%- JSON.stringify(data_points) %>);
         var current = moment();
-        // console.log(ds.getWeekSet(current, true));
         var points = ds.getWeekSet(current);
         var xmax = current.endOf("week").toDate();
-        // var xmin = current.startOf("week").subtract(1, "days").toDate();
         var xmin = current.startOf("week").toDate();
         var options = { "time": "week", "xmax": xmax, "xmin": xmin };
         var g = new scatterPlot("graph-container", points, options);

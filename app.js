@@ -1,8 +1,12 @@
 var express = require('express'),
-    path = require('path');
+    path = require('path')
+    bodyParser = require('body-parser');
 
 var config = require("./config.js")();
 var app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /*
     Setting view engine to EJS

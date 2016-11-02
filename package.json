@@ -7,12 +7,16 @@
     "start": "node ./bin/www_visualyze"
   },
   "devDependencies": {
+    "body-parser": "^1.15.2",
     "debug": "*",
     "ejs": "^2.5.2",
     "express": "^4.14.0",
     "express-session": "*",
     "helmet": "^2.1.1",
-    "moment": "*",
+    "moment": "^2.15.2",
     "pg-promise": "^5.3.5"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2"
   }
 }
