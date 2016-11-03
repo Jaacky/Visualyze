@@ -57,6 +57,35 @@
             }
             $("#date").html(timeToDisplay);
         }
+
+        const updateTime = function(time, mode, direction) {
+            var magnitude;
+            switch(mode) {
+                case "year":
+                    magnitude = "y";
+                    break;
+                case "month":
+                    magnitude = "M";
+                    break;
+                case "week":
+                    magnitude = "w";
+                    break;
+                default:
+                    throw "Invalid mode passed to function updateTime";
+            }
+
+            switch(direction) {
+                case "forward":
+                    time.add(1, magnitude);
+                    break;
+                case "backward":
+                    time.subtract(1, magnitude);
+                    break;
+                default:
+                    throw "Invalid direction passed to function updateTime";
+            }
+            return time;
+        }
     </script>
 
     <script>
@@ -71,6 +100,9 @@
 
     <script>
         $(document).ready(function() {
+            /*
+                On click event for changing time modes
+            */
             $('.btn-graph-time').on('click', function() {
                 $('.btn-graph-time').removeClass('active');
                 $(this).addClass('active');
@@ -82,6 +114,21 @@
                     ds.getOptions(mode, moment(current))
                 );
             }); 
+
+            /*
+                On click event for changing time
+            */
+            $('.date button').on('click', function() {
+                var mode = $(".btn-graph-time.active").html().toLowerCase();
+                var direction = $(this).attr("id");
+                current = updateTime(moment(current), mode, direction);
+                
+                setDate(current, mode);
+                const y = new scatterPlot("graph-container",
+                    ds.getPoints(mode, moment(current)),
+                    ds.getOptions(mode, moment(current))
+                );
+            });
         });
     </script>
 </html>  
