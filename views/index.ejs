@@ -44,11 +44,25 @@
     <script>
         var ds = new Dataset(<%- JSON.stringify(data_points) %>);
         var current = moment();
-        var points = ds.getWeekSet(current);
-        var xmax = current.endOf("week").toDate();
-        var xmin = current.startOf("week").toDate();
-        var options = { "time": "week", "xmax": xmax, "xmin": xmin };
-        var g = new scatterPlot("graph-container", points, options);
+
+        const g = new scatterPlot("graph-container", 
+            ds.getPoints("month", moment(current)), 
+            ds.getOptions("month", moment(current))
+        );
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('.btn-graph-time').on('click', function() {
+                $('.btn-graph-time').removeClass('active');
+                $(this).addClass('active');
+                var mode = $(this).html().toLowerCase();
+
+                const x = new scatterPlot("graph-container", 
+                    ds.getPoints(mode, moment(current)),
+                    ds.getOptions(mode, moment(current))
+                );
+            }); 
+        });
+    </script>
 </html>  

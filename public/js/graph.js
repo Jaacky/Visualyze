@@ -35,8 +35,8 @@ var scatterPlot = function(container, points, options) {
         .style("fill", function(d) { return d.colour; });
 
     this.xAxis = d3.axisBottom(this.x)
-        .ticks(7)
-        .tickFormat(d3.timeFormat("%b %a %d"))
+        .ticks(this.options.numTimeTicks)
+        .tickFormat(this.options.timeFormat)
         .tickSizeOuter(0);
     this.vis.append("g")
         .attr('class', 'x axis')
