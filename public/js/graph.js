@@ -11,13 +11,6 @@ var scatterPlot = function(container, points, options) {
     Graph.call(this, container, points, options);
     var self = this;
     self.setProperties();
-    this.x = d3.scaleTime()
-        .domain([this.options.xmin, this.options.xmax])
-        .range([0, this.size.width]);
-
-    this.y = d3.scaleLinear()
-        .domain([0, d3.max(this.points, function(d) { return d.value; }) + 10])
-        .range([this.size.height, 0]);
 
     this.vis = d3.select(this.chart).append("svg")
         .attr('id', 'plot-svg')
@@ -27,23 +20,12 @@ var scatterPlot = function(container, points, options) {
         .append('g')
         .attr('transform', 'translate(' + this.padding.left + "," + this.padding.top + ")");
 
-    var circle = this.vis.selectAll("circle").data(this.points);
-    circle.enter().append("circle")
-        .attr("cx", function(d) { return self.x( new Date(d.date) ); })
-        .attr("cy", function(d) { return self.y(d.value); })
-        .attr("r", 3)
-        .style("fill", function(d) { return d.colour; });
+    this.xAxis = this.vis.append("g")
+        .attr('class', 'x axis');
+    this.yAxis = this.vis.append("g")
+        .attr('class', 'y axis');
 
-    this.xAxis = d3.axisBottom(this.x)
-        .ticks(this.options.numTimeTicks)
-        .tickFormat(this.options.timeFormat)
-        .tickSizeOuter(0);
-    this.vis.append("g")
-        .attr('class', 'x axis')
-        .attr("transform", "translate(0," + this.size.height + ")")
-        .call(this.xAxis);
-    this.vis.append("g")
-        .call(d3.axisLeft(this.y));
+    self.draw();
 }
 
 scatterPlot.prototype.setProperties = function() {
@@ -60,5 +42,50 @@ scatterPlot.prototype.setProperties = function() {
         "height": self.cy - self.padding.top - self.padding.bottom
     };
 
+    this.x = d3.scaleTime()
+        .domain([this.options.xmin, this.options.xmax])
+        .range([0, this.size.width]);
 
+    this.y = d3.scaleLinear()
+        .domain([0, d3.max(this.points, function(d) { return d.value; }) + 10])
+        .range([this.size.height, 0]);
+
+    this.xAxisFormat = d3.axisBottom(this.x)
+        .ticks(this.options.numTimeTicks)
+        .tickFormat(this.options.timeFormat)
+        .tickSizeOuter(0);
+}
+
+scatterPlot.prototype.draw = function() {
+    var self = this;
+    var circle = this.vis.selectAll("circle").data(this.points);
+
+    circle.enter().append("circle")
+        .attr("cx", function(d) { return self.x( new Date(d.date) ); })
+        .attr("cy", function(d) { return self.y(d.value); })
+        .attr("r", 3)
+        .style("fill", function(d) { return d.colour; });
+        
+    circle
+        .attr("cx", function(d) { return self.x( new Date(d.date) ); })
+        .attr("cy", function(d) { return self.y(d.value); })
+        .attr("r", 3)
+        .style("fill", function(d) { return d.colour; });
+    
+    circle.exit().remove();
+
+    this.xAxis
+        .attr("transform", "translate(0," + this.size.height + ")")
+        .call(this.xAxisFormat)
+    this.yAxis
+        .call(d3.axisLeft(this.y));
+}
+
+scatterPlot.prototype.update = function(points, options) {
+    var self = this;
+    self.options = options;
+    self.points = points;
+
+    self.setProperties();
+    self.draw();
 }

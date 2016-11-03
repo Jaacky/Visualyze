@@ -109,7 +109,11 @@
                 var mode = $(this).html().toLowerCase();
 
                 setDate(current, mode);
-                const x = new scatterPlot("graph-container", 
+                // const x = new scatterPlot("graph-container", 
+                //     ds.getPoints(mode, moment(current)),
+                //     ds.getOptions(mode, moment(current))
+                // );
+                g.update(
                     ds.getPoints(mode, moment(current)),
                     ds.getOptions(mode, moment(current))
                 );
@@ -122,9 +126,12 @@
                 var mode = $(".btn-graph-time.active").html().toLowerCase();
                 var direction = $(this).attr("id");
                 current = updateTime(moment(current), mode, direction);
-                
+
                 setDate(current, mode);
-                const y = new scatterPlot("graph-container",
+                // const y = new scatterPlot("graph-container",
+                //     ds.getPoints(mode, moment(current)),
+                //     ds.getOptions(mode, moment(current))
+                g.update(
                     ds.getPoints(mode, moment(current)),
                     ds.getOptions(mode, moment(current))
                 );
