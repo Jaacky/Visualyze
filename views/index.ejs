@@ -39,12 +39,30 @@
             format: "MMMM D, YYYY"
         });
         picker.setMoment(moment());
+
+        const setDate = function(time, mode) {
+            var timeToDisplay;
+            switch(mode) {
+                case "year":
+                    timeToDisplay = time.format("YYYY");
+                    break;
+                case "month":
+                    timeToDisplay = time.format("MMMM YYYY");
+                    break;
+                case "week":
+                    timeToDisplay = time.format("wo") + " week of " + time.format("YYYY");
+                    break;
+                default:
+                    throw "Invalid use of function setDate";
+            }
+            $("#date").html(timeToDisplay);
+        }
     </script>
 
     <script>
         var ds = new Dataset(<%- JSON.stringify(data_points) %>);
         var current = moment();
-
+        setDate(current, "month");
         const g = new scatterPlot("graph-container", 
             ds.getPoints("month", moment(current)), 
             ds.getOptions("month", moment(current))
@@ -58,6 +76,7 @@
                 $(this).addClass('active');
                 var mode = $(this).html().toLowerCase();
 
+                setDate(current, mode);
                 const x = new scatterPlot("graph-container", 
                     ds.getPoints(mode, moment(current)),
                     ds.getOptions(mode, moment(current))
