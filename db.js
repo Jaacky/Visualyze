@@ -29,21 +29,21 @@ const getAllUsers = function(cb) {
         });
 }
 
-// var getGraph = function(email, id, cb) {
-//     db.one('SELECT * FROM graphs WHERE owner = $1 AND id = $2', [email, id])
-//         .then(function(graph) {
-//             db.any("SELECT * FROM data_points WHERE graph = $1", [id])
-//                 .then(function(data_points) {
-//                     cb(graph, data_points);
-//                 })
-//                 .catch(function(err) {
-//                     console.log("DATAPOINTS ERR: ", err);
-//                 });
-//         })
-//         .catch(function(err) {
-//             console.log("GRAPH ERR: ", err);
-//         });
-// }
+const getAllUserGraphs = function(email, cb) {
+
+    var queryString = "SELECT * FROM graphs "
+                + "WHERE owner = $1";
+
+    var findAllUserGraphs = new pgp.ParameterizedQuery(queryString);
+
+    db.any(findAllUserGraphs, [email])
+        .then(function(graphs) {
+            cb(graphs);
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+}
 
 const getGraph = function(email, graph_id, cb) {
     
@@ -78,8 +78,9 @@ const addPoint = function(graph_id, value, date, cb) {
 } 
 
 module.exports = {
-    "getUser": getUser,
-    "getAllUsers": getAllUsers,
-    "getGraph": getGraph,
-    "addPoint": addPoint,
+    getUser,
+    getAllUsers,
+    getGraph,
+    addPoint,
+    getAllUserGraphs,
 }
