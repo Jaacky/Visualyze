@@ -2,6 +2,47 @@ function Dataset(data) {
     this.data = data;
 }
 
+/*
+    mode is a string in { "year", "month", "week" }
+    time is a moment object
+*/
+Dataset.prototype.getPoints = function(mode, time) {
+    var self = this;
+    switch(mode) {
+        case "year":
+            return self.getYearSet(time);
+        case "month":
+            return self.getMonthSet(time);
+        case "week":
+            return self.getWeekSet(time);
+        default:
+            throw "Improper use of getData";
+    }
+}
+
+Dataset.prototype.getOptions = function(mode, time) {
+    const xmax = time.endOf(mode).toDate();
+    const xmin = time.startOf(mode).toDate();
+    var numTimeTicks;
+    var timeFormat;
+    switch(mode) {
+        case "year":
+            numTimeTicks = d3.timeMonth.every(1);
+            timeFormat = d3.timeFormat("%B");
+            break;
+        case "week":
+            numTimeTicks = d3.timeDay.every(1);
+            timeFormat = d3.timeFormat("%b %a %d");
+            break;
+        default:
+            numTimeTicks = d3.timeWeek.every(1);
+            timeFormat = d3.timeFormat("%b %a %d");
+            break;
+    }
+
+    return { mode, xmax, xmin, numTimeTicks, timeFormat };
+}
+
 function loop(data, condition, converter) {
     dataset = [];
     for (var i=0; i<data.length; i++) {
