@@ -25,9 +25,9 @@ router.get('/graph/:id', function(req, res) {
 
 router.post('/graph/addPoint', function(req, res, next) {
     const date = moment(req.body.date, "MMMM D, YYYY").toISOString();
-    db.addPoint(1, parseInt(req.body.value), date, function(data) {
+    db.addPoint(parseInt(req.body.id), parseInt(req.body.value), date, function(data) {
         console.log("Added points: ", data);
-        res.redirect("/");
+        res.redirect("/graph/" + req.body.id);
     });
 });
 

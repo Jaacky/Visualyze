@@ -19,7 +19,7 @@
                 <form action="/graph/addPoint" method="post">
                     <input type="text" id="datepicker", name="date" required>
                     <input type="number" id="value", name="value" placeholder="Value" required>
-                    <input type="string" id="id" name="id" value="1" hidden required>
+                    <input type="string" id="id" name="id" value="<%= graph.id %>" hidden required>
                     <button class="btn btn-default" type="submit">Add</button>
                 </form>
             </div>
