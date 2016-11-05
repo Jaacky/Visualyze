@@ -1,0 +1,36 @@
+<!DOCTYPE html>  
+<html lang="en">  
+    <head>
+        <%- include('partials/header.ejs') %>
+        <script src="/js/dataset.js"></script>
+        <script src="/js/graph.js"></script>
+    </head>
+    <script>
+        var fusion = <%- JSON.stringify(fusion) %>
+        console.log(fusion);
+    </script>
+    <body>
+        <div class="row">
+            <div class="col-md-12">
+                <h1><%= fusion.name %></h1>
+            </div>
+
+            <div id="graph-time-options" class="col-md-12 options-group">
+                <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
+            </div>
+            <div class="date">
+                <button id="backward" class="btn btn-default">&lt;</button>
+                <h3 id="date">Sunday duh</h3>
+                <button id="forward" class="btn btn-default">&gt;</button>
+            </div>
+            <div class="col-sm-offset-2 col-sm-8">
+                <div id="graph-container"></div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        var current = moment();
+        setDate(current, "month");
+    </script>
+</html>  

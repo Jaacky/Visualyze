@@ -105,6 +105,76 @@ const getGraph = function(email, graph_id, cb) {
         });
 }
 
+const getFusion = function(email, fusion_id, cb) {
+
+    var getFusionQString = "SELECT * FROM fusions WHERE id = $1";
+    var getGraphsInFusionQString =  "SELECT * FROM graphs "
+            + "WHERE id IN "
+                + "(SELECT graph_id "
+                + "FROM fusions_to_graphs as ftg INNER JOIN graphs as g "
+                + "ON ftg.fusion_id = g.id "
+                + "WHERE ftg.fusion_id = $1)";
+    
+    var getFusion = new pgp.ParameterizedQuery(getFusionQString);
+    var getGraphsInFusion = new pgp.ParameterizedQuery(getGraphsInFusionQString);
+
+    db.tx(function(t) {
+        return t.batch([
+            t.one(getFusion, [fusion_id]),
+            t.any(getGraphsInFusion, [fusion_id])
+                .then(function(graph_ids) {
+                    return db.tx(function(t1) {
+                        queries = [];
+                        for (var i=0; i<graph_ids.length; i++) {
+                            queries.push(
+                                createFusionGraphsQ(t1, [email, graph_ids[i].id])
+                            );
+                        }
+                        return t1.batch(queries);
+                    });
+                })
+                .catch(function(err) {
+                    console.log("level-t fusion err", err);
+                })
+        ]);
+    })
+        .then(function(result) {
+            var fusion = result[0];
+            fusion.graphs = result[1];
+            cb(fusion);
+        })
+        .catch(function(err) {
+            console.log("INIT TX GET FUSION ", err);
+        });
+}
+
+const createFusionGraphsQ = function(ctx, values) {
+
+    var graphQString = "SELECT * FROM graphs "
+                + "WHERE owner = $1 AND id = $2";
+    
+    var pointsQString = "SELECT graphs.colour, data_points.value, data_points.date "
+                + "FROM graphs INNER JOIN data_points ON "
+                + "graphs.id = data_points.graph AND graphs.owner = $1 AND graphs.id = $2";
+    
+    var findGraph = new pgp.ParameterizedQuery(graphQString);
+    var findPoints = new pgp.ParameterizedQuery(pointsQString);
+    return ctx.tx(function(t) {
+        return t.batch([
+            t.one(findGraph, values),
+            t.any(findPoints, values)
+        ])
+        .then(function(result) {
+            var graph = result[0];
+            graph.points = result[1];
+            return graph;
+        })
+        .catch(function(err) {
+            console.log("createQ err ", err);
+        });
+    });
+}
+
 /* 
     Inserting a point to a graph
 */
@@ -129,4 +199,5 @@ module.exports = {
     getGraph,
     getAllUserPlots,
     addPoint,
+    getFusion,
 }

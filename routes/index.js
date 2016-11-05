@@ -26,4 +26,10 @@ router.post('/graph/addPoint', function(req, res, next) {
     });
 });
 
+router.get('/fusion/:id', function(req, res) {
+    db.getFusion("jacky", req.params.id, function(fusion) {
+        res.render('fusion', { title_addon: "Fusion", fusion });
+    });
+});
+
 module.exports = router;
