@@ -6,136 +6,22 @@
         <script src="/js/graph.js"></script>
     </head>
 
+    <script>
+        var graphs = <%- JSON.stringify(graphs) %>;
+        console.log(graphs);
+    </script>
+
     <body>
         <div>
             <h2> User id: <%= user.email %> </h2>
         </div>
+
         <div class="row">
-            <div class="col-md-12">
-                <form action="/graph/addPoint" method="post">
-                    <input type="text" id="datepicker", name="date" required>
-                    <input type="number" id="value", name="value" placeholder="Value" required>
-                    <input type="string" id="id" name="id" value="1" hidden required>
-                    <button class="btn btn-default" type="submit">Add</button>
-                </form>
-            </div>
-            <div id="graph-time-options" class="col-md-12 options-group">
-                <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
-            </div>
-            <div class="date">
-                <button id="backward" class="btn btn-default">&lt;</button>
-                <h3 id="date">Sunday duh</h3>
-                <button id="forward" class="btn btn-default">&gt;</button>
-            </div>
-            <div class="col-sm-offset-2 col-sm-8">
-                <div id="graph-container"></div>
-            </div>
+            <% for (var i=0; i<graphs.length; i++) { %>
+                <div class="col-sm-4">
+                    <a href="/graph/<%= graphs[i].id %>"><button class="btn btn-default"><%= graphs[i].name %></button></a>
+                </div>
+            <% } %>
         </div>
     </body>
-
-    <script>
-        var picker = new Pikaday({
-            field: document.getElementById('datepicker'),
-            format: "MMMM D, YYYY"
-        });
-        picker.setMoment(moment());
-
-        const setDate = function(time, mode) {
-            var timeToDisplay;
-            switch(mode) {
-                case "year":
-                    timeToDisplay = time.format("YYYY");
-                    break;
-                case "month":
-                    timeToDisplay = time.format("MMMM YYYY");
-                    break;
-                case "week":
-                    timeToDisplay = time.format("wo") + " week of " + time.format("YYYY");
-                    break;
-                default:
-                    throw "Invalid use of function setDate";
-            }
-            $("#date").html(timeToDisplay);
-        }
-
-        const updateTime = function(time, mode, direction) {
-            var magnitude;
-            switch(mode) {
-                case "year":
-                    magnitude = "y";
-                    break;
-                case "month":
-                    magnitude = "M";
-                    break;
-                case "week":
-                    magnitude = "w";
-                    break;
-                default:
-                    throw "Invalid mode passed to function updateTime";
-            }
-
-            switch(direction) {
-                case "forward":
-                    time.add(1, magnitude);
-                    break;
-                case "backward":
-                    time.subtract(1, magnitude);
-                    break;
-                default:
-                    throw "Invalid direction passed to function updateTime";
-            }
-            return time;
-        }
-    </script>
-
-    <script>
-        var ds = new Dataset(<%- JSON.stringify(data_points) %>);
-        var current = moment();
-        setDate(current, "month");
-        const g = new scatterPlot("graph-container", 
-            ds.getPoints("month", moment(current)), 
-            ds.getOptions("month", moment(current))
-        );
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            /*
-                On click event for changing time modes
-            */
-            $('.btn-graph-time').on('click', function() {
-                $('.btn-graph-time').removeClass('active');
-                $(this).addClass('active');
-                var mode = $(this).html().toLowerCase();
-
-                setDate(current, mode);
-                // const x = new scatterPlot("graph-container", 
-                //     ds.getPoints(mode, moment(current)),
-                //     ds.getOptions(mode, moment(current))
-                // );
-                g.update(
-                    ds.getPoints(mode, moment(current)),
-                    ds.getOptions(mode, moment(current))
-                );
-            }); 
-
-            /*
-                On click event for changing time
-            */
-            $('.date button').on('click', function() {
-                var mode = $(".btn-graph-time.active").html().toLowerCase();
-                var direction = $(this).attr("id");
-                current = updateTime(moment(current), mode, direction);
-
-                setDate(current, mode);
-                // const y = new scatterPlot("graph-container",
-                //     ds.getPoints(mode, moment(current)),
-                //     ds.getOptions(mode, moment(current))
-                g.update(
-                    ds.getPoints(mode, moment(current)),
-                    ds.getOptions(mode, moment(current))
-                );
-            });
-        });
-    </script>
 </html>  
