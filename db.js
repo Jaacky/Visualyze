@@ -105,6 +105,12 @@ const getGraph = function(email, graph_id, cb) {
         });
 }
 
+/*
+    Returns an object { fusion, [graphs] }
+
+    fusion is the fusion, identified by fusion_id, and its details
+    [graphs] is an array of graphs that also contain their data points
+*/
 const getFusion = function(email, fusion_id, cb) {
 
     var getFusionQString = "SELECT * FROM fusions WHERE id = $1";
@@ -119,13 +125,24 @@ const getFusion = function(email, fusion_id, cb) {
     var getGraphsInFusion = new pgp.ParameterizedQuery(getGraphsInFusionQString);
 
     db.tx(function(t) {
+        /*
+            In the batch:
+                1st query retrieves the fusion details
+                2nd query retrieves each graph that is in the fusion and its data points
+        */
         return t.batch([
-            t.one(getFusion, [fusion_id]),
-            t.any(getGraphsInFusion, [fusion_id])
+            t.one(getFusion, [fusion_id]), // 1st query
+            t.any(getGraphsInFusion, [fusion_id]) // 2nd query
                 .then(function(graph_ids) {
+                    // After getting all the graph ids that belong in the fusion, query for all the graph details and their data points
                     return db.tx(function(t1) {
                         queries = [];
                         for (var i=0; i<graph_ids.length; i++) {
+                            /*
+                                Creating the queries for each graph to get their data points
+                                > Uses a constructor function, createFusionGraphsQ, beacuse the graph_ids[i] that gets pushed
+                                    becomes undefined if not function scoped after each iteration
+                            */
                             queries.push(
                                 createFusionGraphsQ(t1, [email, graph_ids[i].id])
                             );
@@ -139,6 +156,7 @@ const getFusion = function(email, fusion_id, cb) {
         ]);
     })
         .then(function(result) {
+            // formatting the result so that 1 object gets returned, the fusion and its attribute, .graph, contains all the graphs
             var fusion = result[0];
             fusion.graphs = result[1];
             cb(fusion);
@@ -148,6 +166,9 @@ const getFusion = function(email, fusion_id, cb) {
         });
 }
 
+/*
+    Constructor function used in getFusion
+*/
 const createFusionGraphsQ = function(ctx, values) {
 
     var graphQString = "SELECT * FROM graphs "
@@ -165,6 +186,7 @@ const createFusionGraphsQ = function(ctx, values) {
             t.any(findPoints, values)
         ])
         .then(function(result) {
+            // Formatting the result so that 1 object gets returned, the graph and its attribute, .points, contains all the data points
             var graph = result[0];
             graph.points = result[1];
             return graph;
