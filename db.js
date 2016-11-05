@@ -46,19 +46,31 @@ const getAllUserGraphs = function(email, cb) {
 }
 
 const getGraph = function(email, graph_id, cb) {
+
+    var graphQString = "SELECT * FROM graphs "
+                + "WHERE owner = $1 AND id = $2";
     
-    var queryString = "SELECT graphs.colour, data_points.value, data_points.date "
+    var pointsQString = "SELECT graphs.colour, data_points.value, data_points.date "
                 + "FROM graphs INNER JOIN data_points ON "
                 + "graphs.id = data_points.graph AND graphs.owner = $1 AND graphs.id = $2";
 
-    var findGraph = new pgp.ParameterizedQuery(queryString);
+    var findGraph = new pgp.ParameterizedQuery(graphQString);
+    var findPoints = new pgp.ParameterizedQuery(pointsQString);
     
-    db.any(findGraph,[email, graph_id])
-        .then(function(data) {
-            cb(data);
+    db.any(findGraph, [email, graph_id])
+        .then(function(graph) {
+            db.any(findPoints,[email, graph_id])
+                .then(function(points) {
+                    var clone = Object.assign({}, graph);
+                    clone.points = points;
+                    cb(clone);
+                })
+                .catch(function(err) {
+                    console.log("FIND POINTS: ", err);
+                });
         })
         .catch(function(err) {
-            console.log(err);
+            console.log("FIND GRAPH ", err);
         });
 }
 

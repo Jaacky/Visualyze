@@ -86,7 +86,8 @@
     </script>
 
     <script>
-        var ds = new Dataset(<%- JSON.stringify(data_points) %>);
+        var graph = <%- JSON.stringify(graph) %>
+        var ds = new Dataset(graph.points);
         var current = moment();
         setDate(current, "month");
         const g = new scatterPlot("graph-container", 

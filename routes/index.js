@@ -11,15 +11,15 @@ router.get('/', function(req, res, next) {
     //     });
     // });
     db.getUser("jacky", function(user) {
-        db.getAllUserGraphs("jacky", function(graphs) {
+        db.getAllUserGraphs('jacky', function(graphs) {
             res.render('index', { title_addon: "Dashboard", user, graphs });
         });
     });
 });
 
 router.get('/graph/:id', function(req, res) {
-    db.getGraph("jacky", req.params.id, function(points) {
-        res.render('graph', { title_addon: "Graph", "data_points": points });
+    db.getGraph("jacky", req.params.id, function(graph) {
+        res.render('graph', { title_addon: "Graph", graph });
     });
 });
 
