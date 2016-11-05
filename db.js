@@ -38,21 +38,43 @@ const getAllUsers = function(cb) {
 /*
     Returns all of a user's graphs
 */
-const getAllUserGraphs = function(email, cb) {
+const getAllUserPlots = function(email, cb) {
 
-    var queryString = "SELECT * FROM graphs "
+    var graphQString = "SELECT * FROM graphs "
                 + "WHERE owner = $1";
 
-    var findAllUserGraphs = new pgp.ParameterizedQuery(queryString);
+    var fusionQString = "SELECT * FROM "
+                    + "(SELECT f.id, f.date_created, f.name, fto.owner "
+                    + "FROM fusions as f, fusions_to_owners as fto "
+                    + "WHERE f.id = fto.fusion_id) as myf "
+                + "WHERE myf.owner=$1";
 
-    db.any(findAllUserGraphs, [email])
-        .then(function(graphs) {
-            cb(graphs);
+    var findAllUserGraphs = new pgp.ParameterizedQuery(graphQString);
+    var findAllUserFusions = new pgp.ParameterizedQuery(fusionQString);
+
+    db.task(function(t) {
+        return t.batch([t.any(findAllUserGraphs, [email]), t.any(findAllUserFusions, [email])]);
+    })
+        .then(function(result) {
+            var graphs = result[0];
+            var fusions = result[1];
+            cb({graphs, fusions});
         })
         .catch(function(err) {
-            console.log(err);
+            console.log("getAllPlots ", err);
         });
 }
+
+/*
+    Query strings for later use
+*/
+var getGraphsInFusion =  "SELECT * FROM graphs "
++ "WHERE id IN "
+    + "(SELECT graph_id "
+    + "FROM fusions_to_graphs as ftg INNER JOIN graphs as g "
+    + "ON ftg.fusion_id = g.id)";
+
+var fusionOwnerString = "SELECT f.id, f.date_created, f.name, fto.owner FROM fusions as f, fusions_to_owners as fto WHERE f.id = fto.fusion_id";
 
 /*
     Returns a graph along with all its data points
@@ -105,6 +127,6 @@ module.exports = {
     getUser,
     getAllUsers,
     getGraph,
-    getAllUserGraphs,
+    getAllUserPlots,
     addPoint,
 }

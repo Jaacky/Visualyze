@@ -5,14 +5,9 @@ var express = require('express'),
 var db = require('../db.js');
 
 router.get('/', function(req, res, next) {
-    // db.getUser("jacky", function(user) {
-    //     db.getGraph("jacky", 1, function(data_points) {
-    //         res.render('index', { title_addon: "test", user: user, "data_points": data_points });
-    //     });
-    // });
     db.getUser("jacky", function(user) {
-        db.getAllUserGraphs('jacky', function(graphs) {
-            res.render('index', { title_addon: "Dashboard", user, graphs });
+        db.getAllUserPlots('jacky', function(plots) {
+            res.render('index', { title_addon: "Dashboard", user, plots: plots});
         });
     });
 });

@@ -7,21 +7,31 @@
     </head>
 
     <script>
-        var graphs = <%- JSON.stringify(graphs) %>;
-        console.log(graphs);
+        // var plots = <%- JSON.stringify(plots) %>;
     </script>
 
     <body>
         <div>
             <h2> User id: <%= user.email %> </h2>
         </div>
+        <div class="container container-fluid">
+            <div class="row">
+                <h1>Graphs</h1>
+                <% for (var i=0; i<plots.graphs.length; i++) { %>
+                    <div class="col-sm-4">
+                        <a href="/graph/<%= plots.graphs[i].id %>"><button class="btn btn-default"><%= plots.graphs[i].name %></button></a>
+                    </div>
+                <% } %>
+            </div>
 
-        <div class="row">
-            <% for (var i=0; i<graphs.length; i++) { %>
-                <div class="col-sm-4">
-                    <a href="/graph/<%= graphs[i].id %>"><button class="btn btn-default"><%= graphs[i].name %></button></a>
-                </div>
-            <% } %>
+            <div class="row">
+                <h1>Fusions:</h1>
+                <% for (var i=0; i<plots.fusions.length; i++) { %>
+                    <div class="col-sm-4">
+                        <a href="/graph/<%= plots.graphs[i].id %>"><button class="btn btn-default"><%= plots.fusions[i].name %></button></a>
+                    </div>
+                <% } %>
+            </div>
         </div>
     </body>
 </html>  
