@@ -9,6 +9,9 @@ var cn = {
 
 var db = pgp(cn);
 
+/*
+    Returns a user
+*/
 const getUser = function(email, cb) {
     db.one('SELECT * FROM users WHERE email = $1', [email])
         .then(function(data) {
@@ -19,6 +22,9 @@ const getUser = function(email, cb) {
         });
 }
 
+/*
+    Not used right now
+*/
 const getAllUsers = function(cb) {
     db.any("select * from users")
         .then(function(data) {
@@ -29,6 +35,9 @@ const getAllUsers = function(cb) {
         });
 }
 
+/*
+    Returns all of a user's graphs
+*/
 const getAllUserGraphs = function(email, cb) {
 
     var queryString = "SELECT * FROM graphs "
@@ -45,6 +54,9 @@ const getAllUserGraphs = function(email, cb) {
         });
 }
 
+/*
+    Returns a graph along with all its data points
+*/
 const getGraph = function(email, graph_id, cb) {
 
     var graphQString = "SELECT * FROM graphs "
@@ -57,22 +69,23 @@ const getGraph = function(email, graph_id, cb) {
     var findGraph = new pgp.ParameterizedQuery(graphQString);
     var findPoints = new pgp.ParameterizedQuery(pointsQString);
     
-    db.one(findGraph, [email, graph_id])
-        .then(function(graph) {
-            db.any(findPoints,[email, graph_id])
-                .then(function(points) {
-                    graph.points = points;
-                    cb(graph);
-                })
-                .catch(function(err) {
-                    console.log("FIND POINTS: ", err);
-                });
+    db.task(function(t) {
+        return t.batch([t.one(findGraph, [email, graph_id]), t.any(findPoints, [email, graph_id])]);
+    })
+        .then(function(result) {
+            console.log(result);
+            var graph = result[0];
+            graph.points = result[1];
+            cb(graph);
         })
         .catch(function(err) {
-            console.log("FIND GRAPH ", err);
+            console.log("TASK AND BATCH ", err);
         });
 }
 
+/* 
+    Inserting a point to a graph
+*/
 const addPoint = function(graph_id, value, date, cb) {
     
     var queryString = "INSERT INTO data_points(graph, value, date) "
@@ -92,6 +105,6 @@ module.exports = {
     getUser,
     getAllUsers,
     getGraph,
-    addPoint,
     getAllUserGraphs,
+    addPoint,
 }
