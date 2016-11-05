@@ -8,6 +8,7 @@
     <script>
         var fusion = <%- JSON.stringify(fusion) %>
         console.log(fusion);
+        var ds = new FusionDataset(fusion);
     </script>
     <body>
         <div class="row">
@@ -32,5 +33,44 @@
     <script>
         var current = moment();
         setDate(current, "month");
+        const g = new scatterPlot("graph-container", 
+            ds.getPoints("month", moment(current)), 
+            ds.getOptions("month", moment(current))
+        );
     </script>
+
+    <script>
+        $(document).ready(function() {
+            /*
+                On click event for changing time modes
+            */
+            $('.btn-graph-time').on('click', function() {
+                $('.btn-graph-time').removeClass('active');
+                $(this).addClass('active');
+                var mode = $(this).html().toLowerCase();
+
+                setDate(current, mode);
+                g.update(
+                    ds.getPoints(mode, moment(current)),
+                    ds.getOptions(mode, moment(current))
+                );
+            }); 
+
+            /*
+                On click event for changing time
+            */
+            $('.date button').on('click', function() {
+                var mode = $(".btn-graph-time.active").html().toLowerCase();
+                var direction = $(this).attr("id");
+                current = updateTime(moment(current), mode, direction);
+
+                setDate(current, mode);
+                g.update(
+                    ds.getPoints(mode, moment(current)),
+                    ds.getOptions(mode, moment(current))
+                );
+            });
+        });
+    </script>
+
 </html>  

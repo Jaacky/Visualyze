@@ -7,8 +7,7 @@
     </head>
     <script>
         var graph = <%- JSON.stringify(graph) %>
-        var ds = new Dataset(graph.points);
-        console.log(graph);
+        var ds = new GraphDataset(graph);
     </script>
     <body>
         <div class="row">

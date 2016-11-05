@@ -2,6 +2,27 @@ function Dataset(data) {
     this.data = data;
 }
 
+function GraphDataset(graph) {
+    Dataset.call(this, graph.points);
+}
+
+GraphDataset.prototype = Object.create(Dataset.prototype);
+GraphDataset.prototype.constructor = GraphDataset;
+
+function FusionDataset(fusion) {
+    var points = [];
+    for (var i=0; i<fusion.graphs.length; i++) {
+        graph = fusion.graphs[i];
+        points = points.concat(graph.points.map(function(pt) { pt.owner = graph.owner; pt.graph = graph.name; return pt; }));
+    }
+    Dataset.call(this, points);    
+}
+
+FusionDataset.prototype = Object.create(Dataset.prototype);
+FusionDataset.prototype.constructor = FusionDataset;
+
+
+
 /*
     mode is a string in { "year", "month", "week" }
     time is a moment object
