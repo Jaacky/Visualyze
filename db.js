@@ -57,13 +57,12 @@ const getGraph = function(email, graph_id, cb) {
     var findGraph = new pgp.ParameterizedQuery(graphQString);
     var findPoints = new pgp.ParameterizedQuery(pointsQString);
     
-    db.any(findGraph, [email, graph_id])
+    db.one(findGraph, [email, graph_id])
         .then(function(graph) {
             db.any(findPoints,[email, graph_id])
                 .then(function(points) {
-                    var clone = Object.assign({}, graph);
-                    clone.points = points;
-                    cb(clone);
+                    graph.points = points;
+                    cb(graph);
                 })
                 .catch(function(err) {
                     console.log("FIND POINTS: ", err);
