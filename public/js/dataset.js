@@ -3,7 +3,8 @@ function Dataset(data) {
 }
 
 function GraphDataset(graph) {
-    Dataset.call(this, graph.points);
+    var points = graph.points.map(function(pt) { pt.owner = graph.owner; pt.graph = graph.name; return pt; });
+    Dataset.call(this, points);
 }
 
 GraphDataset.prototype = Object.create(Dataset.prototype);
