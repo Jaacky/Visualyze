@@ -1,3 +1,9 @@
+circle.selected {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+}
+
 h1 {
     font-size: 15;
 }

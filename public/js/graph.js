@@ -20,6 +20,9 @@ var scatterPlot = function(container, points, options) {
         .append('g')
         .attr('transform', 'translate(' + this.padding.left + "," + this.padding.top + ")");
 
+    this.tooltip = d3.select(document.getElementById('tooltip'))
+        .style("fill", "e8e8e8");
+
     this.xAxis = this.vis.append("g")
         .attr('class', 'x axis');
     this.yAxis = this.vis.append("g")
@@ -31,10 +34,10 @@ var scatterPlot = function(container, points, options) {
 scatterPlot.prototype.setProperties = function() {
     var self = this;
     this.padding = {
-        "top": 25,
+        "top": 10,
         "bottom": 25,
         "left": 25,
-        "right": 25
+        "right": 10
     };
 
     this.size = {
@@ -63,14 +66,20 @@ scatterPlot.prototype.draw = function() {
     circle.enter().append("circle")
         .attr("cx", function(d) { return self.x( new Date(d.date) ); })
         .attr("cy", function(d) { return self.y(d.value); })
-        .attr("r", 3)
-        .style("fill", function(d) { return d.colour; });
+        .attr("r", 8)
+        .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); })
+        .on('click', function(d) {
+            console.log(this);
+            d3.selectAll("circle").attr("class", "");
+            d3.select(this).attr("class", "selected");
+            self.tooltip.html(formatTooltip(d));
+        });
         
     circle
         .attr("cx", function(d) { return self.x( new Date(d.date) ); })
         .attr("cy", function(d) { return self.y(d.value); })
-        .attr("r", 3)
-        .style("fill", function(d) { return d.colour; });
+        .attr("r", 8)
+        .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); });
     
     circle.exit().remove();
 
@@ -88,4 +97,32 @@ scatterPlot.prototype.update = function(points, options) {
 
     self.setProperties();
     self.draw();
+}
+
+function formatTooltip(d) {
+    html = "";
+    // html += "In " + d.owner + "'s " + d.graph + " graph:<br>";
+    // html += d.value + " on " + moment(d.date).format("MMM D, YY"); 
+    html += "Owner: " + d.owner + "<br>";
+    html += "Graph: " + d.graph + "<br>";
+    html += "Value: " + d.value + "<br>";
+    html += "On: " + moment(d.date).format("MMM D, YYYY");
+
+    return html;
+}
+
+/*
+    Modified from http://stackoverflow.com/questions/21646738/convert-hex-to-rgba
+*/
+function hexToRgbA(hex, opacity=1){
+    var c;
+    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+        c= hex.substring(1).split('');
+        if(c.length== 3){
+            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+        }
+        c= '0x'+c.join('');
+        return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',' + opacity + ')';
+    }
+    throw new Error('Bad Hex');
 }
