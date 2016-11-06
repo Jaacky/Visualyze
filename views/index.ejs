@@ -11,25 +11,23 @@
     </script>
 
     <body>
-        <div>
-            <h2> User id: <%= user.email %> </h2>
-        </div>
+        <%- include('partials/nav.ejs') %>
+
         <div class="container container-fluid">
             <div class="row">
-                <h1>Graphs</h1>
+                <h2>Welcome, <%= user.email %></h2>
+            </div>
+            <div class="row">
+                <h3>Graphs</h3>
                 <% for (var i=0; i<plots.graphs.length; i++) { %>
-                    <div class="col-sm-4">
-                        <a href="/graph/<%= plots.graphs[i].id %>"><button class="btn btn-default"><%= plots.graphs[i].name %></button></a>
-                    </div>
+                    <a href="/graph/<%= plots.graphs[i].id %>"><button class="btn btn-default"><%= plots.graphs[i].name %></button></a>
                 <% } %>
             </div>
 
             <div class="row">
-                <h1>Fusions:</h1>
+                <h3>Fusions</h3>
                 <% for (var i=0; i<plots.fusions.length; i++) { %>
-                    <div class="col-sm-4">
-                        <a href="/fusion/<%= plots.fusions[i].id %>"><button class="btn btn-default"><%= plots.fusions[i].name %></button></a>
-                    </div>
+                    <a href="/fusion/<%= plots.fusions[i].id %>"><button class="btn btn-default"><%= plots.fusions[i].name %></button></a>
                 <% } %>
             </div>
         </div>

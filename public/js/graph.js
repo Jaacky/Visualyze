@@ -69,7 +69,6 @@ scatterPlot.prototype.draw = function() {
         .attr("r", 8)
         .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); })
         .on('click', function(d) {
-            console.log(this);
             d3.selectAll("circle").attr("class", "");
             d3.select(this).attr("class", "selected");
             self.tooltip.html(formatTooltip(d));
