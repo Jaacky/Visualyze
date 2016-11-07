@@ -36,7 +36,7 @@ const getAllUsers = function(cb) {
 }
 
 /*
-    Returns all of a user's graphs
+    Returns all of a user's graphs and fusions
 */
 const getAllUserPlots = function(email, cb) {
 
@@ -122,9 +122,12 @@ const getFusion = function(email, fusion_id, cb) {
                 + "FROM fusions_to_graphs as ftg INNER JOIN graphs as g "
                 + "ON ftg.fusion_id = g.id "
                 + "WHERE ftg.fusion_id = $1)";
+    var getUserGraphsQString = "SELECT * FROM graphs "
+                + "WHERE owner = $1";
     
     var getFusion = new pgp.ParameterizedQuery(getFusionQString);
     var getGraphsInFusion = new pgp.ParameterizedQuery(getGraphsInFusionQString);
+    var getUserGraphs = new pgp.ParameterizedQuery(getUserGraphsQString);
 
     db.tx(function(t) {
         /*
@@ -154,14 +157,16 @@ const getFusion = function(email, fusion_id, cb) {
                 })
                 .catch(function(err) {
                     console.log("level-t fusion err", err);
-                })
+                }),
+            t.any(getUserGraphs, [email])
         ]);
     })
         .then(function(result) {
             // formatting the result so that 1 object gets returned, the fusion and its attribute, .graph, contains all the graphs
             var fusion = result[0];
             fusion.graphs = result[1];
-            cb(fusion);
+            var userGraphs = result[2];
+            cb({ fusion, userGraphs });
         })
         .catch(function(err) {
             console.log("INIT TX GET FUSION ", err);
@@ -209,6 +214,7 @@ const addFusion = function(owner, name, cb) {
     var insertFusion = new pgp.ParameterizedQuery(insertFusionString);
     var insertFusionOwner = new pgp.ParameterizedQuery(insertFusionOwnerString);
 
+    /* Might need to batch inserts */
     db.one(insertFusion, [name])
         .then(function(inserted) {
             db.none(insertFusionOwner, [inserted.id, owner])
@@ -222,7 +228,44 @@ const addFusion = function(owner, name, cb) {
         .catch(function(err) {
             console.log("Add fusion err", err);
         });
-}  
+}
+
+const addGraphsToFusion = function(fusion_id, graphs, cb) {
+    var insertGraphToFusionQString = "INSERT INTO fusions_to_graphs(fusion_id, graph_id) "
+                                + "VALUES($1, $2)";
+    var insertGraphToFusion = new pgp.ParameterizedQuery(insertGraphToFusionQString);
+
+    var queries = [];
+    for (var i=0; i<graphs.length; i++) {
+        queries.push(db.none(insertGraphToFusion, [fusion_id, graphs[i]]));
+    }
+
+    db.tx(function(t) {
+        return t.batch(queries);
+    })
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("Batch insert graphs to fusion err", err);
+        });
+}
+
+const graphsBeginWith = function(begin, cb) {
+    var searchString = "SELECT * FROM graphs "
+                + "WHERE name LIKE $1";
+    
+    var search = pgp.ParameterizedQuery(searchString);
+    console.log(begin);
+    db.any(search, [begin])
+        .then(function(graphs) {
+            console.log(graphs);
+            cb(graphs);
+        })
+        .catch(function(err) {
+            console.log("graphsBeginWith err", err);
+        });
+} 
 
 module.exports = {
     getUser,
@@ -233,6 +276,8 @@ module.exports = {
     addPoint,
     addGraph,
     addFusion,
+    addGraphsToFusion,
+    graphsBeginWith,
 }
 
 /*

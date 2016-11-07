@@ -18,9 +18,11 @@ router.get('/graph/:id', function(req, res) {
     });
 });
 
-router.get('/fusion/:id', function(req, res) {
-    db.getFusion("jacky", req.params.id, function(fusion) {
-        res.render('fusion', { title_addon: "Fusion", fusion });
+router.get('/graph/search/:begin', function(req, res) {
+    console.log(req.params.begin);
+    db.graphsBeginWith(req.params.begin + '%', function(graphs) {
+        console.log(graphs);
+        res.json(graphs);
     });
 });
 
@@ -39,9 +41,22 @@ router.post('/graph/new', function(req, res) {
     });
 });
 
+router.get('/fusion/:id', function(req, res) {
+    db.getFusion("jacky", req.params.id, function(plots) {
+        res.render('fusion', { title_addon: "Fusion", fusion: plots.fusion, userGraphs: plots.userGraphs });
+    });
+});
+
 router.post('/fusion/new', function(req, res) {
     db.addFusion('jacky', req.body.name, function() {
         res.redirect('/');
+    });
+});
+
+router.post('/fusion/add', function(req, res) {
+    console.log(req.body);
+    db.addGraphsToFusion(req.body.fusion_id, req.body.graphs_added, function() {
+        res.redirect('/fusion/' + req.body.fusion_id);
     });
 });
 

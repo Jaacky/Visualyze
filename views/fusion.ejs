@@ -6,36 +6,79 @@
         <script src="/js/graph.js"></script>
     </head>
     <script>
-        var fusion = <%- JSON.stringify(fusion) %>
-        console.log(fusion);
+        var fusion = <%- JSON.stringify(fusion) %>;
+        var userGraphs = <%- JSON.stringify(userGraphs) %>;
+        console.log(fusion, userGraphs);
+        <% var includedGraphs = fusion.graphs.map(function(g) { return g.id; }); %>
         var ds = new FusionDataset(fusion);
     </script>
     <body>
         <%- include('partials/nav.ejs') %>
-        
-        <div class="row">
-            <div class="col-md-12">
-                <h1><%= fusion.name %></h1>
-            </div>
+        <div class="mask"></div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 fusion-title-container">
+                    <h1><%= fusion.name %></h1>
+                    <button id="add-fusion-graph" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus"></span> Graph
+                    </button>
+                    <button id="invite-fusion" class="btn btn-default">Invite friend</button>
+                </div>
 
-            <div id="graph-time-options" class="col-md-12 options-group">
-                <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
-            </div>
-            <div class="date">
-                <button id="backward" class="btn btn-default">&lt;</button>
-                <h3 id="date">Sunday duh</h3>
-                <button id="forward" class="btn btn-default">&gt;</button>
-            </div>
-            <div class="col-sm-offset-1 col-sm-8">
-                <div id="graph-container"></div>
-            </div>
-            <div class="col-sm-2">
-                <div class="row">
-                    <h4>Selected point:</h4>
-                    <div id="tooltip" class="col-sm-12">
+                <div id="graph-time-options" class="col-md-12 options-group">
+                    <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
+                </div>
+                <div class="date">
+                    <button id="backward" class="btn btn-default">&lt;</button>
+                    <h3 id="date">Sunday duh</h3>
+                    <button id="forward" class="btn btn-default">&gt;</button>
+                </div>
+                <div class="col-sm-offset-1 col-sm-8">
+                    <div id="graph-container"></div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <h4>Selected point:</h4>
+                        <div id="tooltip" class="col-sm-12">
+                            None
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Graphs:</h4>
+                        <% for (var i=0; i<fusion.graphs.length; i++) { %>
+                            <div class="col-sm-12"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
+                        <% } %>
                     </div>
                 </div>
             </div>
+        </div> <!-- end container-fluid -->
+
+
+        <div id="add-graph-form" class="mask-overlay">
+            <h4 id="plot-form-title" class="form-title"></h4>
+            <form action="/fusion/add" method="post" style="width: 100%;">
+                <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                <div class="form-group">
+                    <select name="graphs_added[]" id="add-graph-name" class="form-control" multiple>
+                        <% for (var j=0; j<userGraphs.length; j++) { %>
+                            <% if (includedGraphs.indexOf(userGraphs[j].id) == -1) { %> 
+                                <option value="<%= userGraphs[j].id %>"><%= userGraphs[j].name %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </div>
+                <input name="fusion_id" type="text" value="<%= fusion.id %>" hidden required>
+                <button class="btn btn-default" type="submit">Add</button>
+            </form>
+        </div>
+
+        <div id="invite-friend-form" class="mask-overlay">
+            <h4 id="plot-form-title" class="form-title"></h4>
+            <form action="" method="post">
+                <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                <input type="text" id="plot-name" name="name" placeholder="Name" required>
+                <button class="btn btn-default" type="submit">Add</button>
+            </form>
         </div>
     </body>
 
@@ -46,6 +89,13 @@
             ds.getPoints("month", moment(current)), 
             ds.getOptions("month", moment(current))
         );
+
+        $('#add-graph-name').chosen({
+                width: '100%',
+                placeholder_text_multiple: 'Select your graphs',
+                search_contains: true,
+        });
+
     </script>
 
     <script>
@@ -79,7 +129,66 @@
                     ds.getOptions(mode, moment(current))
                 );
             });
+
+            /*
+                On click event for adding a new graph to the fusion
+            */
+            $('#add-fusion-graph').on('click', function() {
+                var form = $('#add-graph-form');
+                $('.mask').addClass('active');
+                form.addClass('active');
+                form.find('.form-title').html("Add graph");
+                console.log("hello");
+            });
+
+            /*
+                http://stackoverflow.com/questions/10318575/jquery-search-as-you-type-with-ajax
+            */
+            var timeoutID = null;
+
+            function getGraphsBeginsWith(begin) {
+                $.ajax({
+                    url: window.location.origin + '/graph/search/' + 'be',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                    },
+                });
+            }
+
+            // $('#add-graph-name').keyup(function(e) {
+            //     clearTimeout(timeoutID);
+            //     console.log(e);
+            //     timeoutID = setTimeout(getGraphsBeginsWith.bind(undefined, e.target.value), 500);
+            // });
+
+            /*
+                On click event for inviting friend to the fusion
+            */
+            $('#invite-fusion').on('click', function() {
+                var form = $('#invite-friend-form');
+                $('.mask').addClass('active');
+                form.addClass('active');
+                form.find('.form-title').html("Invite friend");
+            });
+
+            // $('.new-plot-btn').on('click', function() {
+            //     const type = $(this).attr('id').split('-')[1];
+            //     $('.mask').addClass('active');
+            //     $('#new-plot-form').addClass('active');
+            //     $('#new-plot-form form').attr('action', '/' + type + '/new');
+            //     $('#plot-form-title').html('New ' + type);
+            // });
+
+            $('.mask, .remove-mask-overlay').on('click', function() {
+                $('.mask, .mask-overlay').removeClass('active');
+            });
         });
+
+        /*
+            TODO: Disable scrolling!
+            http://stackoverflow.com/questions/3656592/how-to-programmatically-disable-page-scrolling-with-jquery
+        */
     </script>
 
 </html>  

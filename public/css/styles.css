@@ -4,6 +4,10 @@ circle.selected {
     stroke-opacity: 1;
 }
 
+.chosen-container-multi .chosen-choices li.search-field input[type=text] {
+    width:100% !important;
+}
+
 .mask {
     position: absolute;
     top: 0;
@@ -30,6 +34,8 @@ circle.selected {
     background-color: white;
     border-radius: 8px;
     display: none;
+
+    width: 33%;
 }
 
 .mask.active, .mask-overlay.active {
@@ -141,11 +147,11 @@ h1 {
 	border-bottom-left-radius: 0;
 }
 
-.dashboard-title-container > * {
+.dashboard-title-container > *, .fusion-title-container > * {
     display: inline-block;
     margin-bottom: 10px;
 }
 
-.new-plot-btn {
+.new-plot-btn, #add-fusion-graph {
     margin-left: 25px;
 }
