@@ -18,6 +18,12 @@ router.get('/graph/:id', function(req, res) {
     });
 });
 
+router.get('/fusion/:id', function(req, res) {
+    db.getFusion("jacky", req.params.id, function(fusion) {
+        res.render('fusion', { title_addon: "Fusion", fusion });
+    });
+});
+
 router.post('/graph/addPoint', function(req, res, next) {
     const date = moment(req.body.date, "MMMM D, YYYY").toISOString();
     db.addPoint(parseInt(req.body.id), parseInt(req.body.value), date, function(data) {
@@ -26,9 +32,16 @@ router.post('/graph/addPoint', function(req, res, next) {
     });
 });
 
-router.get('/fusion/:id', function(req, res) {
-    db.getFusion("jacky", req.params.id, function(fusion) {
-        res.render('fusion', { title_addon: "Fusion", fusion });
+router.post('/graph/new', function(req, res) {
+    console.log(req.body.name);
+    db.addGraph('jacky', req.body.name, function() {
+        res.redirect('/');
+    });
+});
+
+router.post('/fusion/new', function(req, res) {
+    db.addFusion('jacky', req.body.name, function() {
+        res.redirect('/');
     });
 });
 

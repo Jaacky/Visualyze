@@ -4,6 +4,46 @@ circle.selected {
     stroke-opacity: 1;
 }
 
+.mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1337;
+    background-color: rgba(0,0,0,0.69);
+    display: none;
+}
+
+.mask-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -o-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+
+    padding: 25px 50px;
+    z-index: 1338;
+    background-color: white;
+    border-radius: 8px;
+    display: none;
+}
+
+.mask.active, .mask-overlay.active {
+    display: block;
+}
+
+.remove-mask-overlay {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+}
+
 a {
     color: black;
 }
@@ -99,4 +139,13 @@ h1 {
 .options-group>.btn:last-child:not(:first-child) {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
+}
+
+.dashboard-title-container > * {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.new-plot-btn {
+    margin-left: 25px;
 }

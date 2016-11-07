@@ -110,6 +110,8 @@ const getGraph = function(email, graph_id, cb) {
 
     fusion is the fusion, identified by fusion_id, and its details
     [graphs] is an array of graphs that also contain their data points
+
+    Uses helper function createFusionGraphsQ
 */
 const getFusion = function(email, fusion_id, cb) {
 
@@ -166,7 +168,79 @@ const getFusion = function(email, fusion_id, cb) {
         });
 }
 
+/* 
+    Inserting a point to a graph
+*/
+const addPoint = function(graph_id, value, date, cb) {
+    
+    var queryString = "INSERT INTO data_points(graph, value, date) "
+                + "VALUES($1, $2, $3)";
+    var insertPoint = new pgp.ParameterizedQuery(queryString);
+
+    db.none(insertPoint, [graph_id, value, date])
+        .then(function(data) {
+            cb(data);
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+}
+
+const addGraph = function(owner, name, cb) {
+    var insertString = "INSERT INTO graphs(owner, name) "
+                + "VALUES($1, $2)";
+    var insertGraph = new pgp.ParameterizedQuery(insertString);
+
+    db.none(insertGraph, [owner, name])
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("Add graph err", err);
+        });
+}
+
+const addFusion = function(owner, name, cb) {
+    var insertFusionString = "INSERT INTO fusions(name) "
+                    + "VALUES($1) RETURNING id";
+    var insertFusionOwnerString = "INSERT INTO fusions_to_owners(fusion_id, owner) "
+                    + "VALUES($1, $2)";
+
+    var insertFusion = new pgp.ParameterizedQuery(insertFusionString);
+    var insertFusionOwner = new pgp.ParameterizedQuery(insertFusionOwnerString);
+
+    db.one(insertFusion, [name])
+        .then(function(inserted) {
+            db.none(insertFusionOwner, [inserted.id, owner])
+                .then(function() {
+                    cb();
+                })
+                .catch(function(err) {
+                    console.log('Add fusion owner err', err);
+                });
+        })
+        .catch(function(err) {
+            console.log("Add fusion err", err);
+        });
+}  
+
+module.exports = {
+    getUser,
+    getAllUsers,
+    getGraph,
+    getFusion,
+    getAllUserPlots,
+    addPoint,
+    addGraph,
+    addFusion,
+}
+
 /*
+    HELPER FUNCTIONS
+*/
+
+/*
+    Helper function:
     Constructor function used in getFusion
 */
 const createFusionGraphsQ = function(ctx, values) {
@@ -192,34 +266,7 @@ const createFusionGraphsQ = function(ctx, values) {
             return graph;
         })
         .catch(function(err) {
-            console.log("createQ err ", err);
+            console.log("createFusionGraphQ err ", err);
         });
     });
-}
-
-/* 
-    Inserting a point to a graph
-*/
-const addPoint = function(graph_id, value, date, cb) {
-    
-    var queryString = "INSERT INTO data_points(graph, value, date) "
-                + "VALUES($1, $2, $3)";
-    var insertPoint = new pgp.ParameterizedQuery(queryString);
-
-    db.none(insertPoint, [graph_id, value, date])
-        .then(function(data) {
-            cb(data);
-        })
-        .catch(function(err) {
-            console.log(err);
-        });
-} 
-
-module.exports = {
-    getUser,
-    getAllUsers,
-    getGraph,
-    getAllUserPlots,
-    addPoint,
-    getFusion,
 }
