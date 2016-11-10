@@ -1,11 +1,13 @@
 var express = require('express'),
+    router = express.Router(),
     path = require('path')
     bodyParser = require('body-parser');
 
 var config = require("./config.js")();
+var db = require('./db.js');
 var app = express();
-// var http = require('http').Server(app);
-// var io = require('socket.io')(http);
+var io = require('socket.io');
+app.set('io', io);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,15 +16,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
     Setting view engine to EJS
 */
 app.set('view engine', 'ejs');
-console.log(path.join(__dirname, 'views'));
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 /*
     Routes used
 */
-var routes = require('./routes/');
-app.use('/', routes);
+var routes = require('./routes/index.js')(router, app, db);
+app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -12,7 +12,7 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 var server = http.createServer(app);
-var io = require('socket.io')(server);
+// var io = require('socket.io')(server);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -20,7 +20,10 @@ server.on('listening', onListening);
 /*
   Socket operations
 */
+console.log(app.get('io'));
+var io = app.get('io')(server);
 var socket_ops = require('../app/io')(io);
+app.set('io', io);
 
 /**
  * Normalize a port into a number, string, or false.
