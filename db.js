@@ -140,7 +140,7 @@ const getFusion = function(email, fusion_id, cb) {
             t.any(getGraphsInFusion, [fusion_id]) // 2nd query
                 .then(function(graph_ids) {
                     // After getting all the graph ids that belong in the fusion, query for all the graph details and their data points
-                    return db.tx(function(t1) {
+                    return t.tx(function(t1) {
                         queries = [];
                         for (var i=0; i<graph_ids.length; i++) {
                             /*
