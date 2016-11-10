@@ -1,9 +1,11 @@
 var express = require('express'),
     moment = require('moment'),
+    io = require('socket.io');
     router = express.Router();
 
 var db = require('../db.js');
 
+// module.exports = function(router,)
 router.get('/', function(req, res, next) {
     db.getUser("jacky", function(user) {
         db.getAllUserPlots('jacky', function(plots) {

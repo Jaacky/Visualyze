@@ -4,6 +4,8 @@ var express = require('express'),
 
 var config = require("./config.js")();
 var app = express();
+// var http = require('http').Server(app);
+// var io = require('socket.io')(http);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -12,7 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
     Setting view engine to EJS
 */
 app.set('view engine', 'ejs');
-
+console.log(path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 /*

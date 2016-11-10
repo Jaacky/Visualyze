@@ -14,7 +14,8 @@
     "express-session": "*",
     "helmet": "^2.1.1",
     "moment": "^2.15.2",
-    "pg-promise": "^5.3.5"
+    "pg-promise": "^5.3.5",
+    "socket.io": "^1.5.1"
   },
   "dependencies": {
     "body-parser": "^1.15.2"
