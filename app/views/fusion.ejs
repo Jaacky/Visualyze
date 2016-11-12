@@ -56,7 +56,7 @@
 
         <div id="add-graph-form" class="mask-overlay">
             <h4 id="plot-form-title" class="form-title"></h4>
-            <form action="/fusion/add" method="post" style="width: 100%;">
+            <form action="/fusion/add" method="post">
                 <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                 <div class="form-group">
                     <select name="graphs_added[]" id="add-graph-name" class="form-control" multiple>
@@ -74,9 +74,10 @@
 
         <div id="invite-friend-form" class="mask-overlay">
             <h4 id="plot-form-title" class="form-title"></h4>
-            <form action="" method="post">
+            <form action="/fusion/invite" method="post">
                 <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                 <input type="text" id="plot-name" name="name" placeholder="Name" required>
+                <input name="fusion_id" type="text" value="<%= fusion.id %>" hidden required>
                 <button class="btn btn-default" type="submit">Add</button>
             </form>
         </div>
@@ -96,7 +97,7 @@
                 search_contains: true,
         });
 
-        var socket = io();
+        // var socket = io();
 
     </script>
 
@@ -146,17 +147,17 @@
             /*
                 http://stackoverflow.com/questions/10318575/jquery-search-as-you-type-with-ajax
             */
-            var timeoutID = null;
+            // var timeoutID = null;
 
-            function getGraphsBeginsWith(begin) {
-                $.ajax({
-                    url: window.location.origin + '/graph/search/' + 'be',
-                    dataType: 'json',
-                    success: function(data) {
-                        console.log(data);
-                    },
-                });
-            }
+            // function getGraphsBeginsWith(begin) {
+            //     $.ajax({
+            //         url: window.location.origin + '/graph/search/' + 'be',
+            //         dataType: 'json',
+            //         success: function(data) {
+            //             console.log(data);
+            //         },
+            //     });
+            // }
 
             // $('#add-graph-name').keyup(function(e) {
             //     clearTimeout(timeoutID);
@@ -172,6 +173,7 @@
                 $('.mask').addClass('active');
                 form.addClass('active');
                 form.find('.form-title').html("Invite friend");
+                // socket.emit('fusion request', "hello");
             });
 
             // $('.new-plot-btn').on('click', function() {

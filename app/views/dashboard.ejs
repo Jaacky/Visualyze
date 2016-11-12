@@ -1,0 +1,69 @@
+<!DOCTYPE html>  
+<html lang="en">  
+    <head>
+        <%- include('partials/header.ejs') %>
+        <script src="/js/dataset.js"></script>
+        <script src="/js/graph.js"></script>
+    </head>
+
+    <script>
+        // var plots = <%- JSON.stringify(plots) %>;
+    </script>
+
+    <body>
+        <%- include('partials/nav.ejs') %>
+        <div class="mask"></div>
+        <div class="container container-fluid">
+            <div class="row">
+                <h2>Welcome, <%= user.email %></h2>
+            </div>
+            <div class="row">
+                <div class="dashboard-title-container">
+                    <h3>Graphs</h3>
+                    <button id="new-graph" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+                <% for (var i=0; i<plots.graphs.length; i++) { %>
+                    <a href="/graph/<%= plots.graphs[i].id %>"><button class="btn btn-default"><%= plots.graphs[i].name %></button></a>
+                <% } %>
+            </div>
+
+            <div class="row">
+                <div class="dashboard-title-container">
+                    <h3>Fusions</h3>
+                    <button id="new-fusion" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+                <% for (var i=0; i<plots.fusions.length; i++) { %>
+                    <a href="/fusion/<%= plots.fusions[i].id %>"><button class="btn btn-default"><%= plots.fusions[i].name %></button></a>
+                <% } %>
+            </div>
+        </div> <!-- end container-fluid -->
+
+        <div id="new-plot-form" class="mask-overlay">
+            <h4 id="plot-form-title"></h4>
+            <form action="" method="post">
+                <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                <input type="text" id="plot-name" name="name" placeholder="Name" required>
+                <button class="btn btn-default" type="submit">Add</button>
+            </form>
+        </div>
+    </body>
+
+    <script>
+        $(document).ready(function() {
+            $('.new-plot-btn').on('click', function() {
+                const type = $(this).attr('id').split('-')[1];
+                // const capitalizedType = type.substring(0,1).toUpperCase() + type.substring(1, type.length);
+                $('.mask').addClass('active');
+                $('#new-plot-form').addClass('active');
+                $('#new-plot-form form').attr('action', '/' + type + '/new');
+                $('#plot-form-title').html('New ' + type);
+                // $('#plot-name').attr('placeholder', 
+                //     capitalizedType + ' Name');
+            });
+
+            $('.mask, .remove-mask-overlay').on('click', function() {
+                $('.mask, .mask-overlay').removeClass('active');
+            });
+        });
+    </script>
+</html>  

@@ -2,15 +2,15 @@ var express = require('express'),
     router = express.Router(),
     path = require('path')
     bodyParser = require('body-parser');
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var config = require("./config.js")();
 var db = require('./db.js');
 var app = express();
 var io = require('socket.io');
 app.set('io', io);
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 /*
     Setting view engine to EJS
@@ -19,10 +19,47 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({ secret: 'keyboard cat',
+                  cookie: { maxAge: 1200000 },
+                  resave: true,
+                  saveUninitialized: true,
+                }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(
+    { usernameField: 'email' },
+    function(email, password, done) {
+        console.log('email/pwd', email, password);
+        var result = db.getUser(email, function(user) {
+          console.log("inside passport authen", user);
+          if (user == -1) {
+            return done(null, false);
+          }
+          if (password != "1") {
+            return done(null, false);
+          }
+          done(null, user);
+        });
+    })
+);
+
+passport.serializeUser(function(user, done) {
+    done(null, user.email);
+});
+
+passport.deserializeUser(function(email, done) {
+    db.getUser(email, function(user) {
+        done(null, user);
+    });
+});
+
 /*
     Routes used
 */
-var routes = require('./routes/index.js')(router, app, db);
+var routes = require('./routes/index.js')(router, app, db, passport);
 app.use('/', router);
 
 // catch 404 and forward to error handler

@@ -18,8 +18,24 @@ const getUser = function(email, cb) {
             cb(data);
         })
         .catch(function(err) {
-            console.log(err);
+            console.log('get user err', err);
+            cb(-1);
         });
+    
+    // var getUserQString = 'SELECT * FROM users WHERE email = $1';
+    // var getUserFriendsQString = 'SELECT * FROM friendships WHERE user_a = $1';
+
+    // var getUser = new pgp.ParameterizedQuery(getUserQString);
+    // var getUserFriends = new pgp.ParameterizedQuery(getUserFriendsQString);
+
+    // db.tx(function(t) {
+    //     return t.batch([
+    //         t.one(getUser, [email])
+    //             .then(function(user) {
+
+    //             })
+    //     ]);
+    // });
 }
 
 /*
@@ -267,6 +283,20 @@ const graphsBeginWith = function(begin, cb) {
         });
 } 
 
+const addFriendRequest = function(user_a, user_b, cb) {
+    var insertString = "INSERT INTO friendship_requests(requester, requested) "
+                + "VALUES($1, $2)";
+
+    var insertFriendRequest = new pgp.ParameterizedQuery(insertString);
+    db.none(insertString, [user_a, user_b])
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("insert friend request err", err);
+        });
+}
+
 module.exports = {
     getUser,
     getAllUsers,
@@ -278,6 +308,7 @@ module.exports = {
     addFusion,
     addGraphsToFusion,
     graphsBeginWith,
+    addFriendRequest,
 }
 
 /*
