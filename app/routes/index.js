@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 // var moment = require('moment');
 
-module.exports = function(app, db, passport) {
+module.exports = function(app, db, passport, auth) {
     router.get('/', function(req, res) {
         res.render('index');
     });
@@ -24,7 +24,8 @@ module.exports = function(app, db, passport) {
         });
     });
 
-    router.get('/dashboard', function(req, res, next) {
+    /* Needs auth to access route */
+    router.get('/dashboard', auth, function(req, res, next) {
         console.log("dashboard, req.user", req.user);
         db.getUser("jacky", function(user) {
             db.getAllUserPlots('jacky', function(plots) {

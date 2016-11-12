@@ -4,7 +4,6 @@ var express = require('express'),
     bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 
 var config = require("./config.js")();
 var db = require('./db.js');
@@ -28,40 +27,14 @@ app.use(session({ secret: 'keyboard cat',
                 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-passport.use(new LocalStrategy(
-    { usernameField: 'email' },
-    function(email, password, done) {
-        console.log('email/pwd', email, password);
-        var result = db.getUser(email, function(user) {
-          console.log("inside passport authen", user);
-          if (user == -1) {
-            return done(null, false);
-          }
-          if (password != "1") {
-            return done(null, false);
-          }
-          done(null, user);
-        });
-    })
-);
-
-passport.serializeUser(function(user, done) {
-    done(null, user.email);
-});
-
-passport.deserializeUser(function(email, done) {
-    db.getUser(email, function(user) {
-        done(null, user);
-    });
-});
+var auth = require('./auth.js')(db, passport);
 
 /*
     Routes used
 */
-var index = require('./routes/index.js')(app, db, passport);
-var graphRoutes = require('./routes/graph.js')(app, db, passport);
-var fusionRoutes = require('./routes/fusion.js')(app, db, passport);
+var index = require('./routes/index.js')(app, db, passport, auth);
+var graphRoutes = require('./routes/graph.js')(app, db, auth);
+var fusionRoutes = require('./routes/fusion.js')(app, db, auth);
 app.use('/', index);
 app.use('/graph', graphRoutes);
 app.use('/fusion', fusionRoutes);

@@ -2,7 +2,10 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 
-module.exports = function(app, db, passport) {
+module.exports = function(app, db, auth) {
+
+    // Must be logged in to access these routes
+    router.use(auth);
 
     router.get('/:id', function(req, res) {
         db.getFusion("jacky", req.params.id, function(plots) {
