@@ -1,6 +1,8 @@
+var express = require('express');
+var router = express.Router();
 var moment = require('moment');
 
-module.exports = function(router, app, db, passport) {
+module.exports = function(app, db, passport) {
     router.get('/', function(req, res) {
         res.render('index');
     });
@@ -89,6 +91,8 @@ module.exports = function(router, app, db, passport) {
             res.redirect('/');
         });
     });
+
+    return router;
 }
 
 // module.exports = router;
