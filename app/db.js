@@ -21,23 +21,32 @@ const getUser = function(email, cb) {
                     + "FROM fusions as f, fusions_to_owners as fto "
                     + "WHERE f.id = fto.fusion_id) as myf "
                 + "WHERE myf.owner=$1";
+    var friendRequestsQString = "SELECT * FROM friendship_requests WHERE requester=$1";
+    var friendsQString = "SELECT * FROM friendships WHERE user_a =$1";
     
     var findUser = new pgp.ParameterizedQuery(userQString);
     var findAllUserGraphs = new pgp.ParameterizedQuery(graphsQString);
     var findAllUserFusions = new pgp.ParameterizedQuery(fusionsQString);
+    var findAllFriendRequests = new pgp.ParameterizedQuery(friendRequestsQString);
+    var findAllFriends = new pgp.ParameterizedQuery(friendsQString);
 
     db.task(function(t) {
         return t.batch([
             t.one(findUser, [email]),
             t.any(findAllUserGraphs, [email]),
-            t.any(findAllUserFusions, [email])
+            t.any(findAllUserFusions, [email]),
+            t.any(findAllFriendRequests, [email]),
+            t.any(findAllFriends, [email])
         ]);
     })
         .then(function(result) {
             var user = result[0];
             var graphs = result[1];
             var fusions = result[2];
-            user.plots = {graphs, fusions}
+            var pending = result[3];
+            var accepted = result[4];
+            user.plots = {graphs, fusions};
+            user.friends = {pending, accepted};
             cb(user);
         })
         .catch(function(err) {
@@ -295,7 +304,6 @@ const addFriendRequest = function(requester, requested, cb) {
 
 module.exports = {
     getUser,
-    getAllUsers,
     getGraph,
     getFusion,
     getAllUserPlots,

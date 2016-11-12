@@ -32,7 +32,10 @@
                     </form>
                 </div>
                 <div class="col-sm-6">
-                    Friend requests:
+                    Pending friend requests:
+                    <% for (var i=0; i<user.friends.pending.length; i++) { %>
+                        <p><%= user.friends.pending[i].requested %></p>
+                    <% } %>
                 </div>
             </div>
             <div class="row">
