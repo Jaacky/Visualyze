@@ -50,7 +50,16 @@
                             </div>
                         </form>
                     <% } %>
-
+                    <h5>Fusion Invites:</h5>
+                    <% for (var i=0; i<user.fusion_requests.invites.length; i++) { %>
+                        <form action="/fusion/accept" method="post">
+                            <div class="form-group">
+                                <p><%= user.fusion_requests.invites[i].requester %></p>
+                                <input type="text" name="fusion_id" value="<%= user.fusion_requests.invites[i].fusion_id %>" hidden>
+                                <button>Accept</button>
+                            </div>
+                        </form>
+                    <% } %>
                 </div>
             </div>
             <div class="row">

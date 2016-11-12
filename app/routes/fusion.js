@@ -9,7 +9,14 @@ module.exports = function(app, db, auth) {
 
     router.get('/:id', function(req, res) {
         db.getFusion(req.user.email, req.params.id, function(plots) {
-            res.render('fusion', { title_addon: "Fusion", fusion: plots.fusion, userGraphs: plots.userGraphs });
+            res.render('fusion', 
+                {
+                    title_addon: "Fusion",
+                    user: req.user, 
+                    fusion: plots.fusion, 
+                    userGraphs: plots.userGraphs 
+                }
+            );
         });
     });
 
@@ -28,8 +35,18 @@ module.exports = function(app, db, auth) {
 
     router.post('/invite', function(req, res) {
         app.get('io').emit('notify', "helloworld");
-        res.redirect('/fusion/' + req.body.fusion_id);
+        db.addFusionRequests(req.body.fusion_id, req.user.email, req.body.invitees, function() {
+            res.redirect('/fusion/' + req.body.fusion_id);
+        });
+        // res.redirect('/fusion/' + req.body.fusion_id);
     });
+
+    router.post('/accept', function(req, res) {
+        db.acceptFusionRequest(req.body.fusion_id, req.user.email, function() {
+            req.flash('message', 'Accepted fusion invite');
+            res.redirect('/dashboard');
+        })
+    })
 
     return router;
 }

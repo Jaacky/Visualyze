@@ -21,6 +21,8 @@ const getUser = function(email, cb) {
                     + "FROM fusions as f, fusions_to_owners as fto "
                     + "WHERE f.id = fto.fusion_id) as myf "
                 + "WHERE myf.owner=$1";
+    var fusionInvitesQString = "SELECT * FROM fusion_invites WHERE requested=$1";
+    var pendingFusionRequestsQString = "SELECT * FROM fusion_invites WHERE requester=$1";
     var pendingFriendRequestsQString = "SELECT * FROM friendship_requests WHERE requester=$1";
     var requestingYourFriendshipQString = "SELECT * FROM friendship_requests WHERE requested=$1";
     var friendsQString = "SELECT * FROM friendships WHERE user_a =$1";
@@ -28,29 +30,40 @@ const getUser = function(email, cb) {
     var findUser = new pgp.ParameterizedQuery(userQString);
     var findAllUserGraphs = new pgp.ParameterizedQuery(graphsQString);
     var findAllUserFusions = new pgp.ParameterizedQuery(fusionsQString);
+    var findAllFusionInvites = new pgp.ParameterizedQuery(fusionInvitesQString);
+    var findAllPendingFusionRequests = new pgp.ParameterizedQuery(pendingFusionRequestsQString); 
     var findAllPendingFriendRequests = new pgp.ParameterizedQuery(pendingFriendRequestsQString);
     var findAllRequestingYourFriendship = new pgp.ParameterizedQuery(requestingYourFriendshipQString);
     var findAllFriends = new pgp.ParameterizedQuery(friendsQString);
 
     db.task(function(t) {
         return t.batch([
-            t.one(findUser, [email]),
-            t.any(findAllUserGraphs, [email]),
-            t.any(findAllUserFusions, [email]),
-            t.any(findAllPendingFriendRequests, [email]),
-            t.any(findAllRequestingYourFriendship, [email]),
-            t.any(findAllFriends, [email])
+            t.one(findUser, [email]), // 0
+            t.any(findAllUserGraphs, [email]), // 1
+            t.any(findAllUserFusions, [email]), // 2
+            t.any(findAllFusionInvites, [email]), // 3
+            t.any(findAllPendingFusionRequests, [email]), // 4
+            t.any(findAllPendingFriendRequests, [email]), // 5
+            t.any(findAllRequestingYourFriendship, [email]), // 6
+            t.any(findAllFriends, [email]), // 7
         ]);
     })
         .then(function(result) {
             var user = result[0];
             var graphs = result[1];
             var fusions = result[2];
-            var pending = result[3];
-            var requesting = result[4];
-            var accepted = result[5];
+            
+            user.fusion_requests = {
+                invites: result[3],
+                pending: result[4]
+            };
+
             user.plots = {graphs, fusions};
-            user.friends = {pending, requesting, accepted};
+            user.friends = {
+                pending: result[5], 
+                requesting: result[6], 
+                accepted: result[7]
+            };
             cb(user);
         })
         .catch(function(err) {
@@ -89,17 +102,6 @@ const getAllUserPlots = function(email, cb) {
             console.log("getAllPlots ", err);
         });
 }
-
-/*
-    Query strings for later use
-*/
-var getGraphsInFusion =  "SELECT * FROM graphs "
-+ "WHERE id IN "
-    + "(SELECT graph_id "
-    + "FROM fusions_to_graphs as ftg INNER JOIN graphs as g "
-    + "ON ftg.fusion_id = g.id)";
-
-var fusionOwnerString = "SELECT f.id, f.date_created, f.name, fto.owner FROM fusions as f, fusions_to_owners as fto WHERE f.id = fto.fusion_id";
 
 /*
     Returns a graph along with all its data points
@@ -163,18 +165,18 @@ const getFusion = function(email, fusion_id, cb) {
         return t.batch([
             t.one(getFusion, [fusion_id]), // 1st query
             t.any(getGraphsInFusion, [fusion_id]) // 2nd query
-                .then(function(graph_ids) {
-                    // After getting all the graph ids that belong in the fusion, query for all the graph details and their data points
+                .then(function(graphs) {
+                    // After getting all the graph that belong in the fusion, query for all the graph details and their data points
                     return t.tx(function(t1) {
                         queries = [];
-                        for (var i=0; i<graph_ids.length; i++) {
+                        for (var i=0; i<graphs.length; i++) {
                             /*
                                 Creating the queries for each graph to get their data points
-                                > Uses a constructor function, createFusionGraphsQ, beacuse the graph_ids[i] that gets pushed
+                                > Uses a constructor function, createFusionGraphsQ, beacuse the graphs[i] that gets pushed
                                     becomes undefined if not function scoped after each iteration
                             */
                             queries.push(
-                                createFusionGraphsQ(t1, [email, graph_ids[i].id])
+                                createFusionGraphsQ(t1, [graphs[i].owner, graphs[i].id])
                             );
                         }
                         return t1.batch(queries);
@@ -276,6 +278,59 @@ const addGraphsToFusion = function(fusion_id, graphs, cb) {
         });
 }
 
+const addFusionRequests = function(fusion_id, user, invitees, cb) {
+    var insertFusionInviteRequestQString = "INSERT INTO fusion_invites(requester, requested, fusion_id) "
+                                + "VALUES($1, $2, $3)";
+
+    var insertIntoFusionInvites = pgp.ParameterizedQuery(insertFusionInviteRequestQString);
+
+    queries = [];
+    for (var i=0; i<invitees.length; i++) {
+        queries.push(db.none(insertIntoFusionInvites, [user, invitees[i], fusion_id]));
+    }
+
+    db.tx(function(t) {
+        return t.batch(queries);
+    })
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("batch insert into fusion_invites err", err);
+            cb(-1);
+        });
+}
+
+const acceptFusionRequest = function(fusion_id, owner, cb) {
+    var insertOwnerToFusionQString = "INSERT INTO fusions_to_owners(fusion_id, owner) "
+                                + "VALUES($1, $2)";
+    var insertOwnerToFusion = new pgp.ParameterizedQuery(insertOwnerToFusionQString);
+
+    db.none(insertOwnerToFusion, [fusion_id, owner])
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("accept fusion req err", err);
+            cb(-1);
+        });
+    // var queries = [];
+    // for (var i=0; i < friends.length; i++) {
+    //     queries.push(db.none(insertFriendsToFusion, [fusion_id, friends[i]]));
+    // }
+
+    // db.tx(function(t) {
+    //     return t.batch(queries);
+    // })
+    //     .then(function() {
+    //         cb();
+    //     })
+    //     .catch(function(err) {
+    //         console.log("Batch add friend to fusion err", err);
+    //         cb(-1);
+    //     })
+}
+
 const graphsBeginWith = function(begin, cb) {
     var searchString = "SELECT * FROM graphs "
                 + "WHERE name LIKE $1";
@@ -338,6 +393,8 @@ module.exports = {
     addGraph,
     addFusion,
     addGraphsToFusion,
+    addFusionRequests,
+    acceptFusionRequest,
     graphsBeginWith,
     addFriendRequest,
     acceptFriendRequest,
@@ -378,3 +435,14 @@ const createFusionGraphsQ = function(ctx, values) {
         });
     });
 }
+
+/*
+    Query strings for later use
+*/
+var getGraphsInFusion =  "SELECT * FROM graphs "
++ "WHERE id IN "
+    + "(SELECT graph_id "
+    + "FROM fusions_to_graphs as ftg INNER JOIN graphs as g "
+    + "ON ftg.fusion_id = g.id)";
+
+var fusionOwnerString = "SELECT f.id, f.date_created, f.name, fto.owner FROM fusions as f, fusions_to_owners as fto WHERE f.id = fto.fusion_id";
