@@ -4,6 +4,7 @@ var express = require('express'),
     bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
+var flash = require('connect-flash');
 
 var config = require("./config.js")();
 var db = require('./db.js');
@@ -18,6 +19,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(flash());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({ secret: 'keyboard cat',

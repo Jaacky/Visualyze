@@ -10,14 +10,16 @@ module.exports = function(db, passport) {
         function(email, password, done) {
             console.log('email/pwd', email, password);
             var result = db.getUser(email, function(user) {
-            console.log("inside passport authen", user);
-            if (user == -1) {
-                return done(null, false);
-            }
-            if (password != "1") {
-                return done(null, false);
-            }
-            done(null, user);
+                console.log("inside passport authen", user);
+                if (user == -1) { // User not found
+                    return done(null, false, { message: 'User does not exist.' });
+                }
+
+                if (password != user.password) { // Incorrect password
+                    return done(null, false, { message: 'Incorrect password.' });
+                }
+
+                done(null, user);
             });
         })
     );

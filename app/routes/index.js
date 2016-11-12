@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-// var moment = require('moment');
 
 module.exports = function(app, db, passport, auth) {
     router.get('/', function(req, res) {
@@ -8,13 +7,14 @@ module.exports = function(app, db, passport, auth) {
     });
 
     router.get('/login', function(req, res) {
-        res.render('login');
+        res.render('login', { message: req.flash('error') });
     });
 
     router.post('/login',
         passport.authenticate('local', {
             successRedirect: '/dashboard',
-            failureRedirect: '/login'
+            failureRedirect: '/login',
+            failureFlash: true
         })
     );
 
@@ -27,8 +27,8 @@ module.exports = function(app, db, passport, auth) {
     /* Needs auth to access route */
     router.get('/dashboard', auth, function(req, res, next) {
         console.log("dashboard, req.user", req.user);
-        db.getUser("jacky", function(user) {
-            db.getAllUserPlots('jacky', function(plots) {
+        db.getUser(req.user.email, function(user) {
+            db.getAllUserPlots(req.user.email, function(plots) {
                 res.render('dashboard', { title_addon: "Dashboard", user, plots: plots});
             });
         });

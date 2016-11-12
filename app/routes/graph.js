@@ -8,11 +8,14 @@ module.exports = function(app, db, auth) {
     router.use(auth); 
 
     router.get('/:id', function(req, res) {
-        db.getGraph("jacky", req.params.id, function(graph) {
+        db.getGraph(req.user.email, req.params.id, function(graph) {
             res.render('graph', { title_addon: "Graph", graph });
         });
     });
 
+    /*
+        Not needed anymore, search is built into chosen
+    */
     router.get('/search/:begin', function(req, res) {
         console.log(req.params.begin);
         db.graphsBeginWith(req.params.begin + '%', function(graphs) {
@@ -31,8 +34,8 @@ module.exports = function(app, db, auth) {
 
     router.post('/new', function(req, res) {
         console.log(req.body.name);
-        db.addGraph('jacky', req.body.name, function() {
-            res.redirect('/');
+        db.addGraph(req.user.email, req.body.name, function() {
+            res.redirect('/dashboard');
         });
     });
 
