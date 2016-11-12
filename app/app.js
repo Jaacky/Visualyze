@@ -37,6 +37,7 @@ var auth = require('./auth.js')(db, passport);
 var index = require('./routes/index.js')(app, db, passport, auth);
 var graphRoutes = require('./routes/graph.js')(app, db, auth);
 var fusionRoutes = require('./routes/fusion.js')(app, db, auth);
+
 app.use('/', index);
 app.use('/graph', graphRoutes);
 app.use('/fusion', fusionRoutes);

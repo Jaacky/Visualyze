@@ -7,7 +7,8 @@
     </head>
 
     <script>
-        // var plots = <%- JSON.stringify(plots) %>;
+        var user = <%- JSON.stringify(user) %>;
+        console.log(user);
     </script>
 
     <body>
@@ -16,14 +17,31 @@
         <div class="container container-fluid">
             <div class="row">
                 <h2>Welcome, <%= user.email %></h2>
+                <div class="col-sm-6">
+                    <% if (message) { %>
+                        <h4><%= message %></h4>
+                    <% } %>
+                    <h4></h4>
+                    <form action="/friends/request" method="post">
+                        <div class="form-group">
+                            <label for="requested">Friend's email</label>
+                            <input type="text" id="requested" name="requested" placeholder="email@domain.com">
+                            <input type="text" name="requester" value="<%= user.email %>" hidden>
+                        </div>
+                        <button class="btn btn-default">Add</button>
+                    </form>
+                </div>
+                <div class="col-sm-6">
+                    Friend requests:
+                </div>
             </div>
             <div class="row">
                 <div class="dashboard-title-container">
                     <h3>Graphs</h3>
                     <button id="new-graph" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
                 </div>
-                <% for (var i=0; i<plots.graphs.length; i++) { %>
-                    <a href="/graph/<%= plots.graphs[i].id %>"><button class="btn btn-default"><%= plots.graphs[i].name %></button></a>
+                <% for (var i=0; i<user.plots.graphs.length; i++) { %>
+                    <a href="/graph/<%= user.plots.graphs[i].id %>"><button class="btn btn-default"><%= user.plots.graphs[i].name %></button></a>
                 <% } %>
             </div>
 
@@ -32,8 +50,8 @@
                     <h3>Fusions</h3>
                     <button id="new-fusion" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
                 </div>
-                <% for (var i=0; i<plots.fusions.length; i++) { %>
-                    <a href="/fusion/<%= plots.fusions[i].id %>"><button class="btn btn-default"><%= plots.fusions[i].name %></button></a>
+                <% for (var i=0; i<user.plots.fusions.length; i++) { %>
+                    <a href="/fusion/<%= user.plots.fusions[i].id %>"><button class="btn btn-default"><%= user.plots.fusions[i].name %></button></a>
                 <% } %>
             </div>
         </div> <!-- end container-fluid -->

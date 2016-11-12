@@ -27,17 +27,24 @@ module.exports = function(app, db, passport, auth) {
     /* Needs auth to access route */
     router.get('/dashboard', auth, function(req, res, next) {
         console.log("dashboard, req.user", req.user);
-        db.getUser(req.user.email, function(user) {
-            db.getAllUserPlots(req.user.email, function(plots) {
-                res.render('dashboard', { title_addon: "Dashboard", user, plots: plots});
-            });
+        res.render('dashboard', 
+            { 
+                title_addon: "Dashboard", 
+                user: req.user, 
+                message: req.flash('message')
+            }
+        );
+    });
+
+    router.post('/friends/request', function(req, res) {
+        db.addFriendRequest(req.body.requester, req.body.requested, function() {
+            req.flash('message', 'Sent friend request to ' + req.body.requested);
+            res.redirect('/dashboard');
         });
     });
 
     router.post('/friends/add', function(req, res) {
-        db.addFriendRequest(req.body.user_a, req.body.user_b, function() {
-            res.redirect('/');
-        });
+        res.json("hello");
     });
 
     return router;

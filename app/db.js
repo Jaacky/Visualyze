@@ -13,41 +13,37 @@ var db = pgp(cn);
     Returns a user
 */
 const getUser = function(email, cb) {
-    db.one('SELECT * FROM users WHERE email = $1', [email])
-        .then(function(data) {
-            cb(data);
-        })
-        .catch(function(err) {
-            console.log('get user err', err);
-            cb(-1);
-        });
+
+    var userQString = "SELECT * FROM users WHERE email = $1";
+    var graphsQString = "SELECT * FROM graphs WHERE owner = $1";
+    var fusionsQString = "SELECT * FROM "
+                    + "(SELECT f.id, f.date_created, f.name, fto.owner "
+                    + "FROM fusions as f, fusions_to_owners as fto "
+                    + "WHERE f.id = fto.fusion_id) as myf "
+                + "WHERE myf.owner=$1";
     
-    // var getUserQString = 'SELECT * FROM users WHERE email = $1';
-    // var getUserFriendsQString = 'SELECT * FROM friendships WHERE user_a = $1';
+    var findUser = new pgp.ParameterizedQuery(userQString);
+    var findAllUserGraphs = new pgp.ParameterizedQuery(graphsQString);
+    var findAllUserFusions = new pgp.ParameterizedQuery(fusionsQString);
 
-    // var getUser = new pgp.ParameterizedQuery(getUserQString);
-    // var getUserFriends = new pgp.ParameterizedQuery(getUserFriendsQString);
-
-    // db.tx(function(t) {
-    //     return t.batch([
-    //         t.one(getUser, [email])
-    //             .then(function(user) {
-
-    //             })
-    //     ]);
-    // });
-}
-
-/*
-    Not used right now
-*/
-const getAllUsers = function(cb) {
-    db.any("select * from users")
-        .then(function(data) {
-            cb(data);
+    db.task(function(t) {
+        return t.batch([
+            t.one(findUser, [email]),
+            t.any(findAllUserGraphs, [email]),
+            t.any(findAllUserFusions, [email])
+        ]);
+    })
+        .then(function(result) {
+            var user = result[0];
+            var graphs = result[1];
+            var fusions = result[2];
+            user.plots = {graphs, fusions}
+            cb(user);
         })
         .catch(function(err) {
-            console.log(err);
+            console.log('Get user err', err);
+            // -1 for passport to recognize that user does not exist (could extend further for more errs)
+            cb(-1);
         });
 }
 
@@ -283,12 +279,12 @@ const graphsBeginWith = function(begin, cb) {
         });
 } 
 
-const addFriendRequest = function(user_a, user_b, cb) {
+const addFriendRequest = function(requester, requested, cb) {
     var insertString = "INSERT INTO friendship_requests(requester, requested) "
                 + "VALUES($1, $2)";
 
     var insertFriendRequest = new pgp.ParameterizedQuery(insertString);
-    db.none(insertString, [user_a, user_b])
+    db.none(insertString, [requester, requested])
         .then(function() {
             cb();
         })
