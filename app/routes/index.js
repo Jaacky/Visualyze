@@ -47,6 +47,14 @@ module.exports = function(app, db, passport, auth) {
         res.json("hello");
     });
 
+    router.post('/friends/accept', function(req, res) {
+        console.log("post friends/accept user.email", req.user.email);
+        db.acceptFriendRequest(req.user.email, req.body.requester, function() {
+            req.flash('message', 'Accepted ' + req.body.requester + "'s friend request.");
+            res.redirect('/dashboard');
+        });
+    });
+
     return router;
 }
 

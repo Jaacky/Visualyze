@@ -32,10 +32,25 @@
                     </form>
                 </div>
                 <div class="col-sm-6">
-                    Pending friend requests:
+                    <h5>Friends:</h5>
+                    <% for (var i=0; i<user.friends.accepted.length; i++) { %>
+                        <p><%= user.friends.accepted[i].user_b %></p>
+                    <% } %>
+                    <h5>Pending friend requests:</h5>
                     <% for (var i=0; i<user.friends.pending.length; i++) { %>
                         <p><%= user.friends.pending[i].requested %></p>
                     <% } %>
+                    <h5>Friend requests:</h5>
+                    <% for (var i=0; i<user.friends.requesting.length; i++) { %>
+                        <form action="/friends/accept" method="post">
+                            <div class="form-group">
+                                <p><%= user.friends.requesting[i].requester %></p>
+                                <input type="text" name="requester" value="<%= user.friends.requesting[i].requester %>" hidden>
+                                <button>Accept</button>
+                            </div>
+                        </form>
+                    <% } %>
+
                 </div>
             </div>
             <div class="row">

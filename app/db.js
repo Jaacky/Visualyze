@@ -21,13 +21,15 @@ const getUser = function(email, cb) {
                     + "FROM fusions as f, fusions_to_owners as fto "
                     + "WHERE f.id = fto.fusion_id) as myf "
                 + "WHERE myf.owner=$1";
-    var friendRequestsQString = "SELECT * FROM friendship_requests WHERE requester=$1";
+    var pendingFriendRequestsQString = "SELECT * FROM friendship_requests WHERE requester=$1";
+    var requestingYourFriendshipQString = "SELECT * FROM friendship_requests WHERE requested=$1";
     var friendsQString = "SELECT * FROM friendships WHERE user_a =$1";
     
     var findUser = new pgp.ParameterizedQuery(userQString);
     var findAllUserGraphs = new pgp.ParameterizedQuery(graphsQString);
     var findAllUserFusions = new pgp.ParameterizedQuery(fusionsQString);
-    var findAllFriendRequests = new pgp.ParameterizedQuery(friendRequestsQString);
+    var findAllPendingFriendRequests = new pgp.ParameterizedQuery(pendingFriendRequestsQString);
+    var findAllRequestingYourFriendship = new pgp.ParameterizedQuery(requestingYourFriendshipQString);
     var findAllFriends = new pgp.ParameterizedQuery(friendsQString);
 
     db.task(function(t) {
@@ -35,7 +37,8 @@ const getUser = function(email, cb) {
             t.one(findUser, [email]),
             t.any(findAllUserGraphs, [email]),
             t.any(findAllUserFusions, [email]),
-            t.any(findAllFriendRequests, [email]),
+            t.any(findAllPendingFriendRequests, [email]),
+            t.any(findAllRequestingYourFriendship, [email]),
             t.any(findAllFriends, [email])
         ]);
     })
@@ -44,9 +47,10 @@ const getUser = function(email, cb) {
             var graphs = result[1];
             var fusions = result[2];
             var pending = result[3];
-            var accepted = result[4];
+            var requesting = result[4];
+            var accepted = result[5];
             user.plots = {graphs, fusions};
-            user.friends = {pending, accepted};
+            user.friends = {pending, requesting, accepted};
             cb(user);
         })
         .catch(function(err) {
@@ -302,6 +306,29 @@ const addFriendRequest = function(requester, requested, cb) {
         });
 }
 
+const acceptFriendRequest = function(user, requester, cb) {
+    var insertFriendShipString = "INSERT INTO friendships(user_a, user_b) "
+                + "VALUES ($1, $2), ($2, $1)";
+    var deleteRequestString = "DELETE FROM friendship_requests "
+                + "WHERE requested=$1 AND requester=$2";
+
+    var insertFriendship = new pgp.ParameterizedQuery(insertFriendShipString);
+    var deleteFriendRequest = new pgp.ParameterizedQuery(deleteRequestString);
+
+    db.task(function(t) {
+        return t.batch([
+            t.none(deleteFriendRequest, [user, requester]),
+            t.none(insertFriendship, [user, requester])
+        ]);
+    })
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("acceptFriendRequest err", err);
+        });
+}
+
 module.exports = {
     getUser,
     getGraph,
@@ -313,6 +340,7 @@ module.exports = {
     addGraphsToFusion,
     graphsBeginWith,
     addFriendRequest,
+    acceptFriendRequest,
 }
 
 /*
