@@ -1,3 +1,7 @@
+body {
+    font-family: 'PT Sans';
+}
+
 circle.selected {
     stroke: black;
     stroke-width: 2;
@@ -6,6 +10,21 @@ circle.selected {
 
 .chosen-container-multi .chosen-choices li.search-field input[type=text] {
     width:100% !important;
+}
+
+.btn-login {
+    border: 2px solid white;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 4px;
+}
+
+.btn-signup {
+    border: 2px solid white;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 20px;
+    letter-spacing: 2px;
 }
 
 .mask {
@@ -51,54 +70,157 @@ circle.selected {
 }
 
 a {
-    color: black;
+    color: white;
 }
 
 a:hover {
-    color: black;
+    color: white;
     text-decoration: none;
 }
 
 nav {
-    text-align: center;
-    box-shadow: 0px 1px 10px #c8c8c8;
-    padding: 5px;
+    position: fixed;
+    width: 100%;
+    height: 75px;
+    /*padding: 25px 45px 0 45px;*/
+    z-index: 1337;
+    padding: 0px 45px;
 }
 
-/*nav .container {
-    text-align: left;
-}*/
-
-/*nav .brand {
-    font-size: 40px;
+nav.active {
+    background-color: black;
 }
 
-nav ul {
+nav a {
+    color: white;
+    font-size: 18px;
+}
+
+nav a:hover { 
+    color: white;
+}
+
+.nav-container {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.nav-header, .nav-menu {
+    width: 50%;
+    display: inline-block;
+}
+
+.nav-menu {
+    text-align: right;
+}
+
+.nav-brand {
+    font-size: 25px;
+}
+
+.brand {
+    font-family: 'Roboto';
+    font-weight: 300;
+    letter-spacing: 5px;
+    font-size: 0.9em;
+}
+
+.nav-menu ul {
     margin: 0;
     padding: 0;
 }
 
-nav ul li {
+.nav-menu ul li {
     display: inline-block;
     box-sizing: border-box;
-    border-bottom: 1px solid transparent;
-    padding: 0px 5px;
+    padding: 0;
 }
 
-nav ul li:hover {
-    border-bottom: 1px solid black;
+.nav-menu ul li:hover {
+    color: white;
+    box-shadow: 1px 1px 1px white;
 }
 
-nav ul li a {
-    font-size: 20px;
-    margin: 0px;
+.nav-menu ul li a {
     display: block;
-    width:100%;
     height: 100%;
-}*/
+    width: 100%;
+    padding: 8px 12px;
+    letter-spacing: 1px;
+    color: white;
+}
+
+.landing {
+    background-image: url('/img/landing.jpeg');
+    background-size: cover;
+    position: relative;
+    color: white;
+    height: 80vh;
+}
+
+.landing .mask {
+    display: block;
+    background-color: rgba(0,0,0,0.1);
+    z-index: 1;
+}
+
+.landing .container {
+    height: 100%;
+}
+
+.landing-text {
+    position: relative;
+    z-index: 1;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.landing-text h2, .landing-text h3 {
+    text-align: right;
+    text-shadow: 1px 3px 5px black;
+    letter-spacing: 1px;
+}
+
+.landing-text h2 {
+    font-size: 55px;
+}
+
+.landing .btn-signup {
+    position: absolute;
+    z-index: 1;
+    top: 95%;
+    left: 50%;
+
+    -webkit-transform: translateX(-50%) translateY(-100%);
+    -moz-transform: translateX(-50%) translateY(-100%);
+    -o-transform: translateX(-50%) translateY(-100%);
+    transform: translateX(-50%) translateY(-100%);
+}
 
 h1 {
     font-size: 15;
+}
+
+.main {
+    padding-top: 75px; /* equal to the height of the nav */
+}
+
+.login-form-container {
+    text-align: center;
+}
+
+.login-form {
+    display: inline-block;
+    width: 50%;
+    min-width: 450px;
+    text-align: left;
 }
 
 #graph-container {

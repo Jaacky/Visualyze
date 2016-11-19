@@ -3,7 +3,7 @@ var router = express.Router();
 
 module.exports = function(app, db, passport, auth) {
     router.get('/', function(req, res) {
-        res.render('index');
+        res.render('index', { landing: true });
     });
 
     router.get('/login', function(req, res) {
