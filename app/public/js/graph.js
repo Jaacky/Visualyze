@@ -3,7 +3,7 @@ var Graph = function(container, points, options) {
     this.chart = document.getElementById(container);
     this.options = options;
     this.cx = this.chart.clientWidth;
-    this.cy = options.cy ? options.cy : 600;
+    this.cy = options.cy ? options.cy : 450;
     this.points = points;
 }
 
