@@ -6,6 +6,7 @@
         --><div class="nav-menu">
             <ul class="">
                 <% if (typeof user !== 'undefined') { %>
+                    <li><a href="/dashboard">Dashboard</a></li>
                     <li><a href="#">Requests</a></li>
                     <li><a href="#"><%= user.email %></a></li>
                     <li><a href="/logout">Logout</a></li>

@@ -12,21 +12,6 @@ circle.selected {
     width:100% !important;
 }
 
-.btn-login {
-    border: 2px solid white;
-    background-color: rgba(0, 0, 0, 0.35);
-    border-radius: 4px;
-}
-
-.btn-signup {
-    border: 2px solid white;
-    background-color: rgba(0, 0, 0, 0.35);
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-size: 20px;
-    letter-spacing: 2px;
-}
-
 .mask {
     position: absolute;
     top: 0;
@@ -136,13 +121,18 @@ nav a:hover {
 
 .nav-menu ul li {
     display: inline-block;
+    border: 2px solid transparent;
     box-sizing: border-box;
     padding: 0;
 }
 
+.nav-menu ul li.btn-login {
+    border: 2px solid white;
+}
+
 .nav-menu ul li:hover {
     color: white;
-    box-shadow: 1px 1px 1px white;
+    border: 2px solid white;
 }
 
 .nav-menu ul li a {
@@ -280,4 +270,42 @@ h1 {
 
 .new-plot-btn, #add-fusion-graph {
     margin-left: 25px;
+}
+
+.btn-plot:hover {
+    background-color: rgba(0,0,0,0.10);
+}
+
+.plot-btn-container {
+    font-size: 0;
+}
+
+.plot-btn-container a {
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.btn-plot {
+    color: black;
+    display: inline-block;
+    padding: 25px 25px;
+    border: 1px solid black;
+    border-radius: 2px;
+    font-size: 18px;
+}
+
+.btn-login {
+    border: 2px solid white;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 4px;
+}
+
+.btn-signup {
+    border: 2px solid white;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 20px;
+    letter-spacing: 2px;
 }
