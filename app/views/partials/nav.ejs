@@ -7,8 +7,17 @@
             <ul class="">
                 <% if (typeof user !== 'undefined') { %>
                     <li><a href="/dashboard">Dashboard</a></li>
-                    <li><a href="#">Requests</a></li>
                     <li><a href="#"><%= user.email %></a></li>
+                    <li class="nav-dropdown active">
+                        <a href="#">Requests</a>
+                        <div id="request-dropdown" class="dropdown active">
+                            <ul>
+                                <li>Request 1</li>
+                                <li>Request 2</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <span class="nav-divider">/</span>
                     <li><a href="/logout">Logout</a></li>
                 <% } else { %>
                     <li class="btn-login"><a href="/login">Login</a></li>
@@ -19,6 +28,27 @@
 </nav>
 
 <script>
+
+    $(document).ready(function() {
+        $('.nav-dropdown').on('click', function() {
+            var self = $(this);
+            // switch(self.hasClass('active')) {
+            //     case true:
+            //         self.removeClass('active')
+
+            //         break;
+            //     default:
+            //         console.log('faslsee');
+            //         break;
+            // }
+            self.toggleClass('active');
+            self.find('.dropdown').toggleClass('active');
+
+            // self.addClass('active');
+            // self.find('.dropdown').addClass('active');
+        });
+    });
+
     var socket = io();
 
     socket.on('connection', function(msg) {
