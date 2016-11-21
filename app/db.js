@@ -14,27 +14,37 @@ var db = pgp(cn);
 */
 const getUser = function(email, cb) {
 
-    var userQString = "SELECT * FROM users WHERE email = $1";
-    var graphsQString = "SELECT * FROM graphs WHERE owner = $1";
+    var userQString = "SELECT * FROM users WHERE email = $1"; // 0
+    var findUser = new pgp.ParameterizedQuery(userQString); // 0
+
+    var graphsQString = "SELECT * FROM graphs WHERE owner = $1"; // 1
+    var findAllUserGraphs = new pgp.ParameterizedQuery(graphsQString); // 1
+
     var fusionsQString = "SELECT * FROM "
                     + "(SELECT f.id, f.date_created, f.name, fto.owner "
                     + "FROM fusions as f, fusions_to_owners as fto "
                     + "WHERE f.id = fto.fusion_id) as myf "
-                + "WHERE myf.owner=$1";
-    var fusionInvitesQString = "SELECT * FROM fusion_invites WHERE requested=$1";
-    var pendingFusionRequestsQString = "SELECT * FROM fusion_invites WHERE requester=$1";
-    var pendingFriendRequestsQString = "SELECT * FROM friendship_requests WHERE requester=$1";
-    var requestingYourFriendshipQString = "SELECT * FROM friendship_requests WHERE requested=$1";
-    var friendsQString = "SELECT * FROM friendships WHERE user_a =$1";
+                + "WHERE myf.owner=$1"; // 2
+    var findAllUserFusions = new pgp.ParameterizedQuery(fusionsQString); // 2
+
+    // var fusionInvitesQString = "SELECT * FROM fusion_invites WHERE requested=$1"; // 3
+    var fusionInvitesQString = "SELECT requester, requested, fusion_id, name FROM "
+                            + "fusion_invites as fi INNER JOIN fusions as f "
+                            + "ON f.id=fi.fusion_id AND fi.requested=$1";
+    var findAllFusionInvites = new pgp.ParameterizedQuery(fusionInvitesQString); // 3
+    // "SELECT requester, requested, fusion_id, name FROM fusion_invites as fi INNER JOIN fusions as f ON f.id=fi.fusion_id AND fi.requested='nobody'; "
+
+    var pendingFusionRequestsQString = "SELECT * FROM fusion_invites WHERE requester=$1"; // 4
+    var findAllPendingFusionRequests = new pgp.ParameterizedQuery(pendingFusionRequestsQString); // 4
+
+    var pendingFriendRequestsQString = "SELECT * FROM friendship_requests WHERE requester=$1"; // 5
+    var findAllPendingFriendRequests = new pgp.ParameterizedQuery(pendingFriendRequestsQString); // 5
     
-    var findUser = new pgp.ParameterizedQuery(userQString);
-    var findAllUserGraphs = new pgp.ParameterizedQuery(graphsQString);
-    var findAllUserFusions = new pgp.ParameterizedQuery(fusionsQString);
-    var findAllFusionInvites = new pgp.ParameterizedQuery(fusionInvitesQString);
-    var findAllPendingFusionRequests = new pgp.ParameterizedQuery(pendingFusionRequestsQString); 
-    var findAllPendingFriendRequests = new pgp.ParameterizedQuery(pendingFriendRequestsQString);
-    var findAllRequestingYourFriendship = new pgp.ParameterizedQuery(requestingYourFriendshipQString);
-    var findAllFriends = new pgp.ParameterizedQuery(friendsQString);
+    var requestingYourFriendshipQString = "SELECT * FROM friendship_requests WHERE requested=$1"; // 6
+    var findAllRequestingYourFriendship = new pgp.ParameterizedQuery(requestingYourFriendshipQString); // 6
+
+    var friendsQString = "SELECT * FROM friendships WHERE user_a =$1"; // 7
+    var findAllFriends = new pgp.ParameterizedQuery(friendsQString); // 7    
 
     db.task(function(t) {
         return t.batch([
@@ -61,7 +71,7 @@ const getUser = function(email, cb) {
             user.plots = {graphs, fusions};
             user.friends = {
                 pending: result[5], 
-                requesting: result[6], 
+                invites: result[6], 
                 accepted: result[7]
             };
             cb(user);
