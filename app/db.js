@@ -316,14 +316,23 @@ const acceptFusionRequest = function(fusion_id, owner, cb) {
                                 + "VALUES($1, $2)";
     var insertOwnerToFusion = new pgp.ParameterizedQuery(insertOwnerToFusionQString);
 
-    db.none(insertOwnerToFusion, [fusion_id, owner])
+    var deleteFusionRequestString = "DELETE FROM fusion_invites "
+                + "WHERE fusion_id = $1 AND requested=$2";
+    var deleteFusionRequest = new pgp.ParameterizedQuery(deleteFusionRequestString);
+
+    db.task(function(t) {
+        return t.batch([
+            t.none(deleteFusionRequest, [fusion_id, owner]),
+            t.none(insertOwnerToFusion, [fusion_id, owner])
+        ]);
+    })
         .then(function() {
             cb();
         })
         .catch(function(err) {
-            console.log("accept fusion req err", err);
+            console.log("acceptFriendRequest err", err);
             cb(-1);
-        });
+        });        
     // var queries = [];
     // for (var i=0; i < friends.length; i++) {
     //     queries.push(db.none(insertFriendsToFusion, [fusion_id, friends[i]]));
