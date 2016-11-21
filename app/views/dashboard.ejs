@@ -15,8 +15,16 @@
         <%- include('partials/nav.ejs') %>
         <div class="mask"></div>
         <div class="container container-fluid main">
-            <div class="row">
-                <div class="col-lg-6"> <!-- graphs row -->
+            <div class="row"> <!-- welcome row -->
+                <h2>Welcome, <%= user.email %></h2>
+                <div class="col-sm-6">
+                    <% if (message) { %>
+                        <h4><%= message %></h4>
+                    <% } %>
+                </div>
+            </div> <!-- end welcome row -->
+            <div class="row"> <!-- plots row -->
+                <div class="col-lg-6"> <!-- graphs col -->
                     <div class="dashboard-title-container">
                         <h3>Graphs</h3>
                         <button id="new-graph" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
@@ -30,9 +38,9 @@
                             </a>
                         <% } %>
                     </div>
-                </div> <!-- end graphs row -->
+                </div> <!-- end graphs col -->
 
-                <div class="col-lg-6"> <!-- fusions row -->
+                <div class="col-lg-6"> <!-- fusions col -->
                     <div class="dashboard-title-container">
                         <h3>Fusions</h3>
                         <button id="new-fusion" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
@@ -46,16 +54,11 @@
                             </a>
                         <% } %>
                     </div>
-                </div> <!-- end fusions row -->
-            </div>
+                </div> <!-- end fusions col -->
+            </div> <!-- end plots row -->
 
             <div class="row">
-                <h2>Welcome, <%= user.email %></h2>
-                <div class="col-sm-6">
-                    <% if (message) { %>
-                        <h4><%= message %></h4>
-                    <% } %>
-                    <h4></h4>
+                <!--<div class="col-sm-6">
                     <form action="/friends/request" method="post">
                         <div class="form-group">
                             <label for="requested">Friend's email</label>
@@ -64,7 +67,7 @@
                         </div>
                         <button class="btn btn-default">Add</button>
                     </form>
-                </div>
+                </div>-->
                 <div class="col-sm-6">
                     <h5>Friends:</h5>
                     <% for (var i=0; i<user.friends.accepted.length; i++) { %>

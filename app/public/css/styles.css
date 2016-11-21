@@ -99,12 +99,14 @@ nav a:hover {
     transform: translateY(-50%);
 }
 
-.nav-header, .nav-menu {
-    width: 50%;
+.nav-header {
     display: inline-block;
+    width: 25%;
 }
 
 .nav-menu {
+    width: 75%;
+    display: inline-block;
     text-align: right;
     color: white;
 }
@@ -141,8 +143,9 @@ nav a:hover {
     border-color: white;
 }
 
-.nav-menu > ul > li > a {
-    display: block;
+.nav-menu > ul > li > a, .nav-menu > ul > li > form {
+    display: inline-block;
+    vertical-align: middle;
     height: 100%;
     width: 100%;
     padding: 8px 12px;
@@ -151,6 +154,11 @@ nav a:hover {
 
     border: 2px solid transparent;
     box-sizing: border-box;
+}
+
+.nav-menu .glyphicon {
+    vertical-align: middle;
+    top: -1px;
 }
 
 .nav-menu > ul > li > a:hover {
@@ -291,12 +299,21 @@ h1 {
 
 .plot-btn-container {
     font-size: 0;
+    /*max-height: 300px;
+    height: 300px;*/
+    /*overflow-y: scroll;*/
+    padding: 15px;
+    /*border: 1px solid black;*/
+    background-color: #f9f9f9;
+    box-shadow: 1px 1px 3px black;
+    border-radius: 4px;
 }
 
 .plot-btn-container a {
     display: inline-block;
     margin-right: 5px;
     margin-bottom: 5px;
+    background-color: white;
 }
 
 .btn-plot {
@@ -381,6 +398,10 @@ h1 {
     border-bottom: 7px solid white;
 }
 
+.dropdown a, .dropdown a:hover {
+    color: black;
+}
+
 .dropdown > ul {
     list-style: none;
     background-color: white;
@@ -425,4 +446,37 @@ h1 {
 
 .request-form .action:hover {
     border: 2px solid black;
+}
+
+.input-btn-group {
+    font-size: 0px;
+}
+
+.input-btn-group > * {
+    font-size: 16px;
+    height: 100%;
+    padding: 6px 12px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border: none;
+    letter-spacing: 1px;
+}
+
+.input-btn-group > *:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.input-btn-group > *:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.input-btn-group input {
+    border: 1px solid transparent;
+    background-color: #3b3a36;
+}
+
+.input-btn-group button {
+    background-color:#3b3a36;
 }

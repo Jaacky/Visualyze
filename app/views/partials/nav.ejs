@@ -6,11 +6,19 @@
         --><div class="nav-menu">
             <ul class="">
                 <% if (typeof user !== 'undefined') { %>
+                    <li>
+                        <form action="/friends/request" method="post">
+                            <div class="input-btn-group">
+                                <input type="text" id="requested" name="requested" placeholder="Friend's email">
+                                <button>Add</button>
+                            </div>
+                            <input type="text" name="requester" value="<%= user.email %>" hidden>
+                        </form>
+                    </li>
                     <li><a href="/dashboard">Dashboard</a></li>
-                    <li><a href="#"><%= user.email %></a></li>
-                    <li class="nav-dropdown active">
+                    <li class="nav-dropdown">
                         <a href="#">Requests</a>
-                        <div id="request-dropdown" class="dropdown active">
+                        <div id="request-dropdown" class="dropdown">
                             <ul>
                                 <% if ((user.friends.invites.length + user.fusion_requests.invites.length) == 0) { %>
                                     <li>No requests.</li>
@@ -32,6 +40,16 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-dropdown">
+                        <a href="#"><span class="glyphicon glyphicon-cog"></span></a>
+                        <div class="dropdown">
+                            <ul>
+                                <li><a href="#"><%= user.email %></a></li>
+                                <li><a href="#">Friends</a></li>
+                                <li><a href="#">Settings</a></li>
+                            </ul>
+                        </div>
+                    </li>
                     <span class="nav-divider">/</span>
                     <li><a href="/logout">Logout</a></li>
                 <% } else { %>
@@ -49,6 +67,9 @@
             var self = $(this);
             self.parent().toggleClass('active');
             self.siblings('.dropdown').toggleClass('active');
+
+            $('.nav-dropdown').not(self.parent()).removeClass('active');
+            $('.dropdown').not(self.siblings('.dropdown')).removeClass('active');
         });
     });
 
