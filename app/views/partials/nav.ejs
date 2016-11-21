@@ -12,8 +12,7 @@
                         <a href="#">Requests</a>
                         <div id="request-dropdown" class="dropdown active">
                             <ul>
-                                <li>Request 1</li>
-                                <li>Request 2</li>
+                                <li>No requests.</li>
                             </ul>
                         </div>
                     </li>
@@ -30,22 +29,10 @@
 <script>
 
     $(document).ready(function() {
-        $('.nav-dropdown').on('click', function() {
+        $('.nav-dropdown > a').on('click', function() {
             var self = $(this);
-            // switch(self.hasClass('active')) {
-            //     case true:
-            //         self.removeClass('active')
-
-            //         break;
-            //     default:
-            //         console.log('faslsee');
-            //         break;
-            // }
-            self.toggleClass('active');
-            self.find('.dropdown').toggleClass('active');
-
-            // self.addClass('active');
-            // self.find('.dropdown').addClass('active');
+            self.parent().toggleClass('active');
+            self.siblings('.dropdown').toggleClass('active');
         });
     });
 
