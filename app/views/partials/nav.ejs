@@ -12,7 +12,23 @@
                         <a href="#">Requests</a>
                         <div id="request-dropdown" class="dropdown active">
                             <ul>
-                                <li>No requests.</li>
+                                <% if ((user.friends.invites.length + user.fusion_requests.invites.length) == 0) { %>
+                                    <li>No requests.</li>
+                                <% } else { %>
+                                    <% for (var i=0; i<user.fusion_requests.invites.length; i++) { %>
+                                        <li><form class="request-form" action="/fusion/accept" method="post">
+                                            <!--<div class="request-form-content">-->
+                                                <div class="description">
+                                                    <span><%= user.fusion_requests.invites[i].requester %></span>
+                                                    invited you join
+                                                    <span><%= user.fusion_requests.invites[i].name %></span>
+                                                </div>
+                                                <input type="text" name="fusion_id" value="<%= user.fusion_requests.invites[i].fusion_id %>" hidden>
+                                                <button class="action">Accept</button>
+                                            <!--</div>-->
+                                        </form></li>
+                                    <% } %>
+                                <% } %>
                             </ul>
                         </div>
                     </li>

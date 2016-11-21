@@ -75,11 +75,11 @@
                         <p><%= user.friends.pending[i].requested %></p>
                     <% } %>
                     <h5>Friend requests:</h5>
-                    <% for (var i=0; i<user.friends.requesting.length; i++) { %>
+                    <% for (var i=0; i<user.friends.invites.length; i++) { %>
                         <form action="/friends/accept" method="post">
                             <div class="form-group">
-                                <p><%= user.friends.requesting[i].requester %></p>
-                                <input type="text" name="requester" value="<%= user.friends.requesting[i].requester %>" hidden>
+                                <p><%= user.friends.invites[i].requester %></p>
+                                <input type="text" name="requester" value="<%= user.friends.invites[i].requester %>" hidden>
                                 <button>Accept</button>
                             </div>
                         </form>
