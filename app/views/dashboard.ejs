@@ -64,49 +64,6 @@
                     </div>
                 </div> <!-- end fusions col -->
             </div> <!-- end plots row -->
-
-            <div class="row">
-                <!--<div class="col-sm-6">
-                    <form action="/friends/request" method="post">
-                        <div class="form-group">
-                            <label for="requested">Friend's email</label>
-                            <input type="text" id="requested" name="requested" placeholder="email@domain.com">
-                            <input type="text" name="requester" value="<%= user.email %>" hidden>
-                        </div>
-                        <button class="btn btn-default">Add</button>
-                    </form>
-                </div>-->
-                <div class="col-sm-6">
-                    <h5>Friends:</h5>
-                    <% for (var i=0; i<user.friends.accepted.length; i++) { %>
-                        <p><%= user.friends.accepted[i].user_b %></p>
-                    <% } %>
-                    <h5>Pending friend requests:</h5>
-                    <% for (var i=0; i<user.friends.pending.length; i++) { %>
-                        <p><%= user.friends.pending[i].requested %></p>
-                    <% } %>
-                    <h5>Friend requests:</h5>
-                    <% for (var i=0; i<user.friends.invites.length; i++) { %>
-                        <form action="/friends/accept" method="post">
-                            <div class="form-group">
-                                <p><%= user.friends.invites[i].requester %></p>
-                                <input type="text" name="requester" value="<%= user.friends.invites[i].requester %>" hidden>
-                                <button>Accept</button>
-                            </div>
-                        </form>
-                    <% } %>
-                    <h5>Fusion Invites:</h5>
-                    <% for (var i=0; i<user.fusion_requests.invites.length; i++) { %>
-                        <form action="/fusion/accept" method="post">
-                            <div class="form-group">
-                                <p><%= user.fusion_requests.invites[i].requester %></p>
-                                <input type="text" name="fusion_id" value="<%= user.fusion_requests.invites[i].fusion_id %>" hidden>
-                                <button>Accept</button>
-                            </div>
-                        </form>
-                    <% } %>
-                </div>
-            </div>
         </div> <!-- end container-fluid -->
 
         <div id="new-plot-form" class="mask-overlay">
@@ -128,8 +85,6 @@
                 $('#new-plot-form').addClass('active');
                 $('#new-plot-form form').attr('action', '/' + type + '/new');
                 $('#plot-form-title').html('New ' + type);
-                // $('#plot-name').attr('placeholder', 
-                //     capitalizedType + ' Name');
             });
 
             $('.mask, .remove-mask-overlay').on('click', function() {

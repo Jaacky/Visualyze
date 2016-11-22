@@ -1,0 +1,43 @@
+<!DOCTYPE html>  
+<html lang="en">  
+    <head>
+        <%- include('partials/header.ejs') %>
+    </head>
+
+    <script>
+        var user = <%- JSON.stringify(user) %>;
+        console.log(user);
+    </script>
+
+    <body>
+        <%- include('partials/nav.ejs') %>
+        <div class="mask"></div>
+        <div class="container container-fluid main">
+            <div class="row"> <!-- row -->
+                <% if (user.friends.pending.length != 0) { %>
+                    <div class="col-sm-12">
+                        <h3>Pending friend requests:</h3>
+                        <ul class="friends-list">
+                            <% for (var i=0; i<user.friends.pending.length; i++) { %>
+                                <li><%= user.friends.pending[i].requested %></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <% if (user.friends.accepted.length == 0) { %>
+                    Add some!
+                <% } else { %>
+                    <div class="col-sm-12">
+                        <h3>Friends:</h3>
+                        <ul class="friends-list">
+                            <% for (var i=0; i<user.friends.accepted.length; i++) { %>
+                                <li><%= user.friends.accepted[i].user_b %></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                <% } %>
+            </div> <!-- end row -->
+        </div> <!-- end container-fluid -->
+    </body>
+</html>  

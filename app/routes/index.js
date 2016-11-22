@@ -36,7 +36,16 @@ module.exports = function(app, db, passport, auth) {
         );
     });
 
-    router.post('/friends/request', function(req, res) {
+    router.get('/friends', auth, function(req, res) {
+        res.render('friends',
+            {
+                title_addon: "Friends",
+                user: req.user,
+            }
+        );
+    });
+
+    router.post('/friends/request', auth, function(req, res) {
         db.addFriendRequest(req.body.requester, req.body.requested, function() {
             req.flash('message', 'Sent friend request to ' + req.body.requested);
             res.redirect('/dashboard');
@@ -47,7 +56,7 @@ module.exports = function(app, db, passport, auth) {
         res.json("hello");
     });
 
-    router.post('/friends/accept', function(req, res) {
+    router.post('/friends/accept', auth, function(req, res) {
         console.log("post friends/accept user.email", req.user.email);
         db.acceptFriendRequest(req.user.email, req.body.requester, function() {
             req.flash('message', 'Accepted ' + req.body.requester + "'s friend request.");

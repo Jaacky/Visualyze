@@ -2,6 +2,10 @@ body {
     font-family: 'PT Sans';
 }
 
+ul {
+    list-style: none;
+}
+
 circle.selected {
     stroke: black;
     stroke-width: 2;
@@ -437,7 +441,7 @@ h1 {
     width: 75%;
 }
 
-.request-form .description span {
+.request-form .description span  {
     font-weight: 700;
 }
 
@@ -485,3 +489,42 @@ h1 {
 .input-btn-group button {
     background-color:#3b3a36;
 }
+
+.friends-list {
+    padding: 0px 40px;
+    margin-bottom: 0;
+    font-size: 0;
+}
+
+.friends-list li {
+    border: 1px solid black;
+    border-top: none;
+    padding: 8px 12px;
+    font-size: 18px;
+    display: inline-block;
+    
+    text-overflow: ellipsis;
+    height:100%;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.friends-list li:hover {
+    background-color: #f9f9f9;
+    box-shadow: 0px 1px 1px black;
+}
+
+/* FRIENDS LI CSS FOR 2 COLUMN LIST */
+.friends-list li {
+    width: 50%;
+}
+
+.friends-list li:nth-child(-n+2) {
+    border-top: 1px solid black;
+}
+
+.friends-list li:nth-child(even) {
+    border-left: none;
+}
+/* END FRIENDS LI CSS FOR 2 COLUMN LIST */
