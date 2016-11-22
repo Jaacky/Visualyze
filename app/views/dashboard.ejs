@@ -30,12 +30,16 @@
                         <button id="new-graph" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
                     </div>
                     <div class="plot-btn-container">
-                        <% for (var i=0; i<user.plots.graphs.length; i++) { %>
-                            <a href="/graph/<%= user.plots.graphs[i].id %>">
-                                <div class="btn-plot">
-                                    <%= user.plots.graphs[i].name %>
-                                </div>
-                            </a>
+                        <% if (user.plots.graphs.length == 0) { %>
+                            <h4>No graphs</h4>
+                        <% } else { %>
+                            <% for (var i=0; i<user.plots.graphs.length; i++) { %>
+                                <a href="/graph/<%= user.plots.graphs[i].id %>">
+                                    <div class="btn-plot">
+                                        <%= user.plots.graphs[i].name %>
+                                    </div>
+                                </a>
+                            <% } %>
                         <% } %>
                     </div>
                 </div> <!-- end graphs col -->
@@ -46,12 +50,16 @@
                         <button id="new-fusion" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
                     </div>
                     <div class="plot-btn-container">
-                        <% for (var i=0; i<user.plots.fusions.length; i++) { %>
-                            <a href="/fusion/<%= user.plots.fusions[i].id %>">
-                                <div class="btn-plot">
-                                    <%= user.plots.fusions[i].name %>
-                                </div>
-                            </a>
+                        <% if (user.plots.fusions.length == 0) { %>
+                            <h4>No fusions</h4>
+                        <% } else { %>
+                            <% for (var i=0; i<user.plots.fusions.length; i++) { %>
+                                <a href="/fusion/<%= user.plots.fusions[i].id %>">
+                                    <div class="btn-plot">
+                                        <%= user.plots.fusions[i].name %>
+                                    </div>
+                                </a>
+                            <% } %>
                         <% } %>
                     </div>
                 </div> <!-- end fusions col -->

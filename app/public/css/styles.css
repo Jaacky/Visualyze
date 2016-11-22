@@ -316,6 +316,11 @@ h1 {
     background-color: white;
 }
 
+.plot-btn-container h4 {
+    text-align: center;
+    padding: 25px 0px;
+}
+
 .btn-plot {
     color: black;
     display: inline-block;

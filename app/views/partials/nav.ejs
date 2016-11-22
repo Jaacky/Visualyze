@@ -36,6 +36,19 @@
                                             <!--</div>-->
                                         </form></li>
                                     <% } %>
+
+                                    <% for (var i=0; i<user.friends.invites.length; i++) { %>
+                                        <li><form class="request-form" action="/friends/accept" method="post">
+                                            <!--<div class="request-form-content">-->
+                                                <div class="description">
+                                                    <span><%= user.friends.invites[i].requester %></span>
+                                                    wants to add you as a friend
+                                                </div>
+                                                <input type="text" name="requester" value="<%= user.friends.invites[i].requester %>" hidden>
+                                                <button class="action">Accept</button>
+                                            <!--</div>-->
+                                        </form></li>
+                                    <% } %>
                                 <% } %>
                             </ul>
                         </div>
