@@ -2,7 +2,9 @@ let assert = chai.assert;
 
 describe('Dataset', function() {
 	var points;
-	var ds;
+	var gDataset;
+	var fDataset;
+	var fusion;
 
 	beforeEach(function(done) {
 		let dates = [];
@@ -15,27 +17,32 @@ describe('Dataset', function() {
 		// create Graph
 		points = [];
 		for (var i=0; i<dates.length; i++) {
-			let pt = { 
+			var pt = { 
 				colour: "#000",
 				date: dates[i],
-				graph: 'name',
-				owner: 'owner',
-				value: Math.random()
-			}
+				graph: "name",
+				owner: "owner",
+				value: Math.random(),
+			};
 			points.push(pt);
 		}
 		let graph = { points };
+		let fusion = { graphs: [graph, graph] };
 		// create Fusion
 		// create Datasets
-		ds = new GraphDataset(graph);
+		gDataset = new GraphDataset(graph);
+		fDataset = new FusionDataset(fusion);
 		done();
 	});
 
 	it('should get points from a graph', function() {
-		assert.sameDeepMembers(points, ds.data, 'Graph has same points as dataset.');
+		assert.sameDeepMembers(points, gDataset.data, 'Graph has same points as dataset.');
 	});
 
-	it('should get points from a fusion');
+	it('should get points from a fusion', function() {
+		assert.sameDeepMembers(fDataset.data, points.concat(points), 'Fusion dataset has the same points as fusion.');
+		assert.lengthOf(fDataset.data, points.concat(points).length, 'Fusion dataset has the same length as fusion.');
+	});
 
 	describe('#getYearSet(<time>)', function() {
 		it('should return set of points within the same year of <time>', function() {
