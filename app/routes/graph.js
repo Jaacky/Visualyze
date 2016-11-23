@@ -9,7 +9,7 @@ module.exports = function(app, db, auth) {
 
     router.get('/:id', function(req, res) {
         db.getGraph(req.user.email, req.params.id, function(graph) {
-            res.render('graph', { title_addon: "Graph", graph });
+            res.render('graph', { title_addon: "Graph", user: req.user, graph });
         });
     });
 
