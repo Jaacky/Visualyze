@@ -1,7 +1,10 @@
 let assert = chai.assert;
 
 describe('Dataset', function() {
-	before(function() {
+	var points;
+	var ds;
+
+	beforeEach(function(done) {
 		let dates = [];
 		let date = moment().format();
 		dates.push(moment(date).format());
@@ -10,7 +13,7 @@ describe('Dataset', function() {
 		dates.push(moment(date).add(1, 'y').format());
 
 		// create Graph
-		let points = [];
+		points = [];
 		for (var i=0; i<dates.length; i++) {
 			let pt = { 
 				colour: "#000",
@@ -22,15 +25,17 @@ describe('Dataset', function() {
 			points.push(pt);
 		}
 		let graph = { points };
-
 		// create Fusion
 		// create Datasets
-		let ds = new GraphDataset(graph);
+		ds = new GraphDataset(graph);
+		done();
 	});
 
-	it('should get points from a graph');
-	it('should get points from a fusion');
+	it('should get points from a graph', function() {
+		assert.sameDeepMembers(points, ds.data, 'Graph has same points as dataset.');
+	});
 
+	it('should get points from a fusion');
 
 	describe('#getYearSet(<time>)', function() {
 		it('should return set of points within the same year of <time>', function() {
@@ -38,11 +43,9 @@ describe('Dataset', function() {
 		});
 	});
 
-
 	describe('#getMonthSet(<time>)', function() {
 		it('should return set of points within the same month of <time>');
 	});
-
 
 	describe('#getWeekSet(<time>)', function() {
 		it('should return set of points within the same week of <time>');
