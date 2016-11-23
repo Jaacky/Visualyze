@@ -6,6 +6,11 @@ module.exports = function(app, db, passport, auth) {
         res.render('index', { landing: true });
     });
 
+    router.get('/test', function(req, res) {
+        console.log("test");
+        res.render('tests');
+    });
+
     router.get('/login', function(req, res) {
         res.render('login', { message: req.flash('error') });
     });
