@@ -71,5 +71,3 @@ module.exports = function(app, db, passport, auth) {
 
     return router;
 }
-
-// module.exports = router;
