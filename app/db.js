@@ -9,6 +9,21 @@ var cn = {
 
 var db = pgp(cn);
 
+const addUser = function(email, password, first_name, last_name, cb) {
+    var insertString = "INSERT INTO users (email, password, first_name, last_name) "
+                     + "VALUES($1, $2, $3, $4)";
+    var insertUser = new pgp.ParameterizedQuery(insertString);
+
+    db.none(insertUser, [email, password, first_name, last_name])
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("Add user err", err);
+            cb(-1);
+        });
+}
+
 /*
     Returns a user
 */
@@ -404,6 +419,7 @@ const acceptFriendRequest = function(user, requester, cb) {
 }
 
 module.exports = {
+    addUser,
     getUser,
     getGraph,
     getFusion,

@@ -7,7 +7,7 @@ module.exports = function(app, db, passport, auth) {
     });
 
     router.get('/login', function(req, res) {
-        res.render('login', { message: req.flash('error') });
+        res.render('login', { message: req.flash('message'), error: req.flash('error') });
     });
 
     router.post('/login',
@@ -26,6 +26,19 @@ module.exports = function(app, db, passport, auth) {
 
     router.get('/signup', function(req, res) {
         res.render('signup', { message: req.flash('error') });
+    });
+
+    router.post('/signup', function(req, res) {
+        console.log(req.body);
+        db.addUser(req.body.email, req.body.password, req.body.first_name, req.body.last_name, function(err) {
+            if (err) {
+                req.flash('message', 'Account creation failed');
+                res.redirect('/login');
+                return;
+            }
+            req.flash('message', 'Account created.');
+            res.redirect('/login');
+        });
     });
 
     /* Needs auth to access route */
