@@ -24,6 +24,10 @@ module.exports = function(app, db, passport, auth) {
         });
     });
 
+    router.get('/signup', function(req, res) {
+        res.render('signup', { message: req.flash('error') });
+    });
+
     /* Needs auth to access route */
     router.get('/dashboard', auth, function(req, res, next) {
         console.log("dashboard, req.user", req.user);
