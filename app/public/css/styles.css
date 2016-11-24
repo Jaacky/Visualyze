@@ -244,13 +244,17 @@ h1 {
 .login-form, .signup-form {
     display: inline-block;
     width: 50%;
-    min-width: 450px;
+    min-width: 350px;
     text-align: left;
     font-size: 0;
 }
 
 .login-form *, .signup-form * {
     font-size: 16px;
+}
+
+.login-form button, .signup-form button {
+    margin-top: 5px;
 }
 
 .form-group-half {

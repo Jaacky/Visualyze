@@ -4,7 +4,13 @@
             <div class="nav-brand"><a class="brand" href="/">VISUALYZE</a></div>
         </div><!--
         --><div class="nav-menu">
-            <ul class="">
+            <div id="nav-mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu-items">
                 <% if (typeof user !== 'undefined') { %>
                     <li>
                         <form action="/friends/request" method="post">
@@ -76,6 +82,11 @@
 <script>
 
     $(document).ready(function() {
+        $('#nav-mobile-menu').on('click', function() {
+            $(this).toggleClass('open');
+            $('.nav-menu-items').toggleClass('open');
+        });
+
         $('.nav-dropdown > a').on('click', function() {
             var self = $(this);
             self.parent().toggleClass('active');
