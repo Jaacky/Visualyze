@@ -11,18 +11,16 @@
     </script>
     <body>
         <%- include('partials/nav.ejs') %>
+        <div class="mask"></div>
         <div class="container container-fluid main">
             <div class="row">
-                <div class="col-md-12">
-                    <h1><%= graph.name %></h1>
-                </div>
-                <div class="col-md-12">
-                    <form action="/graph/addPoint" method="post">
-                        <input type="text" id="datepicker", name="date" required>
-                        <input type="number" id="value", name="value" placeholder="Value" required>
-                        <input type="string" id="id" name="id" value="<%= graph.id %>" hidden required>
-                        <button class="btn btn-default" type="submit">Add</button>
-                    </form>
+                <div class="col-md-12 plot-header">
+                    <div class="name">
+                        <%= graph.name %>
+                    </div>
+                    <div class="action">
+                        <button class="btn-add-point">Add Point</button>
+                    </div>
                 </div>
                 <div id="graph-time-options" class="col-md-12 options-group">
                     <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
@@ -44,6 +42,16 @@
                 </div>
             </div>
         </div> <!-- end container-fluid -->
+        <div id="add-point-form" class="mask-overlay">
+            <h4>Add points</h4>
+            <form action="/graph/addPoint" method="post">
+                <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                <input type="text" id="datepicker", name="date" required>
+                <input type="number" id="value", name="value" placeholder="Value" required>
+                <input type="string" id="id" name="id" value="<%= graph.id %>" hidden required>
+                <button class="btn btn-default" type="submit">Add</button>
+            </form>
+        </div>
     </body>
 
     <script>
@@ -91,6 +99,15 @@
                     ds.getPoints(mode, moment(current)),
                     ds.getOptions(mode, moment(current))
                 );
+            });
+
+            $('.btn-add-point').on('click', function() {
+                $('.mask').addClass('active');
+                $('#add-point-form').addClass('active');
+            });
+
+            $('.mask, .remove-mask-overlay').on('click', function() {
+                $('.mask, .mask-overlay').removeClass('active');
             });
         });
     </script>
