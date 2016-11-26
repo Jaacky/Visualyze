@@ -20,10 +20,12 @@
             <div class="row">
                 <div class="col-md-12 fusion-title-container">
                     <h1><%= fusion.name %></h1>
-                    <button id="add-fusion-graph" class="btn btn-default">
-                        <span class="glyphicon glyphicon-plus"></span> Graph
-                    </button>
-                    <button id="invite-fusion" class="btn btn-default">Invite friend</button>
+                    <div class="buttons">
+                        <button id="add-fusion-graph" class="btn btn-default">
+                            <span class="glyphicon glyphicon-plus"></span> Graph
+                        </button>
+                        <button id="invite-fusion" class="btn btn-default">Invite friend</button>
+                    </div>
                 </div>
 
                 <div id="graph-time-options" class="col-md-12 options-group">
@@ -98,9 +100,12 @@
     <script>
         var current = moment();
         setDate(current, "month");
+
+        var options = ds.getOptions("month", moment(current));
+        options['cy'] = $(window).height() - $('#graph-container').offset().top;
         const g = new scatterPlot("graph-container", 
             ds.getPoints("month", moment(current)), 
-            ds.getOptions("month", moment(current))
+            options
         );
 
         $('#graphs_added').chosen({

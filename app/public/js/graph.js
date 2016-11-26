@@ -2,8 +2,6 @@ var Graph = function(container, points, options) {
     var self = this;
     this.chart = document.getElementById(container);
     this.options = options;
-    this.cx = this.chart.clientWidth;
-    this.cy = options.cy ? options.cy : 450;
     this.points = points;
 }
 
@@ -33,6 +31,9 @@ var scatterPlot = function(container, points, options) {
 
 scatterPlot.prototype.setProperties = function() {
     var self = this;
+    
+    this.cx = this.chart.clientWidth;
+    this.cy = self.options.cy ? self.options.cy : 450;
     this.padding = {
         "top": 10,
         "bottom": 25,
