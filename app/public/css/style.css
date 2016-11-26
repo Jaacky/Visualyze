@@ -166,10 +166,10 @@
         border-radius: 9px;
         opacity: 1;
         left: 0;
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg) translateY(-50%);
+        -moz-transform: rotate(0deg) translateY(-50%);
+        -o-transform: rotate(0deg) translateY(-50%);
+        transform: rotate(0deg) translateY(-50%);
         -webkit-transition: .25s ease-in-out;
         -moz-transition: .25s ease-in-out;
         -o-transition: .25s ease-in-out;
@@ -179,28 +179,32 @@
     #nav-mobile-menu span:nth-child(1) {
         top: 0px;
         top: 20%;
-        -webkit-transform: rotate(0deg) transformY(-20%);
-        -moz-transform: rotate(0deg) transformY(-20%);
-        -o-transform: rotate(0deg) transformY(-20%);
-        transform: rotate(0deg) transformY(-20%);
+        -webkit-transform: rotate(0deg) translateY(-50%);
+        -moz-transform: rotate(0deg) translateY(-50%);
+        -o-transform: rotate(0deg) translateY(-50%);
+        transform: rotate(0deg) translateY(-50%);
     }
 
     #nav-mobile-menu span:nth-child(2),#nav-mobile-menu span:nth-child(3) {
         top: 18px;
         top: 50%;
-        -webkit-transform: rotate(0deg) transformY(-50%);
-        -moz-transform: rotate(0deg) transformY(-50%);
-        -o-transform: rotate(0deg) transformY(-50%);
-        transform: rotate(0deg) transformY(-50%);
+        -webkit-transform: rotate(0deg) translateY(-50%);
+        -moz-transform: rotate(0deg) translateY(-50%);
+        -o-transform: rotate(0deg) translateY(-50%);
+        transform: rotate(0deg) translateY(-50%);
+    }
+
+    #nav-mobile-menu span:nth-child(3) {
+        opacity: 0;
     }
 
     #nav-mobile-menu span:nth-child(4) {
         top: 36px;
         top: 80%;
-        -webkit-transform: rotate(0deg) transformY(-80%);
-        -moz-transform: rotate(0deg) transformY(-80%);
-        -o-transform: rotate(0deg) transformY(-80%);
-        transform: rotate(0deg) transformY(-80%);
+        -webkit-transform: rotate(0deg) translateY(-50%);
+        -moz-transform: rotate(0deg) translateY(-50%);
+        -o-transform: rotate(0deg) translateY(-50%);
+        transform: rotate(0deg) translateY(-50%);
     }
 
     #nav-mobile-menu.open span:nth-child(1), #nav-mobile-menu.open span:nth-child(4) {
@@ -215,23 +219,14 @@
         -moz-transform: rotate(45deg);
         -o-transform: rotate(45deg);
         transform: rotate(45deg);
-
-        -webkit-transform: rotate(45deg) transformY(-50%);
-        -moz-transform: rotate(45deg) transformY(-50%);
-        -o-transform: rotate(45deg) transformY(-50%);
-        transform: rotate(45deg) transformY(-50%);
     }
 
     #nav-mobile-menu.open span:nth-child(3) {
+        opacity: 1;
         -webkit-transform: rotate(-45deg);
         -moz-transform: rotate(-45deg);
         -o-transform: rotate(-45deg);
         transform: rotate(-45deg);
-
-        -webkit-transform: rotate(-45deg) transformY(-50%);
-        -moz-transform: rotate(-45deg) transformY(-50%);
-        -o-transform: rotate(-45deg) transformY(-50%);
-        transform: rotate(-45deg) transformY(-50%);
     }
 
     .nav-menu-items {
@@ -246,11 +241,20 @@
     }
 
     .nav-menu-items li {
-        padding: 8px 12px;
+        padding: 12px;
+        border-bottom: 2px solid white;
     }
 
     .nav-menu-items.open {
         display: inline-block;
+    }
+
+    .nav-divider {
+        display: none;
+    }
+
+    .dropdown {
+        display: none;
     }
     /* END NAV */
 
@@ -346,6 +350,53 @@
 
 
     /* END DASHBOARD */
+
+    /* REQUESTS */
+    .requests-list {
+        margin-top: 25px;
+    }
+
+    .requests-list li {
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    .requests-list li:not(:first-child) {
+        border-top: 1px solid transparent;
+    }
+
+    .request-form {
+        text-align: left;
+        font-size: 0;
+    }
+
+    .request-form .description, .request-form .action {
+        display: inline-block;
+        font-size: 1.5rem;
+        vertical-align: middle;
+    }
+
+    .request-form .description { 
+        width: 75%;
+    }
+
+    .request-form .description span {
+        font-weight: 700;
+    }
+
+    .request-form .action {
+        width: 25%;
+        padding: 5px;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 4px;
+    }
+
+    .request-form .action:hover {
+        border: 2px soldi black;
+    }
+    /* END REQUESTS */
+
     /* BUTTONS */
     .btn-signup {
         border: 2px solid white;
@@ -503,7 +554,7 @@
     .plot-header .action button:hover {
         border-color: black;
     }
-    
+
     circle.selected {
         stroke: black;
         stroke-width: 2;

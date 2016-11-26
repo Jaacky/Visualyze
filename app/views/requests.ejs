@@ -1,0 +1,79 @@
+<!DOCTYPE html>  
+<html lang="en">  
+    <head>
+        <%- include('partials/header.ejs') %>
+        <script src="/js/dataset.js"></script>
+        <script src="/js/graph.js"></script>
+    </head>
+
+    <script>
+        var user = <%- JSON.stringify(user) %>;
+        console.log(user);
+    </script>
+
+    <body>
+        <%- include('partials/nav.ejs') %>
+        <div class="container container-fluid main">
+            <ul class="requests-list">
+                <% if ((user.friends.invites.length + user.fusion_requests.invites.length) == 0) { %>
+                    <li>No requests.</li>
+                <% } else { %>
+                    <% for (var i=0; i<user.fusion_requests.invites.length; i++) { %>
+                        <li><form class="request-form" action="/fusion/accept" method="post">
+                            <!--<div class="request-form-content">-->
+                                <div class="description">
+                                    <span><%= user.fusion_requests.invites[i].requester %></span>
+                                    invited you join
+                                    <span><%= user.fusion_requests.invites[i].name %></span>
+                                </div>
+                                <input type="text" name="fusion_id" value="<%= user.fusion_requests.invites[i].fusion_id %>" hidden>
+                                <button class="action">Accept</button>
+                            <!--</div>-->
+                        </form></li>
+                    <% } %>
+
+                    <% for (var i=0; i<user.friends.invites.length; i++) { %>
+                        <li><form class="request-form" action="/friends/accept" method="post">
+                            <!--<div class="request-form-content">-->
+                                <div class="description">
+                                    <span><%= user.friends.invites[i].requester %></span>
+                                    wants to add you as a friend
+                                </div>
+                                <input type="text" name="requester" value="<%= user.friends.invites[i].requester %>" hidden>
+                                <button class="action">Accept</button>
+                            <!--</div>-->
+                        </form></li>
+                    <% } %>
+                <% } %>
+                <li><form class="request-form" action="/friends/accept" method="post">
+                        <div class="description">
+                            <span>Hello</span>
+                            wants to add you as a friend
+                        </div>
+                        <input type="text" name="requester" value="" hidden>
+                        <button class="action">Accept</button>
+                    <!--</div>-->
+                </form></li>
+                <li><form class="request-form" action="/friends/accept" method="post">
+                        <div class="description">
+                            <span>super long name san sensei suki one more time</span>
+                            wants to add you as a friend
+                        </div>
+                        <input type="text" name="requester" value="" hidden>
+                        <button class="action">Accept</button>
+                    <!--</div>-->
+                </form></li>
+                <li><form class="request-form" action="/friends/accept" method="post">
+                        <div class="description">
+                            <span>Hello</span>
+                            wants to add you as a friend
+                        </div>
+                        <input type="text" name="requester" value="" hidden>
+                        <button class="action">Accept</button>
+                    <!--</div>-->
+                </form></li>
+            </ul>
+        </div> <!-- end container-fluid -->
+    </body>
+
+</html>  

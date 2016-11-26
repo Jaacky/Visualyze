@@ -23,7 +23,7 @@
                     </li>
                     <li><a href="/dashboard">Dashboard</a></li>
                     <li class="nav-dropdown">
-                        <a href="#">Requests (<%= user.friends.invites.length + user.fusion_requests.invites.length %>)</a>
+                        <a href="/requests">Requests (<%= user.friends.invites.length + user.fusion_requests.invites.length %>)</a>
                         <div id="request-dropdown" class="dropdown">
                             <ul>
                                 <% if ((user.friends.invites.length + user.fusion_requests.invites.length) == 0) { %>

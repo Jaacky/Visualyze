@@ -53,6 +53,13 @@ module.exports = function(app, db, passport, auth) {
         );
     });
 
+    router.get('/requests', auth, function(req, res, next) {
+        res.render('requests', {
+            title_addon: "Requests",
+            user: req.user,
+        });
+    });
+
     router.get('/friends', auth, function(req, res) {
         res.render('friends',
             {
