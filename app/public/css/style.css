@@ -76,6 +76,9 @@
     .mask-overlay form > input {
         width: 100%;
         padding: 5px;
+        border: 1px solid black;
+        box-shadow: inset 1px 1px 1px black;
+        border-radius: 4px;
     }
 
     .mask-overlay form > button {
@@ -88,7 +91,6 @@
         width: 100%;
         height: 75px;
         z-index: 1337;
-        padding: 0px 45px;
     }
 
     nav.active {
@@ -105,13 +107,15 @@
     }
 
     .nav-container {
-        position: relative;
+        /*position: relative;
         top: 50%;
         -webkit-transform: translateY(-50%);
         -moz-transform: translateY(-50%);
         -o-transform: translateY(-50%);
-        transform: translateY(-50%);
-        height: 50%;
+        transform: translateY(-50%);*/
+        height: 100%;
+        padding: 0px 45px;
+        background-color: black;
     }
 
     .nav-header {
@@ -131,23 +135,21 @@
         display: inline-block;
         vertical-align: middle;
         text-align: right;
-        position: relative;
+        /*position: relative;*/
     }
 
     /* Icon 3 from https://codepen.io/designcouch/pen/Atyop */
 
     #nav-mobile-menu {
-        width: 60px;
-        height: 45px;
         width: 3rem;
-        height: 100%;
+        height: 50%;
         position: relative;
-        margin: 50px auto;
+        top: 46%;
         margin: 0;
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg) translateY(-50%);
+        -moz-transform: rotate(0deg) translateY(-50%);
+        -o-transform: rotate(0deg) translateY(-50%);
+        transform: rotate(0deg) translateY(-50%);
         -webkit-transition: .5s ease-in-out;
         -moz-transition: .5s ease-in-out;
         -o-transition: .5s ease-in-out;
@@ -166,10 +168,10 @@
         border-radius: 9px;
         opacity: 1;
         left: 0;
-        -webkit-transform: rotate(0deg) translateY(-50%);
-        -moz-transform: rotate(0deg) translateY(-50%);
-        -o-transform: rotate(0deg) translateY(-50%);
-        transform: rotate(0deg) translateY(-50%);
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
         -webkit-transition: .25s ease-in-out;
         -moz-transition: .25s ease-in-out;
         -o-transition: .25s ease-in-out;
@@ -178,33 +180,33 @@
 
     #nav-mobile-menu span:nth-child(1) {
         top: 0px;
-        top: 20%;
-        -webkit-transform: rotate(0deg) translateY(-50%);
-        -moz-transform: rotate(0deg) translateY(-50%);
-        -o-transform: rotate(0deg) translateY(-50%);
-        transform: rotate(0deg) translateY(-50%);
+        top: 25%;
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
     }
 
     #nav-mobile-menu span:nth-child(2),#nav-mobile-menu span:nth-child(3) {
         top: 18px;
         top: 50%;
-        -webkit-transform: rotate(0deg) translateY(-50%);
-        -moz-transform: rotate(0deg) translateY(-50%);
-        -o-transform: rotate(0deg) translateY(-50%);
-        transform: rotate(0deg) translateY(-50%);
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
     }
 
-    #nav-mobile-menu span:nth-child(3) {
+    /*#nav-mobile-menu span:nth-child(3) {
         opacity: 0;
-    }
+    }*/
 
     #nav-mobile-menu span:nth-child(4) {
         top: 36px;
-        top: 80%;
-        -webkit-transform: rotate(0deg) translateY(-50%);
-        -moz-transform: rotate(0deg) translateY(-50%);
-        -o-transform: rotate(0deg) translateY(-50%);
-        transform: rotate(0deg) translateY(-50%);
+        top: 75%;
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
     }
 
     #nav-mobile-menu.open span:nth-child(1), #nav-mobile-menu.open span:nth-child(4) {
@@ -222,7 +224,7 @@
     }
 
     #nav-mobile-menu.open span:nth-child(3) {
-        opacity: 1;
+        /*opacity: 1;*/
         -webkit-transform: rotate(-45deg);
         -moz-transform: rotate(-45deg);
         -o-transform: rotate(-45deg);
@@ -231,18 +233,29 @@
 
     .nav-menu-items {
         display: none;
-        width: 200%;
+        padding-top: 75px;
+        width: 100%;
+        height: 100vh;
         min-width: 200px;
         position: absolute;
-        top: 37.5px;
-        right: 0;
-        background-color:rgba(50, 50, 50, 0.9);
+        z-index: -1;
+        top: 0;
+        left: 0;
+        background-color:rgba(50, 50, 50, 0.95);
         border-radius: 2px;
+        text-align: center;
+        overflow-y: scroll;
     }
 
-    .nav-menu-items li {
-        padding: 12px;
+    .nav-menu-items li > a {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .nav-menu-items > li > form, .nav-menu-items > li > a {
         border-bottom: 2px solid white;
+        padding: 15px;
     }
 
     .nav-menu-items.open {
@@ -253,8 +266,28 @@
         display: none;
     }
 
+    .nav-dropdown.active > a {
+        border-bottom: none;
+        background-color: rgba(150, 150, 150, 0.9);
+    }
+
     .dropdown {
         display: none;
+        padding: 15px;
+        border-bottom: 2px solid white;
+    }
+
+    .dropdown.active {
+        display: block;
+    }
+
+    .dropdown li {
+        padding: 10px;
+        border-bottom: 1px dashed white;
+    }
+
+    .dropdown li:last-child {
+        border-bottom: 1px dashed transparent;
     }
     /* END NAV */
 
@@ -273,7 +306,7 @@
         background-size: cover;
         position: relative;
         color: white;
-        height: 80vh;
+        height: 90vh;
     }
 
     .landing .mask {
@@ -379,6 +412,7 @@
 
     .request-form .description { 
         width: 75%;
+        color: white;
     }
 
     .request-form .description span {
@@ -488,7 +522,7 @@
     }
 
     .input-btn-group > * {
-        font-size: 1rem;
+        font-size: 1.5rem;
         height: 100%;
         padding: 6px 12px;
         box-sizing: border-box;
@@ -511,11 +545,13 @@
         /*border: 1px solid transparent;*/
         background-color: #3b3a36;
         background-color: white;
+        width: 70%;
     }
 
     .input-btn-group button {
         background-color:#3b3a36;
         color: white;
+        width: 30%;
     }
     /* END BUTTONS */
 
@@ -537,12 +573,15 @@
         font-size: 4rem;
     }
 
+    .plot-header .action {
+        margin-right: 5px;
+    }
+
     .action {
         font-size: 1.5rem;
         border: 1px solid black;
         border-radius: 4px;
         display: inline-block;
-        margin-right: 5px;
     }
 
     .action button {
