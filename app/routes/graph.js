@@ -9,7 +9,7 @@ module.exports = function(app, db, auth) {
 
     router.get('/:id', function(req, res) {
         db.getGraph(req.user.email, req.params.id, function(graph) {
-            res.render('graph', { title_addon: "Graph", user: req.user, graph });
+            res.render('graph', { title_addon: "Graph", user: req.user, graph, message: req.flash('message') });
         });
     });
 
@@ -51,7 +51,19 @@ module.exports = function(app, db, auth) {
                 res.redirect('/dashboard');
             }
         });
-    })
+    });
+
+    router.post('/remove_point', function(req, res) {
+        console.log(req.body);
+        db.removePoint(req.body.point_id, req.body.graph_id, function(err) {
+            if (err) {
+                req.flash('message', 'Could not remove point.');
+            } else {
+                req.flash('message', 'Removed selected point.');
+            }
+            res.redirect('/graph/' + req.body.graph_id);
+        });
+    });
 
     return router;
 }

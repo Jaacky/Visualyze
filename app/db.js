@@ -136,7 +136,7 @@ const getGraph = function(email, graph_id, cb) {
     var graphQString = "SELECT * FROM graphs "
                 + "WHERE owner = $1 AND id = $2";
     
-    var pointsQString = "SELECT graphs.colour, data_points.value, data_points.date "
+    var pointsQString = "SELECT graphs.colour, data_points.value, data_points.date, data_points.id "
                 + "FROM graphs INNER JOIN data_points ON "
                 + "graphs.id = data_points.graph AND graphs.owner = $1 AND graphs.id = $2";
 
@@ -381,6 +381,21 @@ const deleteGraph = function(graph_id, owner, cb) {
         });
 }
 
+const removePoint = function(point_id, graph_id, cb) {
+    var deleteString = "DELETE FROM data_points "
+                    + "WHERE id=$1 AND graph=$2";
+    
+    var removePoint = new pgp.ParameterizedQuery(deleteString);
+    db.none(removePoint, [point_id, graph_id])
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("remove pt err", err);
+            cb(-1);
+        });
+}
+
 const graphsBeginWith = function(begin, cb) {
     var searchString = "SELECT * FROM graphs "
                 + "WHERE name LIKE $1";
@@ -447,6 +462,7 @@ module.exports = {
     addFusionRequests,
     acceptFusionRequest,
     deleteGraph,
+    removePoint,
     graphsBeginWith,
     addFriendRequest,
     acceptFriendRequest,

@@ -259,7 +259,8 @@
     /* END NAV */
 
     .main {
-        padding: 75px 45px 0px 45px;
+        padding: 75px 45px;
+        position: relative;
     }
 
     .chosen-container-multi .chosen-choices li.search-field input[type=text] {
@@ -536,7 +537,7 @@
         font-size: 4rem;
     }
 
-    .plot-header .action {
+    .action {
         font-size: 1.5rem;
         border: 1px solid black;
         border-radius: 4px;
@@ -544,14 +545,14 @@
         margin-right: 5px;
     }
 
-    .plot-header .action button {
+    .action button {
         padding: 8px;
         border-radius: 3px;
         border: 1px solid transparent;
         background-color: white;
     }
 
-    .plot-header .action button:hover {
+    .action button:hover {
         border-color: black;
     }
 

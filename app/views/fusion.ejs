@@ -70,8 +70,8 @@
 
         <div id="add-graph-form" class="mask-overlay">
             <h4 class="form-title">Add Graphs</h4>
+            <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
             <form action="/fusion/add" method="post">
-                <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                 <div class="form-group">
                     <select name="graphs_added[]" id="graphs_added" class="form-control" multiple>
                         <% for (var j=0; j<userGraphs.length; j++) { %>
@@ -88,8 +88,8 @@
 
         <div id="invite-friend-form" class="mask-overlay">
             <h4 class="form-title">Invite Friends</h4>
+            <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
             <form action="/fusion/invite" method="post">
-                <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                 <div class="form-group">
                     <select name="invitees[]" id="invitees" class="form-control" multiple>
                         <% for (var i=0; i<user.friends.accepted.length; i++) { %>

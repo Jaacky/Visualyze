@@ -18,8 +18,7 @@ var scatterPlot = function(container, points, options) {
         .append('g')
         .attr('transform', 'translate(' + this.padding.left + "," + this.padding.top + ")");
 
-    this.tooltip = d3.select(document.getElementById('tooltip'))
-        .style("fill", "e8e8e8");
+    this.tooltip = d3.select(document.getElementById('tooltip'));
 
     this.xAxis = this.vis.append("g")
         .attr('class', 'x axis');
@@ -72,6 +71,10 @@ scatterPlot.prototype.draw = function() {
         .on('click', function(d) {
             d3.selectAll("circle").attr("class", "");
             d3.select(this).attr("class", "selected");
+            if ($('#remove-point').length) {
+                addPointRemoval(d, '#remove-point');
+                $('#point_id').val(d.id);
+            }
             self.tooltip.html(formatTooltip(d));
         });
         
@@ -109,6 +112,15 @@ function formatTooltip(d) {
     html += "On: " + moment(d.date).format("MMM D, YYYY");
 
     return html;
+}
+
+function addPointRemoval(d, container) {
+    html = "";
+    html += "<div class='action'>";
+    html += "<button class='btn-remove-point'>Remove</button>"
+    html += "</div>";
+
+    $(container).html(html);
 }
 
 /*

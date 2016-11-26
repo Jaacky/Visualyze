@@ -11,8 +11,9 @@
     </script>
     <body>
         <%- include('partials/nav.ejs') %>
-        <div class="mask"></div>
+        
         <div class="container container-fluid main">
+            <div class="mask"></div>
             <div class="row">
                 <div class="col-md-12 plot-header">
                     <div class="name">
@@ -31,7 +32,10 @@
                                 <span> Delete</span>
                             </button>
                         </div>
-                    </div>    
+                    </div>   
+                    <% if (message) { %>
+                        <h4><%= message %></h4>
+                    <% } %> 
                 </div>
                 <div id="graph-time-options" class="col-md-12 options-group">
                     <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
@@ -45,18 +49,19 @@
                     <div id="graph-container"></div>
                 </div>
                 <div class="col-sm-2">
-                    <div class="row">
+                    <div class="row graph-details">
                         <h4>Selected point:</h4>
-                        <div id="tooltip" class="col-sm-12">
+                        <div id="tooltip" class="col-sm-10">
                         </div>
+                        <div id="remove-point" class="col-sm-2"></div>
                     </div>
                 </div>
             </div>
         </div> <!-- end container-fluid -->
         <div id="add-point-form" class="mask-overlay">
             <h4>Add points</h4>
+            <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
             <form action="/graph/addPoint" method="post">
-                <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                 <input type="text" id="datepicker", name="date" required>
                 <input type="number" id="value", name="value" placeholder="Value" required>
                 <input type="string" id="id" name="id" value="<%= graph.id %>" hidden required>
@@ -65,8 +70,8 @@
         </div>
         <div id="delete-graph-form" class="mask-overlay">
             <h4>Delete Graph Confirmation</h4>
+            <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
             <form action="/graph/delete" method="post">
-                <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                 <input type="string" id="graph_name", name="graph_name" value="<%= graph.name %>" hidden required>
                 <input type="string" id="graph_id" name="graph_id" value="<%= graph.id %>" hidden required>
                 <div>
@@ -75,6 +80,18 @@
                     Do you still want to delete the graph?
                 </div>
                 <button class="btn btn-default" type="submit">Delete Graph</button>
+            </form>
+        </div>
+        <div id="remove-point-form" class="mask-overlay">
+            <h4>Remove Point Confirmation</h4>
+            <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+            <form action="/graph/remove_point" method="post">
+                <input type="string" id="point_id", name="point_id" value="" hidden required>
+                <input type="string" id="graph_id" name="graph_id" value="<%= graph.id %>" hidden required>
+                <div>
+                    Are you sure you want to remove this point?
+                </div>
+                <button class="btn btn-default" type="submit">Remove</button>
             </form>
         </div>
     </body>
@@ -137,6 +154,11 @@
             $('#btn-delete-graph').on('click', function() {
                 $('.mask').addClass('active');
                 $('#delete-graph-form').addClass('active');
+            });
+
+            $('.graph-details').on('click', '.btn-remove-point', function() {
+                $('.mask').addClass('active');
+                $('#remove-point-form').addClass('active');
             });
 
             $('.mask, .remove-mask-overlay').on('click', function() {
