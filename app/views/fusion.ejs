@@ -18,13 +18,24 @@
         <div class="mask"></div>
         <div class="container container-fluid main">
             <div class="row">
-                <div class="col-md-12 fusion-title-container">
-                    <h1><%= fusion.name %></h1>
+                <div class="col-md-12 plot-header">
+                    <div class="name"><%= fusion.name %></div>
                     <div class="buttons">
-                        <button id="add-fusion-graph" class="btn btn-default">
-                            <span class="glyphicon glyphicon-plus"></span> Graph
-                        </button>
-                        <button id="invite-fusion" class="btn btn-default">Invite friend</button>
+                        <div class="action">
+                            <button id="add-fusion-graph">
+                                <span class="glyphicon glyphicon-plus"></span><span> Graph</span>
+                            </button>
+                        </div>
+                        <div class="action">
+                            <button id="invite-fusion">
+                                <span class="glyphicon glyphicon-user"></span><span> Invite friend</span>
+                            </button>
+                        </div>
+                        <div class="action">
+                            <button id="delete-graph">
+                                <span class="glyphicon glyphicon-remove"></span><span> Delete</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -58,7 +69,7 @@
 
 
         <div id="add-graph-form" class="mask-overlay">
-            <h4 id="plot-form-title" class="form-title"></h4>
+            <h4 class="form-title">Add Graphs</h4>
             <form action="/fusion/add" method="post">
                 <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
                 <div class="form-group">
@@ -76,10 +87,9 @@
         </div>
 
         <div id="invite-friend-form" class="mask-overlay">
-            <h4 id="plot-form-title" class="form-title"></h4>
+            <h4 class="form-title">Invite Friends</h4>
             <form action="/fusion/invite" method="post">
                 <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
-                <!--<input type="text" id="plot-name" name="name" placeholder="Name" required>-->
                 <div class="form-group">
                     <select name="invitees[]" id="invitees" class="form-control" multiple>
                         <% for (var i=0; i<user.friends.accepted.length; i++) { %>
@@ -159,11 +169,8 @@
                 On click event for adding a new graph to the fusion
             */
             $('#add-fusion-graph').on('click', function() {
-                var form = $('#add-graph-form');
                 $('.mask').addClass('active');
-                form.addClass('active');
-                form.find('.form-title').html("Add graph");
-                console.log("hello");
+                $('#add-graph-form').addClass('active');
             });
 
             /*
@@ -191,11 +198,8 @@
                 On click event for inviting friend to the fusion
             */
             $('#invite-fusion').on('click', function() {
-                var form = $('#invite-friend-form');
                 $('.mask').addClass('active');
-                form.addClass('active');
-                form.find('.form-title').html("Invite friend");
-                // socket.emit('fusion request', "hello");
+                $('#invite-friend-form').addClass('active');
             });
 
             // $('.new-plot-btn').on('click', function() {

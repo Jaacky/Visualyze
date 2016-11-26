@@ -365,6 +365,22 @@ const acceptFusionRequest = function(fusion_id, owner, cb) {
     //     })
 }
 
+const deleteGraph = function(graph_id, owner, cb) {
+    var deleteString = "DELETE FROM graphs "
+                    + "WHERE id=$1 AND owner=$2";
+    
+    var deleteGraph = new pgp.ParameterizedQuery(deleteString);
+
+    db.none(deleteGraph, [graph_id, owner])
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("delete graph err", err);
+            cb(-1);
+        });
+}
+
 const graphsBeginWith = function(begin, cb) {
     var searchString = "SELECT * FROM graphs "
                 + "WHERE name LIKE $1";
@@ -430,6 +446,7 @@ module.exports = {
     addGraphsToFusion,
     addFusionRequests,
     acceptFusionRequest,
+    deleteGraph,
     graphsBeginWith,
     addFriendRequest,
     acceptFriendRequest,

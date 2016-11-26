@@ -18,9 +18,20 @@
                     <div class="name">
                         <%= graph.name %>
                     </div>
-                    <div class="action">
-                        <button class="btn-add-point">Add Point</button>
-                    </div>
+                    <div class="buttons">
+                        <div class="action">
+                            <button id="btn-add-point">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                <span> Point</span>
+                            </button>
+                        </div>
+                        <div class="action">
+                            <button id="btn-delete-graph">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span> Delete</span>
+                            </button>
+                        </div>
+                    </div>    
                 </div>
                 <div id="graph-time-options" class="col-md-12 options-group">
                     <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
@@ -50,6 +61,20 @@
                 <input type="number" id="value", name="value" placeholder="Value" required>
                 <input type="string" id="id" name="id" value="<%= graph.id %>" hidden required>
                 <button class="btn btn-default" type="submit">Add</button>
+            </form>
+        </div>
+        <div id="delete-graph-form" class="mask-overlay">
+            <h4>Delete Graph Confirmation</h4>
+            <form action="/graph/delete" method="post">
+                <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                <input type="string" id="graph_name", name="graph_name" value="<%= graph.name %>" hidden required>
+                <input type="string" id="graph_id" name="graph_id" value="<%= graph.id %>" hidden required>
+                <div>
+                    The graph will be removed from all fusions containing it and all the data pertaining to the graph will be deleted. This action cannot be undone.
+                    </br>
+                    Do you still want to delete the graph?
+                </div>
+                <button class="btn btn-default" type="submit">Delete Graph</button>
             </form>
         </div>
     </body>
@@ -104,9 +129,14 @@
                 );
             });
 
-            $('.btn-add-point').on('click', function() {
+            $('#btn-add-point').on('click', function() {
                 $('.mask').addClass('active');
                 $('#add-point-form').addClass('active');
+            });
+
+            $('#btn-delete-graph').on('click', function() {
+                $('.mask').addClass('active');
+                $('#delete-graph-form').addClass('active');
             });
 
             $('.mask, .remove-mask-overlay').on('click', function() {

@@ -39,5 +39,19 @@ module.exports = function(app, db, auth) {
         });
     });
 
+    router.post('/delete', function(req, res) {
+        db.deleteGraph(req.body.graph_id, req.user.email, function(err) {
+            if (err) {
+                req.flash('message', 'Could not delete graph, '
+                    + req.body.graph_name 
+                    + '. If this error persists, please contact support at support@visualyze.xyz.');
+                res.redirect('/dashboard');
+            } else {
+                req.flash('message', 'Graph - ' + req.body.graph_name + ' has been deleted');
+                res.redirect('/dashboard');
+            }
+        });
+    })
+
     return router;
 }
