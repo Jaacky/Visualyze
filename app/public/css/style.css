@@ -93,10 +93,6 @@
         z-index: 1337;
     }
 
-    nav.active {
-        background-color: black;
-    }
-
     nav a {
         color: white;
         font-size: 2rem;
@@ -115,6 +111,10 @@
         transform: translateY(-50%);*/
         height: 100%;
         padding: 0px 45px;
+        /*background-color: black;*/
+    }
+
+    nav.active .nav-container {
         background-color: black;
     }
 
@@ -245,6 +245,11 @@
         border-radius: 2px;
         text-align: center;
         overflow-y: scroll;
+        background-clip: content-box;
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-duration: 0.5s;
+        -o-animation-duration: 0.5s;
+        animation-duration: 0.5s;
     }
 
     .nav-menu-items li > a {

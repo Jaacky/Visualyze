@@ -99,11 +99,24 @@
 </nav>
 
 <script>
-
     $(document).ready(function() {
         $('#nav-mobile-menu').on('click', function() {
             $(this).toggleClass('open');
-            $('.nav-menu-items').toggleClass('open');
+
+            var nav_menu = $('.nav-menu-items');
+            if (nav_menu.hasClass('open')) { // Close menu action
+                nav_menu.addClass('animated slideOutUp');
+                nav_menu.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', 
+                    function(e) {
+                        nav_menu.removeClass('open animated slideOutUp');
+                    });
+            } else { // Open menu action
+                nav_menu.addClass('open animated slideInDown');
+                nav_menu.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', 
+                    function(e) {
+                        nav_menu.removeClass('animated slideInDown');
+                    });
+            }
         });
 
         $('.nav-dropdown > a').on('click', function() {

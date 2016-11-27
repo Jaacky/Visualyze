@@ -111,11 +111,9 @@
         var current = moment();
         setDate(current, "month");
 
-        var options = ds.getOptions("month", moment(current));
-        options['cy'] = $(window).height() - $('#graph-container').offset().top;
         const g = new scatterPlot("graph-container", 
             ds.getPoints("month", moment(current)), 
-            options
+            ds.getOptions("month", moment(current))
         );
 
         $('#graphs_added').chosen({
@@ -135,6 +133,10 @@
 
     <script>
         $(document).ready(function() {
+            $(window).resize(function() {
+                g.update();
+            });
+
             /*
                 On click event for changing time modes
             */
@@ -201,14 +203,6 @@
                 $('.mask').addClass('active');
                 $('#invite-friend-form').addClass('active');
             });
-
-            // $('.new-plot-btn').on('click', function() {
-            //     const type = $(this).attr('id').split('-')[1];
-            //     $('.mask').addClass('active');
-            //     $('#new-plot-form').addClass('active');
-            //     $('#new-plot-form form').attr('action', '/' + type + '/new');
-            //     $('#plot-form-title').html('New ' + type);
-            // });
 
             $('.mask, .remove-mask-overlay').on('click', function() {
                 $('.mask, .mask-overlay').removeClass('active');
