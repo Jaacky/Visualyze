@@ -96,10 +96,18 @@ scatterPlot.prototype.draw = function() {
     
     circle.exit().remove();
 
+    this.xAxis.selectAll("*").remove();
     this.xAxis
         .attr("transform", "translate(0," + this.size.height + ")")
         .call(this.xAxisFormat);
-
+    
+    if (window.matchMedia('(max-width: 992px)').matches) {
+        this.xAxis.selectAll(".tick text")
+            .attr("class", function(d, i) {
+                if (i%2 != 0) d3.select(this).remove();
+            });
+    }
+        
     this.yAxis
         .call(d3.axisLeft(this.y));
 }
