@@ -10,11 +10,12 @@ var scatterPlot = function(container, points, options) {
     var self = this;
     self.setProperties();
 
-    this.vis = d3.select(this.chart).append("svg")
+    this.svg = d3.select(this.chart).append("svg")
         .attr('id', 'plot-svg')
         .attr('class', 'scatter-plot')
         .attr('width', this.cx)
-        .attr('height', this.cy)
+        .attr('height', this.cy);
+    this.vis = this.svg
         .append('g')
         .attr('transform', 'translate(' + this.padding.left + "," + this.padding.top + ")");
 
@@ -32,10 +33,13 @@ scatterPlot.prototype.setProperties = function() {
     var self = this;
     
     this.cx = this.chart.clientWidth;
-    this.cy = self.options.cy ? self.options.cy : 450;
+    // this.cy = self.options.cy ? self.options.cy : window.innerHeight - $(self.chart).offset().top;
+    this.cy = self.options.cy ? 
+        self.options.cy : 
+        window.innerHeight - self.chart.getBoundingClientRect().top + window.pageYOffset;   
     this.padding = {
         "top": 10,
-        "bottom": 25,
+        "bottom": 35,
         "left": 25,
         "right": 10
     };
@@ -44,6 +48,12 @@ scatterPlot.prototype.setProperties = function() {
         "width": self.cx - self.padding.left - self.padding.right,
         "height": self.cy - self.padding.top - self.padding.bottom
     };
+
+    if (this.svg) {
+        this.svg
+            .attr('width', this.cx)
+            .attr('height', this.cy);
+    }
 
     this.x = d3.scaleTime()
         .domain([this.options.xmin, this.options.xmax])
@@ -88,15 +98,16 @@ scatterPlot.prototype.draw = function() {
 
     this.xAxis
         .attr("transform", "translate(0," + this.size.height + ")")
-        .call(this.xAxisFormat)
+        .call(this.xAxisFormat);
+
     this.yAxis
         .call(d3.axisLeft(this.y));
 }
 
 scatterPlot.prototype.update = function(points, options) {
     var self = this;
-    self.options = options;
-    self.points = points;
+    if (options) { self.options = options; }
+    if (points) { console.log(points); self.points = points; }
 
     self.setProperties();
     self.draw();

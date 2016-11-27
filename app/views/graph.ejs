@@ -106,16 +106,19 @@
         var current = moment();
         setDate(current, "month");
 
-        var options = ds.getOptions("month", moment(current));
-        options['cy'] = $(window).height() - $('#graph-container').offset().top;
         const g = new scatterPlot("graph-container", 
             ds.getPoints("month", moment(current)), 
-            options
+            ds.getOptions("month", moment(current))
         );
     </script>
 
     <script>
         $(document).ready(function() {
+            $(window).resize(function() {
+                console.log("resize");
+                g.update();
+            });
+
             /*
                 On click event for changing time modes
             */
