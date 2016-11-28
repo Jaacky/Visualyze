@@ -85,7 +85,7 @@
         <div id="remove-point-form" class="mask-overlay">
             <h4>Remove Point Confirmation</h4>
             <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
-            <form action="/graph/remove_point" method="post">
+            <form action="/graph/deletePoint" method="post">
                 <input type="string" id="point_id", name="point_id" value="" hidden required>
                 <input type="string" id="graph_id" name="graph_id" value="<%= graph.id %>" hidden required>
                 <div>

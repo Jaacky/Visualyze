@@ -53,9 +53,9 @@ module.exports = function(app, db, auth) {
         });
     });
 
-    router.post('/remove_point', function(req, res) {
+    router.post('/deletePoint', function(req, res) {
         console.log(req.body);
-        db.removePoint(req.body.point_id, req.body.graph_id, function(err) {
+        db.deletePoint(req.body.point_id, req.body.graph_id, function(err) {
             if (err) {
                 req.flash('message', 'Could not remove point.');
             } else {

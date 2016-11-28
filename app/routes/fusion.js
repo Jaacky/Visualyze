@@ -46,7 +46,14 @@ module.exports = function(app, db, auth) {
             req.flash('message', 'Accepted fusion invite');
             res.redirect('/dashboard');
         })
-    })
+    });
+
+    router.post('/removeGraph', function(req, res) {
+        db.removeGraphFromFusion(req.body.fusion_id, req.body.graph_id, req.user.email, function() {
+            req.flash('message', 'Removed graph ' + req.body.graph_name + ' from fusion.');
+            res.redirect('/fusion/' + req.body.fusion_id);
+        });
+    });
 
     return router;
 }

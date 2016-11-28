@@ -22,7 +22,7 @@ const addUser = function(email, password, first_name, last_name, cb) {
             console.log("Add user err", err);
             cb(-1);
         });
-}
+};
 
 /*
     Returns a user
@@ -96,7 +96,7 @@ const getUser = function(email, cb) {
             // -1 for passport to recognize that user does not exist (could extend further for more errs)
             cb(-1);
         });
-}
+};
 
 /*
     Returns all of a user's graphs and fusions
@@ -126,7 +126,7 @@ const getAllUserPlots = function(email, cb) {
         .catch(function(err) {
             console.log("getAllPlots ", err);
         });
-}
+};
 
 /*
     Returns a graph along with all its data points
@@ -155,7 +155,7 @@ const getGraph = function(email, graph_id, cb) {
         .catch(function(err) {
             console.log("TASK AND BATCH ", err);
         });
-}
+};
 
 /*
     Returns an object { fusion, [graphs] }
@@ -223,7 +223,7 @@ const getFusion = function(email, fusion_id, cb) {
         .catch(function(err) {
             console.log("INIT TX GET FUSION ", err);
         });
-}
+};
 
 /* 
     Inserting a point to a graph
@@ -241,7 +241,7 @@ const addPoint = function(graph_id, value, date, cb) {
         .catch(function(err) {
             console.log(err);
         });
-}
+};
 
 const addGraph = function(owner, name, cb) {
     var insertString = "INSERT INTO graphs(owner, name) "
@@ -255,7 +255,7 @@ const addGraph = function(owner, name, cb) {
         .catch(function(err) {
             console.log("Add graph err", err);
         });
-}
+};
 
 const addFusion = function(owner, name, cb) {
     var insertFusionString = "INSERT INTO fusions(name) "
@@ -280,7 +280,7 @@ const addFusion = function(owner, name, cb) {
         .catch(function(err) {
             console.log("Add fusion err", err);
         });
-}
+};
 
 const addGraphsToFusion = function(fusion_id, graphs, cb) {
     var insertGraphToFusionQString = "INSERT INTO fusions_to_graphs(fusion_id, graph_id) "
@@ -301,7 +301,7 @@ const addGraphsToFusion = function(fusion_id, graphs, cb) {
         .catch(function(err) {
             console.log("Batch insert graphs to fusion err", err);
         });
-}
+};
 
 const addFusionRequests = function(fusion_id, user, invitees, cb) {
     var insertFusionInviteRequestQString = "INSERT INTO fusion_invites(requester, requested, fusion_id) "
@@ -324,7 +324,7 @@ const addFusionRequests = function(fusion_id, user, invitees, cb) {
             console.log("batch insert into fusion_invites err", err);
             cb(-1);
         });
-}
+};
 
 const acceptFusionRequest = function(fusion_id, owner, cb) {
     var insertOwnerToFusionQString = "INSERT INTO fusions_to_owners(fusion_id, owner) "
@@ -363,7 +363,7 @@ const acceptFusionRequest = function(fusion_id, owner, cb) {
     //         console.log("Batch add friend to fusion err", err);
     //         cb(-1);
     //     })
-}
+};
 
 const deleteGraph = function(graph_id, owner, cb) {
     var deleteString = "DELETE FROM graphs "
@@ -379,9 +379,9 @@ const deleteGraph = function(graph_id, owner, cb) {
             console.log("delete graph err", err);
             cb(-1);
         });
-}
+};
 
-const removePoint = function(point_id, graph_id, cb) {
+const deletePoint = function(point_id, graph_id, cb) {
     var deleteString = "DELETE FROM data_points "
                     + "WHERE id=$1 AND graph=$2";
     
@@ -394,7 +394,25 @@ const removePoint = function(point_id, graph_id, cb) {
             console.log("remove pt err", err);
             cb(-1);
         });
-}
+};
+
+/*
+    TODO: need to check that owner is actual owner of graph
+*/
+const removeGraphFromFusion = function(fusion_id, graph_id, owner, cb) {
+    var deleteString = "DELETE FROM fusions_to_graphs "
+                    + "WHERE fusion_id=$1 AND graph_id=$2";
+    
+    var removeGraphFromFusion = new pgp.ParameterizedQuery(deleteString);
+    db.none(removeGraphFromFusion, [fusion_id, graph_id])
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log('remove graph from fusion err', err);
+            cb(-1);
+        });
+};
 
 const graphsBeginWith = function(begin, cb) {
     var searchString = "SELECT * FROM graphs "
@@ -410,7 +428,7 @@ const graphsBeginWith = function(begin, cb) {
         .catch(function(err) {
             console.log("graphsBeginWith err", err);
         });
-} 
+};
 
 const addFriendRequest = function(requester, requested, cb) {
     var insertString = "INSERT INTO friendship_requests(requester, requested) "
@@ -424,7 +442,7 @@ const addFriendRequest = function(requester, requested, cb) {
         .catch(function(err) {
             console.log("insert friend request err", err);
         });
-}
+};
 
 const acceptFriendRequest = function(user, requester, cb) {
     var insertFriendShipString = "INSERT INTO friendships(user_a, user_b) "
@@ -447,7 +465,7 @@ const acceptFriendRequest = function(user, requester, cb) {
         .catch(function(err) {
             console.log("acceptFriendRequest err", err);
         });
-}
+};
 
 module.exports = {
     addUser,
@@ -462,7 +480,8 @@ module.exports = {
     addFusionRequests,
     acceptFusionRequest,
     deleteGraph,
-    removePoint,
+    deletePoint,
+    removeGraphFromFusion,
     graphsBeginWith,
     addFriendRequest,
     acceptFriendRequest,
@@ -502,7 +521,7 @@ const createFusionGraphsQ = function(ctx, values) {
             console.log("createFusionGraphQ err ", err);
         });
     });
-}
+};
 
 /*
     Query strings for later use

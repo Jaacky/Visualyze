@@ -85,6 +85,47 @@
         margin-top: 10px;
     }
 
+    .description-action {
+        font-size: 0;
+    }
+
+    .description, .action {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 1rem;
+    }
+
+    .description span {
+        font-weight: 700;
+    }
+
+    .action {
+        font-size: 1.5rem;
+        border: 1px solid black;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    .action > button {
+        padding: 8px;
+        width: 100%;
+        border-radius: 3px;
+        border: 1px solid transparent;
+        background-color: white;
+    }
+
+    .action button:hover {
+        border-color: black;
+    }
+
+    .action button .glyphicon {
+        top: 0;
+    }
+
+    .action button > * {
+        vertical-align: middle;
+    }
+
     /* NAV */
     nav {
         position: fixed;
@@ -103,15 +144,8 @@
     }
 
     .nav-container {
-        /*position: relative;
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-        -moz-transform: translateY(-50%);
-        -o-transform: translateY(-50%);
-        transform: translateY(-50%);*/
         height: 100%;
         padding: 0px 45px;
-        /*background-color: black;*/
     }
 
     nav.active .nav-container {
@@ -135,7 +169,6 @@
         display: inline-block;
         vertical-align: middle;
         text-align: right;
-        /*position: relative;*/
     }
 
     /* Icon 3 from https://codepen.io/designcouch/pen/Atyop */
@@ -406,13 +439,10 @@
 
     .request-form {
         text-align: left;
-        font-size: 0;
     }
 
     .request-form .description, .request-form .action {
-        display: inline-block;
         font-size: 1.5rem;
-        vertical-align: middle;
     }
 
     .request-form .description { 
@@ -420,21 +450,10 @@
         color: white;
     }
 
-    .request-form .description span {
-        font-weight: 700;
-    }
-
     .request-form .action {
         width: 25%;
-        padding: 5px;
-        background-color: white;
-        border: 1px solid black;
-        border-radius: 4px;
     }
 
-    .request-form .action:hover {
-        border: 2px soldi black;
-    }
     /* END REQUESTS */
 
     /* BUTTONS */
@@ -580,38 +599,31 @@
 
     .plot-header .action {
         margin-right: 5px;
-    }
-
-    .action {
-        font-size: 1.5rem;
-        border: 1px solid black;
-        border-radius: 4px;
-        display: inline-block;
-    }
-
-    .action button {
-        padding: 8px;
-        border-radius: 3px;
-        border: 1px solid transparent;
-        background-color: white;
-    }
-
-    .action button:hover {
-        border-color: black;
-    }
-
-    .action button .glyphicon {
-        top: 0;
-    }
-
-    .action button > * {
-        vertical-align: middle;
+        margin-bottom: 5px;
     }
 
     circle.selected {
         stroke: black;
         stroke-width: 2;
         stroke-opacity: 1;
+    }
+
+    .included-graphs form {
+        padding: 8px;
+        border-top: 1px solid black;
+    }
+
+    .included-graphs form:first-of-type {
+        border-top: none;
+    }
+
+    .included-graphs .description {
+        width: 75%;
+        font-size: 1.5rem; 
+    }
+
+    .included-graphs .action {
+        width: 25%;
     }
     /* END GRAPH STYLES */
 

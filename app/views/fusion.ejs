@@ -10,6 +10,7 @@
         var userGraphs = <%- JSON.stringify(userGraphs) %>;
         var user = <%- JSON.stringify(user) %>;
         console.log(user);
+        console.log(fusion);
         <% var includedGraphs = fusion.graphs.map(function(g) { return g.id; }); %>
         var ds = new FusionDataset(fusion);
     </script>
@@ -57,10 +58,17 @@
                             None
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row included-graphs">
                         <h4>Graphs:</h4>
                         <% for (var i=0; i<fusion.graphs.length; i++) { %>
-                            <div class="col-sm-12"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
+                            <form action="/fusion/removeGraph" method="post" class="description-action">
+                                <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
+                                <% if (fusion.graphs[i].owner == user.email) { %>
+                                    <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
+                                    <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
+                                    <div class="action"><button>Remove</button></div>
+                                <% } %>
+                            </form>
                         <% } %>
                     </div>
                 </div>
@@ -121,6 +129,7 @@
                 placeholder_text_multiple: 'Select your graphs',
                 search_contains: true,
         });
+
         $('#invitees').chosen({
             width: '100%',
             placeholder_text_multiple: 'Select friends to invite',
