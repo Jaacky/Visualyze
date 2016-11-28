@@ -36,7 +36,15 @@ scatterPlot.prototype.setProperties = function() {
     // this.cy = self.options.cy ? self.options.cy : window.innerHeight - $(self.chart).offset().top;
     this.cy = self.options.cy ? 
         self.options.cy : 
-        window.innerHeight - self.chart.getBoundingClientRect().top + window.pageYOffset;   
+        // window.innerHeight - self.chart.getBoundingClientRect().top + window.pageYOffset;
+        window.innerHeight - self.chart.getBoundingClientRect().top + document.body.getBoundingClientRect().top;
+    /*
+        window.innerHeight gets the total height of the window
+        self.chart.getBoundingClientRect().top gets the position of the top of the chart
+        document.body.getBoundingClientRect().top gets the position away from the top
+        So then this.cy will be whatever vertical space is left between the top of the graph and the bottom of the window
+        AT THE FIRST LOAD
+    */
     this.padding = {
         "top": 10,
         "bottom": 35,
@@ -115,7 +123,7 @@ scatterPlot.prototype.draw = function() {
 scatterPlot.prototype.update = function(points, options) {
     var self = this;
     if (options) { self.options = options; }
-    if (points) { console.log(points); self.points = points; }
+    if (points) { self.points = points; }
 
     self.setProperties();
     self.draw();
