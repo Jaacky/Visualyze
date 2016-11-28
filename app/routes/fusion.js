@@ -14,7 +14,8 @@ module.exports = function(app, db, auth) {
                     title_addon: "Fusion",
                     user: req.user, 
                     fusion: plots.fusion, 
-                    userGraphs: plots.userGraphs 
+                    userGraphs: plots.userGraphs,
+                    message: req.flash('message'), 
                 }
             );
         });
@@ -49,9 +50,14 @@ module.exports = function(app, db, auth) {
     });
 
     router.post('/removeGraph', function(req, res) {
-        db.removeGraphFromFusion(req.body.fusion_id, req.body.graph_id, req.user.email, function() {
-            req.flash('message', 'Removed graph ' + req.body.graph_name + ' from fusion.');
-            res.redirect('/fusion/' + req.body.fusion_id);
+        db.removeGraphFromFusion(req.body.fusion_id, req.body.graph_id, req.user.email, function(err) {
+            if (err) {
+                req.flash('message', 'Could not remove graph');
+                res.redirect('/fusion/' + req.body.fusion_id);
+            } else {
+                req.flash('message', 'Removed graph ' + req.body.graph_name + ' from fusion.');
+                res.redirect('/fusion/' + req.body.fusion_id);
+            }
         });
     });
 

@@ -608,21 +608,21 @@
         stroke-opacity: 1;
     }
 
-    .included-graphs form {
+    .included-graph {
         padding: 8px;
         border-top: 1px solid black;
     }
 
-    .included-graphs form:first-of-type {
+    .included-graph:first-of-type {
         border-top: none;
     }
 
-    .included-graphs .description {
+    .included-graph .description {
         width: 75%;
         font-size: 1.5rem; 
     }
 
-    .included-graphs .action {
+    .included-graph .action {
         width: 25%;
     }
     /* END GRAPH STYLES */

@@ -396,17 +396,20 @@ const deletePoint = function(point_id, graph_id, cb) {
         });
 };
 
-/*
-    TODO: need to check that owner is actual owner of graph
-*/
 const removeGraphFromFusion = function(fusion_id, graph_id, owner, cb) {
     var deleteString = "DELETE FROM fusions_to_graphs "
-                    + "WHERE fusion_id=$1 AND graph_id=$2";
+                    + "WHERE fusion_id=$1 AND graph_id=$2 "
+                    + "AND graph_id in "
+                        + "(SELECT id FROM graphs WHERE owner=$3)";
     
     var removeGraphFromFusion = new pgp.ParameterizedQuery(deleteString);
-    db.none(removeGraphFromFusion, [fusion_id, graph_id])
-        .then(function() {
-            cb();
+    db.result(removeGraphFromFusion, [fusion_id, graph_id, owner])
+        .then(function(result) {
+            if (result.rowCount == 0) {
+                cb(-1)
+            } else {
+                cb();
+            }
         })
         .catch(function(err) {
             console.log('remove graph from fusion err', err);

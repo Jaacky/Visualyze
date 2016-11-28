@@ -38,6 +38,9 @@
                             </button>
                         </div>
                     </div>
+                    <% if (message) { %>
+                        <h4><%= message %></h4>
+                    <% } %> 
                 </div>
 
                 <div id="graph-time-options" class="col-md-12 options-group">
@@ -61,14 +64,19 @@
                     <div class="row included-graphs">
                         <h4>Graphs:</h4>
                         <% for (var i=0; i<fusion.graphs.length; i++) { %>
-                            <form action="/fusion/removeGraph" method="post" class="description-action">
-                                <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
+                            <div class="included-graph">    
                                 <% if (fusion.graphs[i].owner == user.email) { %>
-                                    <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
-                                    <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
-                                    <div class="action"><button>Remove</button></div>
+                                    <form action="/fusion/removeGraph" method="post" class="description-action">
+                                        <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
+                                        <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
+                                        <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
+                                        <input type="text" name="graph_name" value="<%= fusion.graphs[i].name %>" required hidden>
+                                        <div class="action"><button>Remove</button></div>
+                                    </form>
+                                <% } else { %>
+                                    <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
                                 <% } %>
-                            </form>
+                            </div>
                         <% } %>
                     </div>
                 </div>
