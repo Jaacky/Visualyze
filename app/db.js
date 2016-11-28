@@ -428,23 +428,42 @@ const leaveFusion = function(fusion_id, user, cb) {
 
     var deleteFusionToOwnerString = "DELETE FROM fusions_to_owners "
                                 + "WHERE fusion_id=$1 and owner=$2";
-    
+
+    var getCountOwnersInFusionString = "SELECT COUNT(*) FROM fusions_to_owners "
+                                + "WHERE fusion_id=$1";
+    var deleteFusionString = "DELETE FROM fusions WHERE id=$1";
+
     var deleteFusionToGraphs = new pgp.ParameterizedQuery(deleteFusionToGraphsString);
     var deleteFusionToOwner = new pgp.ParameterizedQuery(deleteFusionToOwnerString);
-
+    var getCountOwnersInFusion = new pgp.ParameterizedQuery(getCountOwnersInFusionString);
+    var deleteFusion = new pgp.ParameterizedQuery(deleteFusionString);
     db.task(function(t) {
         return t.batch([
             t.none(deleteFusionToGraphs, [fusion_id, user]),
             t.result(deleteFusionToOwner, [fusion_id, user])
         ]);
     })
-        .then(function(results) {
-            if (results[1].rowCount == 0) {
+        .then(function(owner_deleted) {
+            if (owner_deleted[1].rowCount == 0) {
                 console.log("Deleting fusion to owner reports 0 deleted");
                 cb(-1);
             }
-            console.log("Leaving fusion results", results);
-            cb(0, results);
+
+            // Check if fusion has any more owners
+            db.one(getCountOwnersInFusion, [fusion_id])
+                .then(function(result) {
+                    if (result.count == 0) { // If no more owners, remove fusion   
+                        db.none(deleteFusion, [fusion_id])
+                            .then(function() {
+                                cb();
+                            })
+                            .catch(function(err) {
+                                cb(-1);
+                            });
+                    } else {
+                        cb();
+                    }
+                })
         })
         .catch(function(err) {
             console.log("Leaving fusion err", err);
