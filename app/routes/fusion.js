@@ -61,5 +61,12 @@ module.exports = function(app, db, auth) {
         });
     });
 
+    router.post('/leave', function(req, res) {
+        db.leaveFusion(req.body.fusion_id, req.user.email, function(err, results) {
+            req.flash('message', 'Left ' + req.body.fusion_name);
+            res.redirect('/dashboard');
+        });
+    });
+
     return router;
 }

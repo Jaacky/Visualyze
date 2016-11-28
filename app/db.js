@@ -172,7 +172,7 @@ const getFusion = function(email, fusion_id, cb) {
             + "WHERE id IN "
                 + "(SELECT graph_id "
                 + "FROM fusions_to_graphs as ftg INNER JOIN graphs as g "
-                + "ON ftg.fusion_id = g.id "
+                + "ON ftg.graph_id = g.id "
                 + "WHERE ftg.fusion_id = $1)";
     var getUserGraphsQString = "SELECT * FROM graphs "
                 + "WHERE owner = $1";
@@ -194,6 +194,7 @@ const getFusion = function(email, fusion_id, cb) {
                     // After getting all the graph that belong in the fusion, query for all the graph details and their data points
                     return t.tx(function(t1) {
                         queries = [];
+                        console.log("before for loop: graphs.len:", graphs.length)
                         for (var i=0; i<graphs.length; i++) {
                             /*
                                 Creating the queries for each graph to get their data points
@@ -218,6 +219,7 @@ const getFusion = function(email, fusion_id, cb) {
             var fusion = result[0];
             fusion.graphs = result[1];
             var userGraphs = result[2];
+            console.log("FUSIONNNN GRAPHS", fusion.graphs);
             cb({ fusion, userGraphs });
         })
         .catch(function(err) {
@@ -399,7 +401,7 @@ const deletePoint = function(point_id, graph_id, cb) {
 const removeGraphFromFusion = function(fusion_id, graph_id, owner, cb) {
     var deleteString = "DELETE FROM fusions_to_graphs "
                     + "WHERE fusion_id=$1 AND graph_id=$2 "
-                    + "AND graph_id in "
+                    + "AND graph_id IN "
                         + "(SELECT id FROM graphs WHERE owner=$3)";
     
     var removeGraphFromFusion = new pgp.ParameterizedQuery(deleteString);
@@ -413,6 +415,39 @@ const removeGraphFromFusion = function(fusion_id, graph_id, owner, cb) {
         })
         .catch(function(err) {
             console.log('remove graph from fusion err', err);
+            cb(-1);
+        });
+};
+
+const leaveFusion = function(fusion_id, user, cb) {
+    var deleteFusionToGraphsString = "DELETE FROM fusions_to_graphs "
+                                + "WHERE fusion_id=$1 AND graph_id IN "
+                                    + "(SELECT id FROM graphs WHERE id IN" 
+                                        + "(SELECT graph_id FROM fusions_to_graphs WHERE fusion_id=$1)"
+                                    + "AND owner=$2)";
+
+    var deleteFusionToOwnerString = "DELETE FROM fusions_to_owners "
+                                + "WHERE fusion_id=$1 and owner=$2";
+    
+    var deleteFusionToGraphs = new pgp.ParameterizedQuery(deleteFusionToGraphsString);
+    var deleteFusionToOwner = new pgp.ParameterizedQuery(deleteFusionToOwnerString);
+
+    db.task(function(t) {
+        return t.batch([
+            t.none(deleteFusionToGraphs, [fusion_id, user]),
+            t.result(deleteFusionToOwner, [fusion_id, user])
+        ]);
+    })
+        .then(function(results) {
+            if (results[1].rowCount == 0) {
+                console.log("Deleting fusion to owner reports 0 deleted");
+                cb(-1);
+            }
+            console.log("Leaving fusion results", results);
+            cb(0, results);
+        })
+        .catch(function(err) {
+            console.log("Leaving fusion err", err);
             cb(-1);
         });
 };
@@ -484,6 +519,7 @@ module.exports = {
     acceptFusionRequest,
     deleteGraph,
     deletePoint,
+    leaveFusion,
     removeGraphFromFusion,
     graphsBeginWith,
     addFriendRequest,

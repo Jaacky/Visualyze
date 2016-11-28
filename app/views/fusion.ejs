@@ -33,8 +33,8 @@
                             </button>
                         </div>
                         <div class="action">
-                            <button id="delete-graph">
-                                <span class="glyphicon glyphicon-remove"></span><span> Delete</span>
+                            <button id="leave-fusion">
+                                <span class="glyphicon glyphicon-remove"></span><span> Leave</span>
                             </button>
                         </div>
                     </div>
@@ -119,6 +119,21 @@
                 </div>
                 <input name="fusion_id" type="text" value="<%= fusion.id %>" hidden required>
                 <button class="btn btn-default" type="submit">Add</button>
+            </form>
+        </div>
+
+        <div id="leave-fusion-form" class="mask-overlay">
+            <h4 class="form-title">Leave Fusion</h4>
+            <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+            <form action="/fusion/leave" method="post">
+                <div>
+                    All the graphs you have added to the fusion will also be removed* from the fusion.
+                    <br>
+                    *your graphs are not deleted 
+                </div>
+                <input name="fusion_id" type="text" value="<%= fusion.id %>" hidden required>
+                <input name="fusion_name" type="text" value="<%= fusion.name %>" hidden required>
+                <button class="btn btn-default" type="submit">Leave</button>
             </form>
         </div>
     </body>
@@ -219,6 +234,11 @@
             $('#invite-fusion').on('click', function() {
                 $('.mask').addClass('active');
                 $('#invite-friend-form').addClass('active');
+            });
+
+            $('#leave-fusion').on('click', function() {
+                $('.mask').addClass('active');
+                $('#leave-fusion-form').addClass('active');
             });
 
             $('.mask, .remove-mask-overlay').on('click', function() {
