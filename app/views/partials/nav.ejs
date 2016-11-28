@@ -104,6 +104,7 @@
                 nav_menu.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', 
                     function(e) {
                         nav_menu.removeClass('open animated slideOutUp');
+                        $('.nav-dropdown, .dropdown').removeClass('active'); // Close any subnav dropdowns open
                     });
             } else { // Open menu action
                 $(this).addClass('open');

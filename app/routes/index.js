@@ -3,11 +3,15 @@ var router = express.Router();
 
 module.exports = function(app, db, passport, auth) {
     router.get('/', function(req, res) {
-        res.render('index', { landing: true });
+        res.render('index', { landing: true, user: req.user });
     });
 
     router.get('/login', function(req, res) {
-        res.render('login', { message: req.flash('message'), error: req.flash('error') });
+        if (req.user) {
+            res.redirect('/dashboard');
+        } else {
+            res.render('login', { message: req.flash('message'), error: req.flash('error') });
+        }
     });
 
     router.post('/login',
@@ -25,20 +29,27 @@ module.exports = function(app, db, passport, auth) {
     });
 
     router.get('/signup', function(req, res) {
-        res.render('signup', { message: req.flash('error') });
+        if (req.user) {
+            res.redirect('/dashboard');
+        } else {
+            res.render('signup', { message: req.flash('error') });
+        }
     });
 
     router.post('/signup', function(req, res) {
-        console.log(req.body);
-        db.addUser(req.body.email, req.body.password, req.body.first_name, req.body.last_name, function(err) {
-            if (err) {
-                req.flash('message', 'Account creation failed');
+        if (req.user) {
+            res.redirect('/dashboard');
+        } else {
+            db.addUser(req.body.email, req.body.password, req.body.first_name, req.body.last_name, function(err) {
+                if (err) {
+                    req.flash('message', 'Account creation failed');
+                    res.redirect('/login');
+                    return;
+                }
+                req.flash('message', 'Account created.');
                 res.redirect('/login');
-                return;
-            }
-            req.flash('message', 'Account created.');
-            res.redirect('/login');
-        });
+            });
+        }   
     });
 
     /* Needs auth to access route */
@@ -74,10 +85,6 @@ module.exports = function(app, db, passport, auth) {
             req.flash('message', 'Sent friend request to ' + req.body.requested);
             res.redirect('/dashboard');
         });
-    });
-
-    router.post('/friends/add', function(req, res) {
-        res.json("hello");
     });
 
     router.post('/friends/accept', auth, function(req, res) {
