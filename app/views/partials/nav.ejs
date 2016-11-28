@@ -117,11 +117,33 @@
 
         $('.nav-dropdown > a').on('click', function() {
             var self = $(this);
-            self.parent().toggleClass('active');
-            self.siblings('.dropdown').toggleClass('active');
+            var parent = self.parent();
+            var dropdown = self.siblings('.dropdown');
+            
+            parent.toggleClass('active');
+            dropdown.toggleClass('active');
+            $('.nav-dropdown').not(parent).removeClass('active');
+            $('.dropdown').not(dropdown).removeClass('active');
 
-            $('.nav-dropdown').not(self.parent()).removeClass('active');
-            $('.dropdown').not(self.siblings('.dropdown')).removeClass('active');
+            /* Animation to sub drop downs, decided not needed for now
+            if (parent.hasClass('active')) { // Close dropdown
+                dropdown.addClass('myAnimated mySlideOutUp');
+                dropdown.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', 
+                    function(e) {
+                        dropdown.removeClass('active myAnimated mySlideOutUp');
+                        parent.removeClass('active');
+                    });
+            } else { // Open dropdown
+                $('.nav-dropdown').not(parent).removeClass('active');
+                $('.dropdown').not(dropdown).removeClass('active');
+                parent.addClass('active');
+                dropdown.addClass('active myAnimated mySlideInDown');
+                dropdown.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', 
+                    function(e) {
+                        dropdown.removeClass('myAnimated mySlideInDown');
+                    });
+            }
+            */
         });
     });
 

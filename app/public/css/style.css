@@ -277,7 +277,7 @@
         background-color:rgba(50, 50, 50, 0.95);
         border-radius: 2px;
         text-align: center;
-        overflow-y: scroll;
+        overflow-y: auto;
         background-clip: content-box;
         -webkit-animation-duration: 0.5s;
         -moz-animation-duration: 0.5s;
@@ -389,6 +389,13 @@
         transform: translateX(-50%) translateY(-100%);
     }
     /* END LANDING */
+
+    /* LOGIN AND SIGN UP */
+    .signup-link a {
+        color: black;
+        text-decoration: underline;
+    }
+    /* END LOGIN AND SIGN UP*?
 
     /* DASHBOARD */
     .dashboard-title-container > * {
@@ -646,4 +653,42 @@
 /* Large Devices, Wide Screens */
 @media only screen and (min-width : 1200px) {
 
+}
+
+.myAnimated {
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@-webkit-keyframes mySlideInDown {
+  from {
+    -webkit-transform: translate3d(0, -25%, 0);
+    transform: translate3d(0, -25%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes mySlideInDown {
+  from {
+    -webkit-transform: translate3d(0, -25%, 0);
+    transform: translate3d(0, -25%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.mySlideInDown {
+  -webkit-animation-name: mySlideInDown;
+  animation-name: mySlideInDown;
 }
