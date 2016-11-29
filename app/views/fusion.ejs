@@ -18,7 +18,7 @@
         <%- include('partials/nav.ejs') %>
         <div class="mask"></div>
         <div class="container container-fluid main">
-            <div class="row">
+            <div class="row"> <!-- PLOT HEADER ROW -->
                 <div class="col-md-12 plot-header">
                     <div class="name"><%= fusion.name %></div>
                     <div class="buttons">
@@ -42,7 +42,8 @@
                         <h4><%= message %></h4>
                     <% } %> 
                 </div>
-
+            </div> <!-- END PLOT HEADER ROW -->
+            <div class="row"> <!-- GRAPH CONTAINER ROW -->
                 <div id="graph-time-options" class="col-md-12 options-group">
                     <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
                 </div>
@@ -54,7 +55,7 @@
                 <div class="col-sm-offset-1 col-sm-8">
                     <div id="graph-container"></div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <div class="row">
                         <h4>Selected point:</h4>
                         <div id="tooltip" class="col-sm-12">
@@ -80,7 +81,7 @@
                         <% } %>
                     </div>
                 </div>
-            </div>
+            </div> <!-- END GRAPH CONTAINER ROW -->
         </div> <!-- end container-fluid -->
 
 

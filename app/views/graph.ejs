@@ -14,7 +14,7 @@
         
         <div class="container container-fluid main">
             <div class="mask"></div>
-            <div class="row">
+            <div class="row"> <!-- PLOT HEADER ROW -->
                 <div class="col-md-12 plot-header">
                     <div class="name">
                         <%= graph.name %>
@@ -37,6 +37,8 @@
                         <h4><%= message %></h4>
                     <% } %> 
                 </div>
+            </div> <!-- END PLOT HEADER ROW -->
+            <div class="row"> <!-- GRAPH CONTAINER ROW -->
                 <div id="graph-time-options" class="col-md-12 options-group">
                     <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
                 </div>
@@ -56,7 +58,7 @@
                         <div id="remove-point" class="col-sm-2"></div>
                     </div>
                 </div>
-            </div>
+            </div> <!-- END GRAPH CONTAINER ROW -->
         </div> <!-- end container-fluid -->
         <div id="add-point-form" class="mask-overlay">
             <h4>Add points</h4>

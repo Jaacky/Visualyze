@@ -75,6 +75,9 @@ scatterPlot.prototype.setProperties = function() {
         .ticks(this.options.numTimeTicks)
         .tickFormat(this.options.timeFormat)
         .tickSizeOuter(0);
+
+    this.yAxisFormat = d3.axisLeft(this.y)
+        .tickSizeOuter(0);
 }
 
 scatterPlot.prototype.draw = function() {
@@ -117,7 +120,7 @@ scatterPlot.prototype.draw = function() {
     }
         
     this.yAxis
-        .call(d3.axisLeft(this.y));
+        .call(this.yAxisFormat);
 }
 
 scatterPlot.prototype.update = function(points, options) {
