@@ -289,12 +289,11 @@ const addGraphsToFusion = function(fusion_id, graphs, cb) {
                                 + "VALUES($1, $2)";
     var insertGraphToFusion = new pgp.ParameterizedQuery(insertGraphToFusionQString);
 
-    var queries = [];
-    for (var i=0; i<graphs.length; i++) {
-        queries.push(db.none(insertGraphToFusion, [fusion_id, graphs[i]]));
-    }
-
     db.tx(function(t) {
+        var queries = [];
+        for (var i=0; i<graphs.length; i++) {
+            queries.push(t.none(insertGraphToFusion, [fusion_id, graphs[i]]));
+        }
         return t.batch(queries);
     })
         .then(function() {
