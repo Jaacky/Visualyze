@@ -55,7 +55,7 @@ module.exports = function(app, db, auth) {
                 req.flash('message', 'Could not remove graph');
                 res.redirect('/fusion/' + req.body.fusion_id);
             } else {
-                req.flash('message', 'Removed graph ' + req.body.graph_name + ' from fusion.');
+                req.flash('message', 'Removed graph ' + req.body.graph_name + '.');
                 res.redirect('/fusion/' + req.body.fusion_id);
             }
         });

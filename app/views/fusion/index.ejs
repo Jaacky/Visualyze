@@ -24,12 +24,12 @@
                     <div class="buttons">
                         <div class="action">
                             <button id="add-fusion-graph">
-                                <span class="glyphicon glyphicon-plus"></span><span> Graph</span>
+                                <span class="glyphicon glyphicon-plus"></span><span class="glyph-text"> Graph</span><span class="glyphicon glyphicon-stats glyph-text-replacement">
                             </button>
                         </div>
                         <div class="action">
                             <button id="invite-fusion">
-                                <span class="glyphicon glyphicon-user"></span><span> Invite friend</span>
+                                <span class="glyphicon glyphicon-plus"></span><span class="glyph-text"> Invite friend</span><span class="glyphicon glyphicon-user glyph-text-replacement"></span>
                             </button>
                         </div>
                         <div class="action">
@@ -52,10 +52,10 @@
                     <h3 id="date">Sunday duh</h3>
                     <button id="forward" class="btn btn-default">&gt;</button>
                 </div>
-                <div class="col-sm-offset-1 col-sm-8">
+                <div class="col-md-9">
                     <div id="graph-container"></div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-md-3">
                     <div class="row">
                         <h4>Selected point:</h4>
                         <div id="tooltip" class="col-sm-12">
@@ -66,16 +66,17 @@
                         <h4 id="included-graphs-title">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
                         <div class="included-graphs">
                             <% for (var i=0; i<fusion.graphs.length; i++) { %>
-                                <div class="included-graph">    
+                                <div class="included-graph description-action">    
                                     <% if (fusion.graphs[i].owner == user.email) { %>
                                         <form action="/fusion/removeGraph" method="post" class="description-action">
+                                            <div class="action"><button><span class="glyphicon glyphicon-remove"></span></button></div>
                                             <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
                                             <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
                                             <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
                                             <input type="text" name="graph_name" value="<%= fusion.graphs[i].name %>" required hidden>
-                                            <div class="action"><button><span class="glyphicon glyphicon-remove"></span></button></div>
                                         </form>
                                     <% } else { %>
+                                        <div class="action empty"></div>
                                         <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
                                     <% } %>
                                 </div>

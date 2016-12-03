@@ -535,12 +535,12 @@
 
     .date #backward {
         margin-top: 10px;
-        margin-right: 15px;
+        margin-right: 5px;
     }
 
     .date #forward {
         margin-top: 10px;
-        margin-left: 15px;
+        margin-left: 5px;
     }
 
     .input-btn-group {
@@ -583,6 +583,10 @@
         color: white;
         width: 30%;
     }
+
+    .glyph-text {
+        display: none;
+    }
     /* END BUTTONS */
 
     /* GRAPH STYLES */
@@ -615,7 +619,7 @@
     }
 
     #included-graphs-title {
-        border-bottom: 1px solid black;
+        margin-bottom: 0;
         padding-bottom: 5px;
     }
 
@@ -633,6 +637,10 @@
 
     .included-graphs {
         display: none;
+        border: 1px solid black;
+        box-shadow: inset 1px 1px 1px black;
+        max-height: 200px;
+        overflow: auto;
     }
 
     .included-graphs.active {
@@ -642,15 +650,26 @@
     .included-graph {
         padding: 6px 15px;
         border-top: 1px solid black;
+        /*height: 35px;*/
+        max-height:35px;
     }
 
     .included-graph:first-of-type {
         border-top: none;
     }
 
+    .included-graph .description-action {
+        height: 100%;
+    }
+
     .included-graph .description {
         width: 85%;
+        height: 100%;
         font-size: 1.5rem; 
+        padding-left: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .included-graph .action {
@@ -659,6 +678,10 @@
 
     .included-graph .action > button {
         padding: 0;
+    }
+
+    .included-graph .action.empty {
+        border: none;
     }
     /* END GRAPH STYLES */
 
@@ -790,6 +813,14 @@
 
     .request-form .description {
         color: black;
+    }
+
+    .date #backward {
+        margin-right: 15px;
+    }
+
+    .date #forward {
+        margin-left: 15px;
     }
 }
 
