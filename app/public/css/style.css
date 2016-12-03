@@ -3,7 +3,6 @@
     body {
         font-family: 'PT Sans';
         font-size: 16px;
-        background-color:rgba(200, 200, 200, 1);
     }
 
     ul {
@@ -171,7 +170,6 @@
         vertical-align: middle;
         text-align: right;
     }
-
     /* Icon 3 from https://codepen.io/designcouch/pen/Atyop */
 
     #nav-mobile-menu {
@@ -298,6 +296,10 @@
 
     .nav-menu-items.open {
         display: inline-block;
+    }
+
+    .nav-menu-items .hover-line {
+        display: none;
     }
 
     .nav-divider {
@@ -625,28 +627,30 @@
         padding-bottom: 5px;
     }
 
-    #included-graphs-title .glyphicon-chevron-down, #included-graphs-title .glyphicon-chevron-up {
+    .expandable-title .glyphicon-chevron-down, .expandable-title .glyphicon-chevron-up {
         font-size: 1.5rem;
     }
 
-    #included-graphs-title .glyphicon-chevron-down, #included-graphs-title.active .glyphicon-chevron-up {
+    .expandable-title .glyphicon-chevron-down, .expandable-title.active .glyphicon-chevron-up {
         display: none;
     }
 
-    #included-graphs-title.active .glyphicon-chevron-down {
+    .expandable-title.active .glyphicon-chevron-down {
         display: inline-block;
+    }
+    .expandable {
+        display: none;
+    }
+
+    .expandable.active {
+        display: block;
     }
 
     .included-graphs {
-        display: none;
         border: 1px solid black;
         box-shadow: inset 1px 1px 1px black;
         max-height: 200px;
         overflow: auto;
-    }
-
-    .included-graphs.active {
-        display: block;
     }
 
     .included-graph {
@@ -699,6 +703,10 @@
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width : 992px) {
+    body {
+        background-color:rgba(200, 200, 200, 1);
+    }
+    
     .nav-header {
         width: 25%;
     }
@@ -755,6 +763,20 @@
         position: relative;
         top: 50%;
         transform: translateY(-50%);
+    }
+
+    .nav-menu-items > li:hover .hover-line, .nav-dropdown.active .hover-line {
+        display: block;
+        position: absolute;
+        background-color: white;
+        height: 8px;
+        width: 100%;
+        bottom: 0;
+        border-bottom: 2px solid black;
+    }
+
+    .nav-dropdown.active > a {
+        background-color: inherit;
     }
 
     .dropdown {

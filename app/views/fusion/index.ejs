@@ -20,7 +20,7 @@
         <div class="container container-fluid main">
             <div class="row"> <!-- PLOT HEADER ROW -->
                 <div class="col-md-12 plot-header">
-                    <div class="name"><%= fusion.name %> BOOM</div>
+                    <div class="name"><%= fusion.name %></div>
                     <div class="buttons">
                         <div class="action">
                             <button id="add-fusion-graph">
@@ -57,14 +57,14 @@
                 </div>
                 <div class="col-md-3">
                     <div class="row">
-                        <h4>Selected point:</h4>
-                        <div id="tooltip" class="col-sm-12">
+                        <h4 id="tooltip-title" class="expandable-title" data-expand-for="#tooltip">Selected point: <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
+                        <div id="tooltip" class="expandable" data-expand-by="tooltip-title" class="col-sm-12">
                             None
                         </div>
                     </div>
                     <div class="row">
-                        <h4 id="included-graphs-title">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
-                        <div class="included-graphs">
+                        <h4 id="included-graphs-title" class="expandable-title" data-expand-for=".included-graphs">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
+                        <div class="included-graphs expandable">
                             <% for (var i=0; i<fusion.graphs.length; i++) { %>
                                 <div class="included-graph description-action">    
                                     <% if (fusion.graphs[i].owner == user.email) { %>
@@ -122,9 +122,9 @@
 
             // $('.plot-row').matchHeight({ target: $('#graph-container') });
 
-            $('#included-graphs-title').on('click', function() {
+            $('.expandable-title').on('click', function() {
                 $(this).toggleClass('active');
-                $('.included-graphs').toggleClass('active');
+                $($(this).data('expandFor')).toggleClass('active');
             });
 
             /*

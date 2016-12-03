@@ -20,6 +20,7 @@ var scatterPlot = function(container, points, options) {
         .attr('transform', 'translate(' + this.padding.left + "," + this.padding.top + ")");
 
     this.tooltip = d3.select(document.getElementById('tooltip'));
+    this.tooltipTitle = d3.select(document.getElementById(self.tooltip.attr("data-expand-by")));
 
     this.xAxis = this.vis.append("g")
         .attr('class', 'x axis');
@@ -96,6 +97,8 @@ scatterPlot.prototype.draw = function() {
                 addPointRemoval(d, '#remove-point');
                 $('#point_id').val(d.id);
             }
+            self.tooltip.classed("active", true);
+            self.tooltipTitle.classed("active",true);
             self.tooltip.html(formatTooltip(d));
         });
         
