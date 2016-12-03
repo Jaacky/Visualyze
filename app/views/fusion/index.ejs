@@ -12,8 +12,9 @@
         var user = <%- JSON.stringify(user) %>;
         console.log(user);
         console.log(fusion);
-        console.log(people);
+        <% var userGraphsIds = userGraphs.map(function(g) { return g.id; }); %>
         <% var includedGraphs = fusion.graphs.map(function(g) { return g.id; }); %>
+        <% var usersGraphsLeft = userGraphsIds.filter(function(g) { if (includedGraphs.indexOf(g) == -1) return true; }); %>
         <% var includedPeople = people.map(function(p) { return p.owner; }); %>
         var ds = new FusionDataset(fusion);
     </script>
@@ -119,19 +120,6 @@
             ds.getPoints("month", moment(current)), 
             ds.getOptions("month", moment(current))
         );
-
-        $('#graphs_added').chosen({
-                width: '100%',
-                placeholder_text_multiple: 'Select your graphs',
-                search_contains: true,
-        });
-
-        $('#invitees').chosen({
-            width: '100%',
-            placeholder_text_multiple: 'Select friends to invite',
-            search_contains: true,
-        });
-
         // var socket = io();
 
     </script>

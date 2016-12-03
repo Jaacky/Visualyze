@@ -126,6 +126,10 @@
         vertical-align: middle;
     }
 
+    .chosen-container {
+        font-size: 1.5rem;
+    }
+
     /* NAV */
     nav {
         position: fixed;
