@@ -23,7 +23,7 @@
         <div class="form-group">
             <select name="invitees[]" id="invitees" class="form-control" multiple>
                 <% for (var i=0; i<user.friends.accepted.length; i++) { %>
-                    <% if (1) { %> 
+                    <% if (includedPeople.indexOf(user.friends.accepted[i].user_b) == -1) { %> 
                         <option value="<%= user.friends.accepted[i].user_b %>">
                             <%= user.friends.accepted[i].user_b %>
                         </option>

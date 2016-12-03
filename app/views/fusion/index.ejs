@@ -14,6 +14,7 @@
         console.log(fusion);
         console.log(people);
         <% var includedGraphs = fusion.graphs.map(function(g) { return g.id; }); %>
+        <% var includedPeople = people.map(function(p) { return p.owner; }); %>
         var ds = new FusionDataset(fusion);
     </script>
     <body>
