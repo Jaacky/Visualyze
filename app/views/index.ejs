@@ -2,6 +2,7 @@
 <html lang="en">  
     <head>
         <%- include('partials/header.ejs') %>
+        <script src="/js/graph.js"></script>
     </head>
     <body>
         <%- include('partials/nav.ejs') %>
@@ -16,25 +17,29 @@
             <div class="btn-signup"><a href="/signup">Create your account</a></div>
             </div> 
         </div>
-        <div class="container container-fluid attraction">
+        <div class="container container-fluid attraction-container">
             <div class="row">
-                <div class="col-md-3">
-                    <div><img class="attraction-graphic" src="/img/landing.jpeg" alt=""></div>
-                    <div id="attraction-track-graph"></div>
-                    <h2><h2>Track your stats</h2>
+                <div class="col-md-4 attraction">
+                    <h2>Track your stats</h2>
+                    <div id="attraction-track-graph" class="attraction-graph"></div>
                 </div>
-                <div class="col-md-3">
-                    <div><img class="attraction-graphic" src="/img/landing.jpeg" alt=""></div>
+                <div class="col-md-4 attraction">
+                    <h2>Fuse your graphs</h2>
+                    <div id="attraction-track-fusion" class="attraction-graph"></div>
+                </div>
+                <div class="col-md-4 attraction">
+                    <h2>Add your friends!</h2>
+                    <div id="attraction-track-compete" class="attraction-graph"></div>
+                </div>
+                <div class="col-md-3 attraction">
                     <h2>Create a fusion of graphs</h2>
-                </div>
-                <div class="col-md-3">
-                    <div><img class="attraction-graphic" src="/img/landing.jpeg" alt=""></div>
                     <h2>Add your friends to a fusion, track and compete together!</h2>
+                    <div><img class="attraction-graphic" src="/img/landing.jpeg" alt=""></div>
                 </div>
             </div>
         </div>
     </body>
-
+    <%- include sampleData %>
     <script>
         $(window).scroll(function() {
             if ($(this).scrollTop() > 75) {
@@ -43,10 +48,27 @@
                 $("nav").removeClass("active");
             }
         });
+        console.log(attraction_track_points);
+        console.log(attraction_track_options);
+        const g = new scatterPlot("attraction-track-graph", 
+            attraction_track_points,
+            attraction_track_options
+        );
 
-        // const g = new scatterPlot("attraction-track-graph", 
-        //     ds.getPoints("month", moment(current)), 
-        //     ds.getOptions("month", moment(current))
-        // );
+        const f = new scatterPlot("attraction-track-fusion",
+            attraction_track_points
+                .concat(attraction_track_points_1)
+                .concat(attraction_track_points_2),
+            attraction_track_options
+        );
+
+        const c = new scatterPlot("attraction-track-compete",
+            attraction_track_points
+                .concat(attraction_track_points_1)
+                .concat(attraction_track_points_3),
+            attraction_track_options
+        );
+
+
     </script>
 </html>

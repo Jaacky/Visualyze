@@ -396,12 +396,22 @@
         transform: translateX(-50%) translateY(-100%);
     }
 
-    .attraction {
+    .attraction-container {
+        /*background-color: white;*/
         padding-top: 50px;
+    }
+
+    .attraction {
+        text-align: center;
     }
 
     .attraction-graphic {
         width: 100%;
+    }
+
+    .attraction-graph {
+        width: 80%;
+        display: inline-block;
     }
     /* END LANDING */
 
@@ -852,6 +862,15 @@
 
     .request-form .description {
         color: black;
+    }
+
+    .attraction {
+        border: 2px solid black;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 1px 1px 1px black;
+        width: 32%;
+        margin-left: 1%;
     }
 
     .date #backward {

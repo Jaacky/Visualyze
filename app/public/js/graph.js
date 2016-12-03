@@ -19,8 +19,10 @@ var scatterPlot = function(container, points, options) {
         .append('g')
         .attr('transform', 'translate(' + this.padding.left + "," + this.padding.top + ")");
 
-    this.tooltip = d3.select(document.getElementById('tooltip'));
-    this.tooltipTitle = d3.select(document.getElementById(self.tooltip.attr("data-expand-by")));
+    if (!self.options.sample) {
+        this.tooltip = d3.select(document.getElementById('tooltip'));
+        this.tooltipTitle = d3.select(document.getElementById(self.tooltip.attr("data-expand-by")));
+    }   
 
     this.xAxis = this.vis.append("g")
         .attr('class', 'x axis');
@@ -91,15 +93,17 @@ scatterPlot.prototype.draw = function() {
         .attr("r", 8)
         .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); })
         .on('click', function(d) {
-            d3.selectAll("circle").attr("class", "");
-            d3.select(this).attr("class", "selected");
-            if ($('#remove-point').length) {
-                addPointRemoval(d, '#remove-point');
-                $('#point_id').val(d.id);
+            if (!self.options.sample) {
+                d3.selectAll("circle").attr("class", "");
+                d3.select(this).attr("class", "selected");
+                if ($('#remove-point').length) {
+                    addPointRemoval(d, '#remove-point');
+                    $('#point_id').val(d.id);
+                }
+                self.tooltip.classed("active", true);
+                self.tooltipTitle.classed("active",true);
+                self.tooltip.html(formatTooltip(d));
             }
-            self.tooltip.classed("active", true);
-            self.tooltipTitle.classed("active",true);
-            self.tooltip.html(formatTooltip(d));
         });
         
     circle
@@ -115,7 +119,7 @@ scatterPlot.prototype.draw = function() {
         .attr("transform", "translate(0," + this.size.height + ")")
         .call(this.xAxisFormat);
     
-    if (window.matchMedia('(max-width: 992px)').matches) {
+    if (window.matchMedia('(max-width: 992px)').matches || self.options.sample) {
         this.xAxis.selectAll(".tick text")
             .attr("class", function(d, i) {
                 if (i%2 != 0) d3.select(this).remove();

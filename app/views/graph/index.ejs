@@ -72,7 +72,7 @@
 
         var current = moment();
         setDate(current, "month");
-
+        
         const g = new scatterPlot("graph-container", 
             ds.getPoints("month", moment(current)), 
             ds.getOptions("month", moment(current))
@@ -94,7 +94,7 @@
                 $('.btn-graph-time').removeClass('active');
                 $(this).addClass('active');
                 var mode = $(this).html().toLowerCase();
-
+                console.log(ds.getPoints(mode, moment(current)));
                 setDate(current, mode);
                 g.update(
                     ds.getPoints(mode, moment(current)),
@@ -110,6 +110,7 @@
                 var direction = $(this).attr("id");
                 current = updateTime(moment(current), mode, direction);
 
+                console.log(ds.getPoints("month", moment(current)));
                 setDate(current, mode);
                 g.update(
                     ds.getPoints(mode, moment(current)),
