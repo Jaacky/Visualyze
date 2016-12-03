@@ -3,6 +3,7 @@
     body {
         font-family: 'PT Sans';
         font-size: 16px;
+        background-color:rgba(200, 200, 200, 1);
     }
 
     ul {
@@ -331,6 +332,7 @@
     .main {
         padding: 75px 45px;
         position: relative;
+        background-color: #fff;
     }
 
     .chosen-container-multi .chosen-choices li.search-field input[type=text] {
@@ -731,7 +733,6 @@
     .nav-menu-items > li {
         display: inline-block;
         position: relative;
-        /*position: static;*/
         box-sizing: border-box;
         padding: 0;
         height: 100%;
@@ -821,6 +822,17 @@
 
     .date #forward {
         margin-left: 15px;
+    }
+
+    .login-form-container {
+        text-align: center;
+    }
+
+    .login-form {
+        width: 80%;
+        max-width: 800px;
+        display: inline-block;
+        text-align: left;
     }
 }
 
