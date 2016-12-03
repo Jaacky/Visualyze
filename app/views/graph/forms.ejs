@@ -1,0 +1,36 @@
+<div id="add-point-form" class="mask-overlay">
+    <h4>Add points</h4>
+    <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+    <form action="/graph/addPoint" method="post">
+        <input type="text" id="datepicker", name="date" required>
+        <input type="number" id="value", name="value" placeholder="Value" required>
+        <input type="string" id="id" name="id" value="<%= graph.id %>" hidden required>
+        <button class="btn btn-default" type="submit">Add</button>
+    </form>
+</div>
+<div id="delete-graph-form" class="mask-overlay">
+    <h4>Delete Graph Confirmation</h4>
+    <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+    <form action="/graph/delete" method="post">
+        <input type="string" id="graph_name", name="graph_name" value="<%= graph.name %>" hidden required>
+        <input type="string" id="graph_id" name="graph_id" value="<%= graph.id %>" hidden required>
+        <div>
+            The graph will be removed from all fusions containing it and all the data pertaining to the graph will be deleted. This action cannot be undone.
+            </br>
+            Do you still want to delete the graph?
+        </div>
+        <button class="btn btn-default" type="submit">Delete Graph</button>
+    </form>
+</div>
+<div id="remove-point-form" class="mask-overlay">
+    <h4>Remove Point Confirmation</h4>
+    <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+    <form action="/graph/deletePoint" method="post">
+        <input type="string" id="point_id", name="point_id" value="" hidden required>
+        <input type="string" id="graph_id" name="graph_id" value="<%= graph.id %>" hidden required>
+        <div>
+            Are you sure you want to remove this point?
+        </div>
+        <button class="btn btn-default" type="submit">Remove</button>
+    </form>
+</div>

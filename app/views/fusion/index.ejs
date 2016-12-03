@@ -1,7 +1,7 @@
 <!DOCTYPE html>  
 <html lang="en">  
     <head>
-        <%- include('partials/header.ejs') %>
+        <%- include ../partials/header %>
         <script src="/js/dataset.js"></script>
         <script src="/js/graph.js"></script>
     </head>
@@ -15,12 +15,12 @@
         var ds = new FusionDataset(fusion);
     </script>
     <body>
-        <%- include('partials/nav.ejs') %>
+        <%- include ../partials/nav %>
         <div class="mask"></div>
         <div class="container container-fluid main">
             <div class="row"> <!-- PLOT HEADER ROW -->
                 <div class="col-md-12 plot-header">
-                    <div class="name"><%= fusion.name %></div>
+                    <div class="name"><%= fusion.name %> BOOM</div>
                     <div class="buttons">
                         <div class="action">
                             <button id="add-fusion-graph">
@@ -62,81 +62,30 @@
                             None
                         </div>
                     </div>
-                    <div class="row included-graphs">
-                        <h4>Graphs:</h4>
-                        <% for (var i=0; i<fusion.graphs.length; i++) { %>
-                            <div class="included-graph">    
-                                <% if (fusion.graphs[i].owner == user.email) { %>
-                                    <form action="/fusion/removeGraph" method="post" class="description-action">
+                    <div class="row">
+                        <h4 id="included-graphs-title">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
+                        <div class="included-graphs">
+                            <% for (var i=0; i<fusion.graphs.length; i++) { %>
+                                <div class="included-graph">    
+                                    <% if (fusion.graphs[i].owner == user.email) { %>
+                                        <form action="/fusion/removeGraph" method="post" class="description-action">
+                                            <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
+                                            <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
+                                            <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
+                                            <input type="text" name="graph_name" value="<%= fusion.graphs[i].name %>" required hidden>
+                                            <div class="action"><button><span class="glyphicon glyphicon-remove"></span></button></div>
+                                        </form>
+                                    <% } else { %>
                                         <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
-                                        <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
-                                        <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
-                                        <input type="text" name="graph_name" value="<%= fusion.graphs[i].name %>" required hidden>
-                                        <div class="action"><button>Remove</button></div>
-                                    </form>
-                                <% } else { %>
-                                    <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
-                                <% } %>
-                            </div>
-                        <% } %>
+                                    <% } %>
+                                </div>
+                            <% } %>
+                        </div>
                     </div>
                 </div>
             </div> <!-- END GRAPH CONTAINER ROW -->
         </div> <!-- end container-fluid -->
-
-
-        <div id="add-graph-form" class="mask-overlay">
-            <h4 class="form-title">Add Graphs</h4>
-            <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
-            <form action="/fusion/add" method="post">
-                <div class="form-group">
-                    <select name="graphs_added[]" id="graphs_added" class="form-control" multiple>
-                        <% for (var j=0; j<userGraphs.length; j++) { %>
-                            <% if (includedGraphs.indexOf(userGraphs[j].id) == -1) { %> 
-                                <option value="<%= userGraphs[j].id %>"><%= userGraphs[j].name %></option>
-                            <% } %>
-                        <% } %>
-                    </select>
-                </div>
-                <input name="fusion_id" type="text" value="<%= fusion.id %>" hidden required>
-                <button class="btn btn-default" type="submit">Add</button>
-            </form>
-        </div>
-
-        <div id="invite-friend-form" class="mask-overlay">
-            <h4 class="form-title">Invite Friends</h4>
-            <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
-            <form action="/fusion/invite" method="post">
-                <div class="form-group">
-                    <select name="invitees[]" id="invitees" class="form-control" multiple>
-                        <% for (var i=0; i<user.friends.accepted.length; i++) { %>
-                            <% if (1) { %> 
-                                <option value="<%= user.friends.accepted[i].user_b %>">
-                                    <%= user.friends.accepted[i].user_b %>
-                                </option>
-                            <% } %>
-                        <% } %>
-                    </select>
-                </div>
-                <input name="fusion_id" type="text" value="<%= fusion.id %>" hidden required>
-                <button class="btn btn-default" type="submit">Add</button>
-            </form>
-        </div>
-
-        <div id="leave-fusion-form" class="mask-overlay">
-            <h4 class="form-title">Leave Fusion</h4>
-            <button class="remove-mask-overlay" type="button"><span class="glyphicon glyphicon-remove"></span></button>
-            <form action="/fusion/leave" method="post">
-                <div>
-                    All the graphs you have added to the fusion will also be removed* from the fusion.
-                    <br>
-                    *your graphs are not deleted 
-                </div>
-                <input name="fusion_id" type="text" value="<%= fusion.id %>" hidden required>
-                <input name="fusion_name" type="text" value="<%= fusion.name %>" hidden required>
-                <button class="btn btn-default" type="submit">Leave</button>
-            </form>
-        </div>
+        <%- include forms %>
     </body>
 
     <script>
@@ -168,6 +117,13 @@
         $(document).ready(function() {
             $(window).resize(function() {
                 g.update();
+            });
+
+            // $('.plot-row').matchHeight({ target: $('#graph-container') });
+
+            $('#included-graphs-title').on('click', function() {
+                $(this).toggleClass('active');
+                $('.included-graphs').toggleClass('active');
             });
 
             /*

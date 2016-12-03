@@ -9,7 +9,7 @@ module.exports = function(app, db, auth) {
 
     router.get('/:id', function(req, res) {
         db.getFusion(req.user.email, req.params.id, function(plots) {
-            res.render('fusion', 
+            res.render('fusion/index', 
                 {
                     title_addon: "Fusion",
                     user: req.user, 

@@ -614,6 +614,31 @@
         stroke-opacity: 1;
     }
 
+    #included-graphs-title {
+        border-bottom: 1px solid black;
+        padding-bottom: 5px;
+    }
+
+    #included-graphs-title .glyphicon-chevron-down, #included-graphs-title .glyphicon-chevron-up {
+        font-size: 1.5rem;
+    }
+
+    #included-graphs-title .glyphicon-chevron-down, #included-graphs-title.active .glyphicon-chevron-up {
+        display: none;
+    }
+
+    #included-graphs-title.active .glyphicon-chevron-down {
+        display: inline-block;
+    }
+
+    .included-graphs {
+        display: none;
+    }
+
+    .included-graphs.active {
+        display: block;
+    }
+
     .included-graph {
         padding: 6px 15px;
         border-top: 1px solid black;
@@ -624,12 +649,16 @@
     }
 
     .included-graph .description {
-        width: 75%;
+        width: 85%;
         font-size: 1.5rem; 
     }
 
     .included-graph .action {
-        width: 25%;
+        width: 15%;
+    }
+
+    .included-graph .action > button {
+        padding: 0;
     }
     /* END GRAPH STYLES */
 
@@ -761,14 +790,6 @@
 
     .request-form .description {
         color: black;
-    }
-
-    .included-graphs .description {
-        width: 65%;
-    }
-
-    .included-graphs .action {
-        width: 35%;
     }
 }
 
