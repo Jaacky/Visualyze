@@ -646,6 +646,10 @@
         display: block;
     }
 
+    .graph-sidebar {
+        border-top: 2px solid black;
+    }
+
     .included-graphs, .included-people {
         border: 1px solid black;
         box-shadow: inset 1px 1px 1px black;
@@ -855,6 +859,10 @@
         max-width: 800px;
         display: inline-block;
         text-align: left;
+    }
+
+    .graph-sidebar {
+        border-top: none;
     }
 }
 
