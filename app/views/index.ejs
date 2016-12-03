@@ -16,5 +16,37 @@
             <div class="btn-signup"><a href="/signup">Create your account</a></div>
             </div> 
         </div>
+        <div class="container container-fluid attraction">
+            <div class="row">
+                <div class="col-md-3">
+                    <div><img class="attraction-graphic" src="/img/landing.jpeg" alt=""></div>
+                    <div id="attraction-track-graph"></div>
+                    <h2><h2>Track your stats</h2>
+                </div>
+                <div class="col-md-3">
+                    <div><img class="attraction-graphic" src="/img/landing.jpeg" alt=""></div>
+                    <h2>Create a fusion of graphs</h2>
+                </div>
+                <div class="col-md-3">
+                    <div><img class="attraction-graphic" src="/img/landing.jpeg" alt=""></div>
+                    <h2>Add your friends to a fusion, track and compete together!</h2>
+                </div>
+            </div>
+        </div>
     </body>
+
+    <script>
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 75) {
+                $("nav").addClass("active");
+            } else {
+                $("nav").removeClass("active");
+            }
+        });
+
+        // const g = new scatterPlot("attraction-track-graph", 
+        //     ds.getPoints("month", moment(current)), 
+        //     ds.getOptions("month", moment(current))
+        // );
+    </script>
 </html>
