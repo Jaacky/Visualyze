@@ -176,10 +176,12 @@ const getFusion = function(email, fusion_id, cb) {
                 + "WHERE ftg.fusion_id = $1)";
     var getUserGraphsQString = "SELECT * FROM graphs "
                 + "WHERE owner = $1";
+    var getPeopleInFusionQString = "SELECT DISTINCT ON (owner) owner FROM fusions_to_owners WHERE fusion_id=$1";
     
     var getFusion = new pgp.ParameterizedQuery(getFusionQString);
     var getGraphsInFusion = new pgp.ParameterizedQuery(getGraphsInFusionQString);
     var getUserGraphs = new pgp.ParameterizedQuery(getUserGraphsQString);
+    var getPeopleInFusion = new pgp.ParameterizedQuery(getPeopleInFusionQString);
 
     db.tx(function(t) {
         /*
@@ -211,7 +213,8 @@ const getFusion = function(email, fusion_id, cb) {
                 .catch(function(err) {
                     console.log("level-t fusion err", err);
                 }),
-            t.any(getUserGraphs, [email])
+            t.any(getUserGraphs, [email]),
+            t.any(getPeopleInFusion, [fusion_id])
         ]);
     })
         .then(function(result) {
@@ -219,8 +222,9 @@ const getFusion = function(email, fusion_id, cb) {
             var fusion = result[0];
             fusion.graphs = result[1];
             var userGraphs = result[2];
+            var people = result[3];
             console.log("FUSIONNNN GRAPHS", fusion.graphs);
-            cb({ fusion, userGraphs });
+            cb({ fusion, userGraphs, people });
         })
         .catch(function(err) {
             console.log("INIT TX GET FUSION ", err);

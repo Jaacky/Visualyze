@@ -8,9 +8,11 @@
     <script>
         var fusion = <%- JSON.stringify(fusion) %>;
         var userGraphs = <%- JSON.stringify(userGraphs) %>;
+        var people = <%- JSON.stringify(people) %>;
         var user = <%- JSON.stringify(user) %>;
         console.log(user);
         console.log(fusion);
+        console.log(people);
         <% var includedGraphs = fusion.graphs.map(function(g) { return g.id; }); %>
         var ds = new FusionDataset(fusion);
     </script>
@@ -56,31 +58,44 @@
                     <div id="graph-container"></div>
                 </div>
                 <div class="col-md-3">
-                    <div class="row">
-                        <h4 id="tooltip-title" class="expandable-title" data-expand-for="#tooltip">Selected point: <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
-                        <div id="tooltip" class="expandable" data-expand-by="tooltip-title" class="col-sm-12">
-                            None
+                    <div class="graph-sidebar">
+                        <div class="row">
+                            <h4 id="tooltip-title" class="expandable-title" data-expand-for="#tooltip">Selected point: <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
+                            <div id="tooltip" class="expandable" data-expand-by="tooltip-title" class="col-sm-12">
+                                None
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <h4 id="included-graphs-title" class="expandable-title" data-expand-for=".included-graphs">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
-                        <div class="included-graphs expandable">
-                            <% for (var i=0; i<fusion.graphs.length; i++) { %>
-                                <div class="included-graph description-action">    
-                                    <% if (fusion.graphs[i].owner == user.email) { %>
-                                        <form action="/fusion/removeGraph" method="post" class="description-action">
-                                            <div class="action"><button><span class="glyphicon glyphicon-remove"></span></button></div>
+                        <div class="row">
+                            <h4 id="included-graphs-title" class="expandable-title" data-expand-for=".included-graphs">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
+                            <div class="included-graphs expandable">
+                                <% for (var i=0; i<fusion.graphs.length; i++) { %>
+                                    <div class="included-graph description-action">    
+                                        <% if (fusion.graphs[i].owner == user.email) { %>
+                                            <form action="/fusion/removeGraph" method="post" class="">
+                                                <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
+                                                <div class="action"><button><span class="glyphicon glyphicon-remove"></span></button></div>
+                                                <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
+                                                <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
+                                                <input type="text" name="graph_name" value="<%= fusion.graphs[i].name %>" required hidden>
+                                            </form>
+                                        <% } else { %>
                                             <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
-                                            <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
-                                            <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
-                                            <input type="text" name="graph_name" value="<%= fusion.graphs[i].name %>" required hidden>
-                                        </form>
-                                    <% } else { %>
-                                        <div class="action empty"></div>
-                                        <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
-                                    <% } %>
-                                </div>
-                            <% } %>
+                                            <div class="action empty"></div>
+                                        <% } %>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h4 class="expandable-title" data-expand-for=".included-people">People
+                                <span class="glyphicon glyphicon-chevron-up"></span>
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </h4>
+                            <div class="included-people expandable">
+                                <% for (var i=0; i<people.length; i++) { %>
+                                    <div class="included-person"><%= people[i].owner %></div>
+                                <% } %>
+                            </div>
                         </div>
                     </div>
                 </div>

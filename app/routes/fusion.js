@@ -8,13 +8,14 @@ module.exports = function(app, db, auth) {
     router.use(auth);
 
     router.get('/:id', function(req, res) {
-        db.getFusion(req.user.email, req.params.id, function(plots) {
+        db.getFusion(req.user.email, req.params.id, function(results) {
             res.render('fusion/index', 
                 {
                     title_addon: "Fusion",
                     user: req.user, 
-                    fusion: plots.fusion, 
-                    userGraphs: plots.userGraphs,
+                    fusion: results.fusion,
+                    userGraphs: results.userGraphs,
+                    people: results.people,
                     message: req.flash('message'), 
                 }
             );

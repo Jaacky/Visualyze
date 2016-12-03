@@ -622,10 +622,10 @@
         stroke-opacity: 1;
     }
 
-    #included-graphs-title {
+    /*#included-graphs-title {
         margin-bottom: 0;
         padding-bottom: 5px;
-    }
+    }*/
 
     .expandable-title .glyphicon-chevron-down, .expandable-title .glyphicon-chevron-up {
         font-size: 1.5rem;
@@ -646,33 +646,33 @@
         display: block;
     }
 
-    .included-graphs {
+    .included-graphs, .included-people {
         border: 1px solid black;
         box-shadow: inset 1px 1px 1px black;
         max-height: 200px;
         overflow: auto;
     }
 
-    .included-graph {
+    .included-graph, .included-person {
         padding: 6px 15px;
         border-top: 1px solid black;
         /*height: 35px;*/
         max-height:35px;
     }
 
-    .included-graph:first-of-type {
+    /*.included-graph:first-of-type {
         border-top: none;
-    }
+    }*/
 
-    .included-graph .description-action {
+    /*.included-graph .description-action {
         height: 100%;
-    }
+    }*/
 
     .included-graph .description {
         width: 85%;
         height: 100%;
         font-size: 1.5rem; 
-        padding-left: 10px;
+        padding-right: 10px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
