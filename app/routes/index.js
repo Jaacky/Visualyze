@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var bcrypt = require('bcrypt');
 
 module.exports = function(app, db, passport, auth) {
     router.get('/', function(req, res) {
@@ -40,21 +41,40 @@ module.exports = function(app, db, passport, auth) {
         if (req.user) {
             res.redirect('/dashboard');
         } else {
-            db.addUser(req.body.email, req.body.password, req.body.first_name, req.body.last_name, function(err) {
-                if (err) {
-                    req.flash('message', 'Account creation failed');
-                    res.redirect('/login');
-                    return;
-                }
-                req.flash('message', 'Account created.');
-                res.redirect('/login');
+            db.checkIfEmailExists(req.body.email, function(user) {
+                if (user.exists) {
+                    console.log("YOU DUN GOOFED");
+                    res.json({ 
+                        success: false,
+                        message: 'E-mail is already being used', 
+                    });
+                } else { /* Generate hash and create user */
+                    bcrypt.genSalt(10, function(err, salt) {
+                        bcrypt.hash(req.body.password, salt, function(err, hash) {
+                            db.addUser(req.body.email, hash, req.body.first_name, req.body.last_name, function(err) {
+                                if (err) {
+                                    res.json({ 
+                                        success: false,
+                                        message: 'Account creation failed.', 
+                                    });
+                                } else {
+                                    req.flash('message', 'Account created');
+                                    res.json({
+                                        success: true,
+                                        redirect: "/login"
+                                    });
+                                }
+                            });
+                        });
+                    });
+                } /* END Generate hash and create user */
             });
         }   
     });
 
     /* Needs auth to access route */
     router.get('/dashboard', auth, function(req, res, next) {
-        console.log("dashboard, req.user", req.user);
+        // console.log("dashboard, req.user", req.user);
         res.render('dashboard', 
             { 
                 title_addon: "Dashboard", 
@@ -88,7 +108,7 @@ module.exports = function(app, db, passport, auth) {
     });
 
     router.post('/friends/accept', auth, function(req, res) {
-        console.log("post friends/accept user.email", req.user.email);
+        // console.log("post friends/accept user.email", req.user.email);
         db.acceptFriendRequest(req.user.email, req.body.requester, function() {
             req.flash('message', 'Accepted ' + req.body.requester + "'s friend request.");
             res.redirect('/dashboard');

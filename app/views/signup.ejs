@@ -7,7 +7,7 @@
         <%- include('partials/nav.ejs') %>
         <div class="container container-fluid main">
             <div class="signup-form-container">
-                <h4><%= message %></h4>
+                <h4 id="msg"><%= message %></h4>
                 <form class="signup-form" action="/signup" method="post">
                     <div class="form-group form-group-half">
                         <label for="name">Name</label>
@@ -29,9 +29,30 @@
                         <label for"confirm-password">Confirm Password</label>
                         <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
                     </div>
-                    <button class="btn btn-default">Create account</button>
+                    <button id="signup" class="btn btn-default">Create account</button>
                 </form>
             </div>
         </div>
     </body>
+
+    <script>
+        $(".signup-form").on("submit", function(e) {
+            console.log("submit event fired");
+            e.preventDefault();
+            var data = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                success: function(account, status) {
+                    if (account.success) {
+                        window.location.replace(account.redirect);
+                    } else {
+                        $("#msg").html(account.message);
+                        return
+                    }
+                }
+            });
+        });
+    </script>
 </html>

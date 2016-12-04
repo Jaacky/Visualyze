@@ -29,7 +29,7 @@ module.exports = function(app, db, auth) {
     });
 
     router.post('/add', function(req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         db.addGraphsToFusion(req.body.fusion_id, req.body.graphs_added, function() {
             res.redirect('/fusion/' + req.body.fusion_id);
         });

@@ -527,6 +527,20 @@ const acceptFriendRequest = function(user, requester, cb) {
         });
 };
 
+const checkIfEmailExists = function(email, cb) {
+    var checkString = "SELECT EXISTS(SELECT 1 FROM users WHERE email=$1)";
+    var check = new pgp.ParameterizedQuery(checkString);
+
+    db.one(check, [email])
+        .then(function(user) {
+            console.log("existence", user);
+            cb(user);
+        })
+        .catch(function(err) {
+            console.log("check email existence error", err);
+        });
+}
+
 module.exports = {
     addUser,
     getUser,
@@ -546,6 +560,7 @@ module.exports = {
     graphsBeginWith,
     addFriendRequest,
     acceptFriendRequest,
+    checkIfEmailExists,
 }
 
 /*
