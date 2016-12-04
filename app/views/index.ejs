@@ -68,7 +68,11 @@
                 .concat(attraction_track_points_3),
             attraction_track_options
         );
-
+        $(window).resize(function() {
+            g.update();
+            f.update();
+            c.update();
+        });
 
     </script>
 </html>
