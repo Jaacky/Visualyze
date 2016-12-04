@@ -5,6 +5,7 @@ var express = require('express'),
 var session = require('express-session');
 var passport = require('passport');
 var flash = require('connect-flash');
+var helmet = require('helmet');
 
 var config = require("./config.js")();
 var db = require('./db.js');
@@ -27,6 +28,7 @@ app.use(session({ secret: 'keyboard cat',
                   resave: true,
                   saveUninitialized: true,
                 }));
+app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
 var auth = require('./auth.js')(db, passport);

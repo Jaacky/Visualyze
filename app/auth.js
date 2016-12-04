@@ -21,6 +21,7 @@ module.exports = function(db, passport) {
                         return -1;
                     }
                     if (res === true) {
+                        user.password = 0;
                         return done(null, user);
                     } else {
                         return done(null, false, { message: 'Incorrect password.' });
@@ -36,6 +37,7 @@ module.exports = function(db, passport) {
 
     passport.deserializeUser(function(email, done) {
         db.getUser(email, function(user) {
+            user.password = 0;
             done(null, user);
         });
     });
