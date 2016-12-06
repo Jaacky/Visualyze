@@ -147,6 +147,13 @@
         color: white;
     }
 
+    .nav-border {
+        width: 98%;
+        border-bottom: 1px solid white;
+        position:absolute;
+        right: 1%;
+    }
+
     .nav-container {
         height: 100%;
         padding: 0px 45px;
@@ -154,6 +161,10 @@
 
     nav.active .nav-container {
         background-color: black;
+    }
+
+    nav.active .nav-border {
+        display: none;
     }
 
     .nav-header {
