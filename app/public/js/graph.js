@@ -159,20 +159,3 @@ function addPointRemoval(d, container) {
 
     $(container).html(html);
 }
-
-/*
-    Modified from http://stackoverflow.com/questions/21646738/convert-hex-to-rgba
-*/
-function hexToRgbA(hex, opacity=1){
-    var c;
-    console.log(hex);
-    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-        c= hex.substring(1).split('');
-        if(c.length== 3){
-            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-        }
-        c= '0x'+c.join('');
-        return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',' + opacity + ')';
-    }
-    throw new Error('Bad Hex');
-}

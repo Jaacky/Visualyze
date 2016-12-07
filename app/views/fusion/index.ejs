@@ -74,17 +74,18 @@
                                 <h4 id="included-graphs-title" class="expandable-title" data-expand-for=".included-graphs">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
                                 <div class="included-graphs expandable">
                                     <% for (var i=0; i<fusion.graphs.length; i++) { %>
-                                        <div class="included-graph description-action">    
+                                        <div class="included-graph description-action">
+                                            <% var graph_colour = hexToRgbA(fusion.graphs[i].colour, 0.55); %>    
                                             <% if (fusion.graphs[i].owner == user.email) { %>
                                                 <form action="/fusion/removeGraph" method="post" class="">
-                                                    <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
+                                                    <div class="description"><%= fusion.graphs[i].owner %> / <span class="graph_name" style="background-color: <%= graph_colour %>;"><%= fusion.graphs[i].name %></span></div>
                                                     <div class="action"><button><span class="glyphicon glyphicon-remove"></span></button></div>
                                                     <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
                                                     <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
                                                     <input type="text" name="graph_name" value="<%= fusion.graphs[i].name %>" required hidden>
                                                 </form>
                                             <% } else { %>
-                                                <div class="description"><%= fusion.graphs[i].owner %> / <%= fusion.graphs[i].name %></div>
+                                                <div class="description"><%= fusion.graphs[i].owner %> / <div style="fill: <%= fusion.graphs[i].colour %>;"><%= fusion.graphs[i].colour %></div> / <%= fusion.graphs[i].name %></div>
                                                 <div class="action empty"></div>
                                             <% } %>
                                         </div>

@@ -746,6 +746,11 @@
         overflow: hidden;
     }
 
+    .included-graph .description span {
+        padding: 1px 6px;
+        border-radius: 8px;
+    }
+
     .included-graph .action {
         width: 15%;
     }
