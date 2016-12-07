@@ -527,6 +527,20 @@ const acceptFriendRequest = function(user, requester, cb) {
         });
 };
 
+const updateGraphColour = function(graph_id, colour, cb) {
+    var updateString = "UPDATE graphs SET colour=$1 WHERE id=$2";
+    var update = new pgp.ParameterizedQuery(updateString);
+
+    db.none(update, [colour, graph_id])
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            console.log("update graph colour err", err);
+            cb(-1);
+        });
+}
+
 const checkIfEmailExists = function(email, cb) {
     var checkString = "SELECT EXISTS(SELECT 1 FROM users WHERE email=$1)";
     var check = new pgp.ParameterizedQuery(checkString);
@@ -561,6 +575,7 @@ module.exports = {
     addFriendRequest,
     acceptFriendRequest,
     checkIfEmailExists,
+    updateGraphColour,
 }
 
 /*

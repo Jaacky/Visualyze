@@ -65,5 +65,24 @@ module.exports = function(app, db, auth) {
         });
     });
 
+    router.post('/updateColour', function(req, res) {
+        console.log(req.body);
+        db.updateGraphColour(req.body.graph_id, req.body.colour_hex, function(err) {
+            if (err) {
+                req.flash('message', 'Graph colour could not be updated.');
+                res.json({
+                    success: false,
+                    message: "Could not update colour, please try again."
+                })
+            } else {
+                res.json({
+                    success: true,
+                    colour: req.body.colour_hex,
+                    message: "Updated graph colour."
+                });
+            }
+        });    
+    });
+
     return router;
 }

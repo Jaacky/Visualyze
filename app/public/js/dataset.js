@@ -10,6 +10,10 @@ function GraphDataset(graph) {
 GraphDataset.prototype = Object.create(Dataset.prototype);
 GraphDataset.prototype.constructor = GraphDataset;
 
+GraphDataset.prototype.updateColour = function(colour) {
+    this.data = this.data.map(function(pt) { pt.colour = colour; return pt; });
+}
+
 function FusionDataset(fusion) {
     var points = [];
     for (var i=0; i<fusion.graphs.length; i++) {

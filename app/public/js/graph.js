@@ -110,7 +110,7 @@ scatterPlot.prototype.draw = function() {
         .attr("cx", function(d) { return self.x( new Date(d.date) ); })
         .attr("cy", function(d) { return self.y(d.value); })
         .attr("r", 8)
-        .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); });
+        .style("fill", function(d) { console.log("udpating colours", d.colour); return hexToRgbA(d.colour, 0.55); });
     
     circle.exit().remove();
 
@@ -165,6 +165,7 @@ function addPointRemoval(d, container) {
 */
 function hexToRgbA(hex, opacity=1){
     var c;
+    console.log(hex);
     if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
         c= hex.substring(1).split('');
         if(c.length== 3){

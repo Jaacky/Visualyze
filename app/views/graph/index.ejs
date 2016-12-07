@@ -7,6 +7,7 @@
     </head>
     <script>
         var graph = <%- JSON.stringify(graph) %>
+        console.log(graph);
         var ds = new GraphDataset(graph);
     </script>
     <body>
@@ -32,9 +33,12 @@
                                 <span> Delete</span>
                             </button>
                         </div>
+                        <div class="action">
+                            <input type="text" id="colour-picker">
+                        </div>
                     </div>   
                     <% if (message) { %>
-                        <h4><%= message %></h4>
+                        <h4 id="msg"><%= message %></h4>
                     <% } %> 
                 </div>
             </div> <!-- END PLOT HEADER ROW -->
@@ -72,11 +76,21 @@
 
         var current = moment();
         setDate(current, "month");
+        console.log($("#date").data("date"));
         
         const g = new scatterPlot("graph-container", 
             ds.getPoints("month", moment(current)), 
             ds.getOptions("month", moment(current))
         );
+        const colourPicker = createColourUpdateHandler(g, ds, current);
+
+        $("#colour-picker").spectrum({
+            color: graph.colour,
+            clickoutFiresChange: false,
+            chooseText: "Update",
+            replacerClassName: "colour-selector",
+            change: colourPicker,
+        });
     </script>
 
     <script>

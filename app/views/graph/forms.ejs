@@ -34,3 +34,9 @@
         <button class="btn btn-default" type="submit">Remove</button>
     </form>
 </div>
+<div id="colour-update-form" class="mask-overlay">
+    <form>
+        <input type="string" id="colour_hex" name="colour_hex" hidden value="<%= graph.colour %>" hidden required>
+        <input type="string" name="graph_id" value="<%= graph.id %>" hidden required>
+    </form>
+</div>

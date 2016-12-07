@@ -1,3 +1,30 @@
+const createColourUpdateHandler = function(graph, dataset) {
+    return function(colour) {
+        var hex = colour.toHexString();
+        $('#colour_hex').val(hex);
+        var data = $('#colour-update-form form').serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/graph/updateColour',
+            dataType: 'json',
+            data: data,
+            success: function(status) { 
+                if (status.success) {
+                    $("#msg").html(status.message);
+                    dataset.updateColour(status.colour);
+                    var mode = $('.btn-graph-time.active').html().toLowerCase();
+                    var current = $("#date").data("date");
+                    graph.update(dataset.getPoints(mode, moment(current)));
+                    return;
+                } else {
+                    $("#msg").html(status.message);
+                    return;
+                }
+            }
+        });
+    }
+}
+
 const setDate = function(time, mode) {
     var timeToDisplay;
     switch(mode) {
@@ -14,6 +41,7 @@ const setDate = function(time, mode) {
             throw "Invalid use of function setDate";
     }
     $("#date").html(timeToDisplay);
+    $("#date").data("date", time);
 }
 
 const updateTime = function(time, mode, direction) {

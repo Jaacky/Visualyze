@@ -649,6 +649,37 @@
         margin-bottom: 5px;
     }
 
+    .plot-header .sp-replacer {
+        background-color: white;
+        border: 1px solid transparent;
+        border-radius: 3px;
+    }
+
+    .plot-header .sp-replacer:hover {
+        border-color: black;
+    }
+    
+    .plot-header .sp-preview {
+        width: 35px;
+        height: 30px;
+    }
+
+    .plot-header .sp-dd {
+        padding: 8px 0;
+    }
+
+    .sp-container {
+        border: 1px solid black;
+        border-radius: 2px;
+        padding: 10px;
+        background-color: white;
+    }
+    
+    .sp-picker-container {
+        border-left: none;
+        width: 200px;
+    }
+
     circle.selected {
         stroke: black;
         stroke-width: 2;
