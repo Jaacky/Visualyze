@@ -346,6 +346,15 @@
     }
     /* END NAV */
 
+    /* FOOTER */
+    .footer {
+        padding: 45px;
+        width: 100%;
+        background-color: black;
+        color: white;
+    }
+    /* END FOOTER */
+
     .main {
         padding: 75px 45px;
         position: relative;
