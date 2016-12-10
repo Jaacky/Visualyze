@@ -1,7 +1,7 @@
 <script>
     var attraction_track_options = {
-        xmax: moment().add(7, "d").toDate(),
-        xmin: moment().toDate(),
+        xmax: moment().startOf('day').add(7, "d").toDate(),
+        xmin: moment().startOf('day').toDate(),
         mode: "week",
         numTimeTicks: d3.timeDay.every(1),
         timeFormat: d3.timeFormat("%b %a %d"),
@@ -9,40 +9,42 @@
         sample: true
     };
 
+    console.log(moment().startOf('day').add(1, "d").toDate());
+
     var attraction_track_points = [
         {
             colour: "#000000",
-            date: moment().toDate(),
+            date: moment().startOf('day').toDate(),
             value: 20
         },
         {
             colour: "#000000",
-            date: moment().add(1, "d").toDate(),
+            date: moment().startOf('day').add(1, "d").toDate(),
             value: 15
         },
         {
             colour: "#000000",
-            date: moment().add(2, "d").toDate(),
+            date: moment().startOf('day').add(2, "d").toDate(),
             value: 35
         },
         {
             colour: "#000000",
-            date: moment().add(3, "d").toDate(),
+            date: moment().startOf('day').add(3, "d").toDate(),
             value: 40
         },
         {
             colour: "#000000",
-            date: moment().add(4, "d").toDate(),
+            date: moment().startOf('day').add(4, "d").toDate(),
             value: 70
         },
         {
             colour: "#000000",
-            date: moment().add(5, "d").toDate(),
+            date: moment().startOf('day').add(5, "d").toDate(),
             value: 65
         },
         {
             colour: "#000000",
-            date: moment().add(6, "d").toDate(),
+            date: moment().startOf('day').add(6, "d").toDate(),
             value: 75
         },
     ];
@@ -50,37 +52,37 @@
     var attraction_track_points_1 = [
         {
             colour: "#4682b4",
-            date: moment().toDate(),
+            date: moment().startOf('day').toDate(),
             value: 67
         },
         {
             colour: "#4682b4",
-            date: moment().add(1, "d").toDate(),
+            date: moment().startOf('day').add(1, "d").toDate(),
             value: 70
         },
         {
             colour: "#4682b4",
-            date: moment().add(2, "d").toDate(),
+            date: moment().startOf('day').add(2, "d").toDate(),
             value: 80
         },
         {
             colour: "#4682b4",
-            date: moment().add(3, "d").toDate(),
+            date: moment().startOf('day').add(3, "d").toDate(),
             value: 75
         },
         {
             colour: "#4682b4",
-            date: moment().add(4, "d").toDate(),
+            date: moment().startOf('day').add(4, "d").toDate(),
             value: 81
         },
         {
             colour: "#4682b4",
-            date: moment().add(5, "d").toDate(),
+            date: moment().startOf('day').add(5, "d").toDate(),
             value: 83
         },
         {
             colour: "#4682b4",
-            date: moment().add(6, "d").toDate(),
+            date: moment().startOf('day').add(6, "d").toDate(),
             value: 85
         },
     ];
@@ -88,37 +90,37 @@
     var attraction_track_points_2 = [
         {
             colour: "#c0625e",
-            date: moment().toDate(),
+            date: moment().startOf('day').toDate(),
             value: 5
         },
         {
             colour: "#c0625e",
-            date: moment().add(1, "d").toDate(),
+            date: moment().startOf('day').add(1, "d").toDate(),
             value: 12
         },
         {
             colour: "#c0625e",
-            date: moment().add(2, "d").toDate(),
+            date: moment().startOf('day').add(2, "d").toDate(),
             value: 20
         },
         {
             colour: "#c0625e",
-            date: moment().add(3, "d").toDate(),
+            date: moment().startOf('day').add(3, "d").toDate(),
             value: 18
         },
         {
             colour: "#c0625e",
-            date: moment().add(4, "d").toDate(),
+            date: moment().startOf('day').add(4, "d").toDate(),
             value: 14
         },
         {
             colour: "#c0625e",
-            date: moment().add(5, "d").toDate(),
+            date: moment().startOf('day').add(5, "d").toDate(),
             value: 16
         },
         {
             colour: "#c0625e",
-            date: moment().add(6, "d").toDate(),
+            date: moment().startOf('day').add(6, "d").toDate(),
             value: 13
         },
     ];
@@ -126,37 +128,37 @@
     var attraction_track_points_3 = [
         {
             colour: "#41c1b7",
-            date: moment().toDate(),
+            date: moment().startOf('day').toDate(),
             value: 15
         },
         {
             colour: "#41c1b7",
-            date: moment().add(1, "d").toDate(),
+            date: moment().startOf('day').add(1, "d").toDate(),
             value: 20
         },
         {
             colour: "#41c1b7",
-            date: moment().add(2, "d").toDate(),
+            date: moment().startOf('day').add(2, "d").toDate(),
             value: 38
         },
         {
             colour: "#41c1b7",
-            date: moment().add(3, "d").toDate(),
+            date: moment().startOf('day').add(3, "d").toDate(),
             value: 42
         },
         {
             colour: "#41c1b7",
-            date: moment().add(4, "d").toDate(),
+            date: moment().startOf('day').add(4, "d").toDate(),
             value: 55
         },
         {
             colour: "#41c1b7",
-            date: moment().add(5, "d").toDate(),
+            date: moment().startOf('day').add(5, "d").toDate(),
             value: 70
         },
         {
             colour: "#41c1b7",
-            date: moment().add(6, "d").toDate(),
+            date: moment().startOf('day').add(6, "d").toDate(),
             value: 85
         },
     ];
