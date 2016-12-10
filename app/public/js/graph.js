@@ -94,15 +94,26 @@ scatterPlot.prototype.draw = function() {
         .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); })
         .on('click', function(d) {
             if (!self.options.sample) {
-                d3.selectAll("circle").attr("class", "");
-                d3.select(this).attr("class", "selected");
-                if ($('#remove-point').length) {
-                    addPointRemoval(d, '#remove-point');
-                    $('#point_id').val(d.id);
+                var selectedAlready;
+                if (d3.select(this).attr("class")) {
+                    selectedAlready = true;
+                } else {
+                    selectedAlready = false;
                 }
-                self.tooltip.classed("active", true);
-                self.tooltipTitle.classed("active",true);
-                self.tooltip.html(formatTooltip(d));
+                console.log(selectedAlready);
+                d3.selectAll("circle").attr("class", "");
+                if (!selectedAlready) {
+                    d3.select(this).attr("class", "selected");
+                    if ($('#remove-point').length) {
+                        addPointRemoval(d, '#remove-point');
+                        $('#point_id').val(d.id);
+                    }
+                    self.tooltip.classed("active", true);
+                    self.tooltipTitle.classed("active",true);
+                    self.tooltip.html(formatTooltip(d));
+                } else {
+                    self.tooltip.html("No selected point.");
+                }
             }
         });
         

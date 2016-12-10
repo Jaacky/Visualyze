@@ -410,6 +410,7 @@
     .attraction-container {
         /*background-color: white;*/
         padding-top: 50px;
+        padding-bottom: 75px;
     }
 
     .attraction {
@@ -714,14 +715,14 @@
         border-top: 2px solid black;
     }
 
-    .included-graphs, .included-people {
+    .included-graphs, .included-people, #tooltip {
         border: 1px solid black;
         box-shadow: inset 1px 1px 1px black;
         max-height: 200px;
         overflow: auto;
     }
 
-    .included-graph, .included-person {
+    .included-graph, .included-person, .selected-point {
         padding: 6px 15px;
         border-top: 1px solid black;
         /*height: 35px;*/
