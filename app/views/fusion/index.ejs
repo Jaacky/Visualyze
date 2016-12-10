@@ -74,7 +74,7 @@
                                 <h4 id="included-graphs-title" class="expandable-title" data-expand-for=".included-graphs">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
                                 <div class="included-graphs expandable">
                                     <% for (var i=0; i<fusion.graphs.length; i++) { %>
-                                        <div class="included-graph description-action">
+                                        <div class="included-graph description-action highlight" data-highlight-id="graph" data-highlight-val="<%= fusion.graphs[i].name %>">
                                             <% var graph_colour = hexToRgbA(fusion.graphs[i].colour, 0.55); %>    
                                             <% if (fusion.graphs[i].owner == user.email) { %>
                                                 <form action="/fusion/removeGraph" method="post" class="">
@@ -101,7 +101,9 @@
                                 </h4>
                                 <div class="included-people expandable">
                                     <% for (var i=0; i<people.length; i++) { %>
-                                        <div class="included-person"><%= people[i].owner %></div>
+                                        <div class="included-person highlight" data-highlight-id="owner" data-highlight-val="<%= people[i].owner %>">
+                                            <%= people[i].owner %>
+                                        </div>
                                     <% } %>
                                 </div>
                             </div>
@@ -167,6 +169,22 @@
             $('#add-fusion-graph').on('click', function() {
                 $('.mask').addClass('active');
                 $('#add-graph-form').addClass('active');
+            });
+
+            $('.highlight').on('click', function() {
+                var active;
+                if ($(this).hasClass('active')) active = false;
+                else active = true;
+
+                var highlight = {};
+                $('.highlight').removeClass('active');
+                if (active) {
+                    $(this).addClass('active');
+                    highlight['id'] = $(this).data('highlightId');
+                    highlight['val'] = $(this).data('highlightVal');
+                }
+                    
+                g.update(null, null, highlight);
             });
 
             /*

@@ -3,6 +3,7 @@ var Graph = function(container, points, options) {
     this.chart = document.getElementById(container);
     this.options = options;
     this.points = points;
+    this.highlight = {};
 }
 
 var scatterPlot = function(container, points, options) {
@@ -93,7 +94,17 @@ scatterPlot.prototype.draw = function() {
         .attr("cx", function(d) { return self.x( new Date(d.date) ); })
         .attr("cy", function(d) { return self.y(d.value); })
         .attr("r", 8)
-        .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); })
+        .style("fill", function(d) {
+            if (Object.keys(self.highlight).length) {
+                if (d[self.highlight.id] == self.highlight.val) {
+                    return hexToRgbA(d.colour, 0.9);
+                } else {
+                    return hexToRgbA(d.colour, 0.35); 
+                }
+            } else {
+                return hexToRgbA(d.colour, 0.55); 
+            }
+        })
         .style("cursor", "pointer")
         .on('click', function(d) {
             if (!self.options.sample) {
@@ -128,7 +139,17 @@ scatterPlot.prototype.draw = function() {
         .attr("cx", function(d) { return self.x( new Date(d.date) ); })
         .attr("cy", function(d) { return self.y(d.value); })
         .attr("r", 8)
-        .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); })
+        .style("fill", function(d) { 
+            if (Object.keys(self.highlight).length) {
+                if (d[self.highlight.id] == self.highlight.val) {
+                    return hexToRgbA(d.colour, 0.9);
+                } else {
+                    return hexToRgbA(d.colour, 0.35); 
+                }
+            } else {
+                return hexToRgbA(d.colour, 0.55); 
+            }
+        })
         .style("cursor", "pointer");
     
     circle.exit().remove();
@@ -149,10 +170,11 @@ scatterPlot.prototype.draw = function() {
         .call(this.yAxisFormat);
 }
 
-scatterPlot.prototype.update = function(points, options) {
+scatterPlot.prototype.update = function(points, options, highlight) {
     var self = this;
     if (options) { self.options = options; }
     if (points) { self.points = points; }
+    if (highlight) { console.log(highlight); self.highlight = highlight; }
 
     self.setProperties();
     self.draw();

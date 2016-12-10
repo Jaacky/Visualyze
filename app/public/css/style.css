@@ -701,6 +701,12 @@
         padding-bottom: 5px;
     }*/
 
+    .expandable-title {
+        border: 1px solid black;
+        padding: 12px;
+        margin: 0;
+    }
+
     .expandable-title .glyphicon-chevron-down, .expandable-title .glyphicon-chevron-up {
         font-size: 1.5rem;
     }
@@ -714,10 +720,14 @@
     }
     .expandable {
         display: none;
+        /*-webkit-transition: max-height 0.5s;
+        transition: max-height 0.5s;
+        max-height: 0px;*/
     }
 
     .expandable.active {
         display: block;
+        /*max-height:200px;*/
     }
 
     .graph-sidebar {
@@ -727,7 +737,7 @@
     .included-graphs, .included-people, #tooltip {
         border: 1px solid black;
         box-shadow: inset 1px 1px 1px black;
-        max-height: 200px;
+        /*max-height: 200px;*/
         overflow: auto;
     }
 
@@ -736,21 +746,27 @@
         border-top: 1px solid black;
         /*height: 35px;*/
         max-height:35px;
+        cursor: pointer;
     }
 
-    #tooltip {
+    .included-graph:hover, .included-graph.active, .included-person:hover, .included-person.active {
+        box-shadow: inset 1px 1px 5px black;
+        background-color: #e9e9e9;
+    }
+
+    #tooltip-text {
         padding: 6px 15px;
     }
 
     #remove-point {
         display: none;
         margin-top: 10px;
-        padding-top: 10px;
+        padding: 10px 15px;
         border-top: 1px solid black;
     }
 
     #remove-point.active {
-        display: inline-block;
+        display: block;
     }
 
     /*.included-graph:first-of-type {

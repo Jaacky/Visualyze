@@ -2,6 +2,7 @@ $(document).ready(function() {
     $('.expandable-title').on('click', function() {
         $(this).toggleClass('active');
         $($(this).data('expandFor')).toggleClass('active');
+        // $($(this).data('expandFor')).addClass("animated slideInDown")
     });
 });
 
