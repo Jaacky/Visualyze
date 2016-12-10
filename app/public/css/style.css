@@ -352,6 +352,7 @@
         width: 100%;
         background-color: black;
         color: white;
+        font-size: 1.8rem;
     }
     /* END FOOTER */
 
@@ -417,18 +418,20 @@
     }
 
     .attraction-container {
-        /*background-color: white;*/
-        padding-top: 50px;
-        padding-bottom: 75px;
+        background-color: white;
+        box-shadow: inset 3px 3px 10px black;
+        padding: 50px 75px;
+        /*padding-top: 50px;
+        padding-bottom: 75px;*/
     }
 
     .attraction {
         text-align: center;
     }
-
+/*
     .attraction-graphic {
         width: 100%;
-    }
+    }*/
 
     .attraction-graph {
         width: 80%;
@@ -813,6 +816,9 @@
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
+    .btn-signup {
+        font-size: 2.5rem;
+    }
 }
 
 /* Medium Devices, Desktops */
@@ -869,7 +875,7 @@
         border: none;
     }
 
-    .nav-menu-items > li > a:hover {
+    nav.active .nav-menu-items > li > a:hover {
         background-color: rgba(75, 75, 75, 0.9);
     }
 
@@ -953,12 +959,12 @@
     }
 
     .attraction {
-        border: 2px solid black;
-        border-radius: 8px;
+        /*border: 2px solid black;*/
+        /*border-radius: 8px;*/
         background-color: white;
-        box-shadow: 1px 1px 1px black;
-        width: 32%;
-        margin-left: 1%;
+        box-shadow: 1px 1px 3px black;
+        width: 31%;
+        margin-left: 2%;
     }
 
     .date #backward {
