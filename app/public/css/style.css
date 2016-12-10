@@ -731,11 +731,26 @@
         overflow: auto;
     }
 
-    .included-graph, .included-person, .selected-point {
+    .included-graph, .included-person {
         padding: 6px 15px;
         border-top: 1px solid black;
         /*height: 35px;*/
         max-height:35px;
+    }
+
+    #tooltip {
+        padding: 6px 15px;
+    }
+
+    #remove-point {
+        display: none;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid black;
+    }
+
+    #remove-point.active {
+        display: inline-block;
     }
 
     /*.included-graph:first-of-type {

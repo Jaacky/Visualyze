@@ -64,8 +64,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h4 id="tooltip-title" class="expandable-title" data-expand-for="#tooltip">Selected point: <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
-                                <div id="tooltip" class="expandable" data-expand-by="tooltip-title" class="col-sm-12">
-                                    <div class="selected-point">No selected point.</div>
+                                <div id="tooltip" class="expandable" data-expand-by="tooltip-title">
+                                    <div id="tooltip-text">No selected point.</div>
                                 </div>
                             </div>
                         </div>
@@ -126,18 +126,11 @@
     </script>
 
     <script>
+        $(window).resize(function() {
+            g.update();
+        });
+
         $(document).ready(function() {
-            $(window).resize(function() {
-                g.update();
-            });
-
-            // $('.plot-row').matchHeight({ target: $('#graph-container') });
-
-            $('.expandable-title').on('click', function() {
-                $(this).toggleClass('active');
-                $($(this).data('expandFor')).toggleClass('active');
-            });
-
             /*
                 On click event for changing time modes
             */

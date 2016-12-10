@@ -12,9 +12,8 @@
     </script>
     <body>
         <%- include ../partials/nav %>
-        
-        <div class="container container-fluid main">
-            <div class="mask"></div>
+        <div class="mask"></div>
+        <div class="container-fluid main">
             <div class="row"> <!-- PLOT HEADER ROW -->
                 <div class="col-md-12 plot-header">
                     <div class="name">
@@ -51,15 +50,24 @@
                     <h3 id="date">Sunday duh</h3>
                     <button id="forward" class="btn btn-default">&gt;</button>
                 </div>
-                <div class="col-sm-offset-1 col-sm-8 plot-row">
+                <div class="col-md-9">
                     <div id="graph-container"></div>
                 </div>
-                <div class="col-sm-2 plot-row">
-                    <div class="row graph-details">
-                        <h4>Selected point:</h4>
-                        <div id="tooltip" class="col-sm-10">
+                <div class="col-md-3">
+                    <div class="graph-sidebar">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 id="tooltip-title" class="expandable-title" data-expand-for="#tooltip">Selected point: <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
+                                <div id="tooltip" class="expandable" data-expand-by="tooltip-title">
+                                    <div id="tooltip-text">No selected point.</div>
+                                    <div id="remove-point">
+                                        <div class="action">
+                                            <button class="btn-remove-point">Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div id="remove-point" class="col-sm-2"></div>
                     </div>
                 </div>
             </div> <!-- END GRAPH CONTAINER ROW -->
@@ -94,13 +102,11 @@
     </script>
 
     <script>
+        $(window).resize(function() {
+            g.update();
+        });
+
         $(document).ready(function() {
-            $(window).resize(function() {
-                g.update();
-            });
-
-            // $('.plot-row').matchHeight({ target: $('#graph-container') });
-
             /*
                 On click event for changing time modes
             */
@@ -142,7 +148,7 @@
                 $('#delete-graph-form').addClass('active');
             });
 
-            $('.graph-details').on('click', '.btn-remove-point', function() {
+            $('#tooltip').on('click', '.btn-remove-point', function() {
                 $('.mask').addClass('active');
                 $('#remove-point-form').addClass('active');
             });

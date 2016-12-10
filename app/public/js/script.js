@@ -1,3 +1,10 @@
+$(document).ready(function() {
+    $('.expandable-title').on('click', function() {
+        $(this).toggleClass('active');
+        $($(this).data('expandFor')).toggleClass('active');
+    });
+});
+
 const createColourUpdateHandler = function(graph, dataset) {
     return function(colour) {
         var hex = colour.toHexString();

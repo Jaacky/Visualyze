@@ -22,6 +22,8 @@ var scatterPlot = function(container, points, options) {
     if (!self.options.sample) {
         this.tooltip = d3.select(document.getElementById('tooltip'));
         this.tooltipTitle = d3.select(document.getElementById(self.tooltip.attr("data-expand-by")));
+        this.tooltipText = d3.select(document.getElementById('tooltip-text'));
+        this.removePoint = d3.select(document.getElementById('remove-point'));
     }   
 
     this.xAxis = this.vis.append("g")
@@ -92,6 +94,7 @@ scatterPlot.prototype.draw = function() {
         .attr("cy", function(d) { return self.y(d.value); })
         .attr("r", 8)
         .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); })
+        .style("cursor", "pointer")
         .on('click', function(d) {
             if (!self.options.sample) {
                 var selectedAlready;
@@ -100,19 +103,23 @@ scatterPlot.prototype.draw = function() {
                 } else {
                     selectedAlready = false;
                 }
-                console.log(selectedAlready);
                 d3.selectAll("circle").attr("class", "");
                 if (!selectedAlready) {
                     d3.select(this).attr("class", "selected");
-                    if ($('#remove-point').length) {
-                        addPointRemoval(d, '#remove-point');
-                        $('#point_id').val(d.id);
+
+                    if (!self.removePoint.empty()) {
+                        self.removePoint.attr("class", "active");
+                        d3.select(document.getElementById('point_id')).attr('value', d.id);
                     }
+
                     self.tooltip.classed("active", true);
-                    self.tooltipTitle.classed("active",true);
-                    self.tooltip.html(formatTooltip(d));
+                    self.tooltipTitle.classed("active", true);
+                    self.tooltipText.html(formatTooltip(d));
                 } else {
-                    self.tooltip.html("No selected point.");
+                    self.tooltipText.html("No selected point.");
+                    if (!self.removePoint.empty()) {
+                        self.removePoint.attr("class", "");
+                    }
                 }
             }
         });
@@ -121,7 +128,8 @@ scatterPlot.prototype.draw = function() {
         .attr("cx", function(d) { return self.x( new Date(d.date) ); })
         .attr("cy", function(d) { return self.y(d.value); })
         .attr("r", 8)
-        .style("fill", function(d) { console.log("udpating colours", d.colour); return hexToRgbA(d.colour, 0.55); });
+        .style("fill", function(d) { return hexToRgbA(d.colour, 0.55); })
+        .style("cursor", "pointer");
     
     circle.exit().remove();
 
@@ -160,13 +168,4 @@ function formatTooltip(d) {
     html += "On: " + moment(d.date).format("MMM D, YYYY");
 
     return html;
-}
-
-function addPointRemoval(d, container) {
-    html = "";
-    html += "<div class='action'>";
-    html += "<button class='btn-remove-point'>Remove</button>"
-    html += "</div>";
-
-    $(container).html(html);
 }
