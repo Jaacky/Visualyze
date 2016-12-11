@@ -21,97 +21,99 @@
     <body>
         <%- include ../partials/nav %>
         <div class="mask"></div>
-        <div class="container container-fluid main">
-            <div class="row"> <!-- PLOT HEADER ROW -->
-                <div class="col-md-12 plot-header">
-                    <div class="name"><%= fusion.name %></div>
-                    <div class="buttons">
-                        <div class="action">
-                            <button id="add-fusion-graph">
-                                <span class="glyphicon glyphicon-plus"></span><span class="glyph-text"> Graph</span><span class="glyphicon glyphicon-stats glyph-text-replacement">
-                            </button>
+        <div class="container">
+            <div class="main">
+                <div class="row"> <!-- PLOT HEADER ROW -->
+                    <div class="col-md-12 plot-header">
+                        <div class="name"><%= fusion.name %></div>
+                        <div class="buttons">
+                            <div class="action">
+                                <button id="add-fusion-graph">
+                                    <span class="glyphicon glyphicon-plus"></span><span class="glyph-text"> Graph</span><span class="glyphicon glyphicon-stats glyph-text-replacement">
+                                </button>
+                            </div>
+                            <div class="action">
+                                <button id="invite-fusion">
+                                    <span class="glyphicon glyphicon-plus"></span><span class="glyph-text"> Invite friend</span><span class="glyphicon glyphicon-user glyph-text-replacement"></span>
+                                </button>
+                            </div>
+                            <div class="action">
+                                <button id="leave-fusion">
+                                    <span class="glyphicon glyphicon-remove"></span><span> Leave</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="action">
-                            <button id="invite-fusion">
-                                <span class="glyphicon glyphicon-plus"></span><span class="glyph-text"> Invite friend</span><span class="glyphicon glyphicon-user glyph-text-replacement"></span>
-                            </button>
-                        </div>
-                        <div class="action">
-                            <button id="leave-fusion">
-                                <span class="glyphicon glyphicon-remove"></span><span> Leave</span>
-                            </button>
-                        </div>
+                        <% if (message) { %>
+                            <h4><%= message %></h4>
+                        <% } %> 
                     </div>
-                    <% if (message) { %>
-                        <h4><%= message %></h4>
-                    <% } %> 
-                </div>
-            </div> <!-- END PLOT HEADER ROW -->
-            <div class="row"> <!-- GRAPH CONTAINER ROW -->
-                <div id="graph-time-options" class="col-md-12 options-group">
-                    <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
-                </div>
-                <div class="date">
-                    <button id="backward" class="btn btn-default">&lt;</button>
-                    <h3 id="date">Sunday duh</h3>
-                    <button id="forward" class="btn btn-default">&gt;</button>
-                </div>
-                <div class="col-md-9">
-                    <div id="graph-container"></div>
-                </div>
-                <div class="col-md-3">
-                    <div class="graph-sidebar">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h4 id="tooltip-title" class="expandable-title" data-expand-for="#tooltip">Selected point: <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
-                                <div id="tooltip" class="expandable" data-expand-by="tooltip-title">
-                                    <div id="tooltip-text">No selected point.</div>
+                </div> <!-- END PLOT HEADER ROW -->
+                <div class="row"> <!-- GRAPH CONTAINER ROW -->
+                    <div id="graph-time-options" class="col-md-12 options-group">
+                        <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
+                    </div>
+                    <div class="date">
+                        <button id="backward" class="btn btn-default">&lt;</button>
+                        <h3 id="date">Sunday duh</h3>
+                        <button id="forward" class="btn btn-default">&gt;</button>
+                    </div>
+                    <div class="col-md-9">
+                        <div id="graph-container"></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="graph-sidebar">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 id="tooltip-title" class="expandable-title" data-expand-for="#tooltip">Selected point: <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
+                                    <div id="tooltip" class="expandable" data-expand-by="tooltip-title">
+                                        <div id="tooltip-text">No selected point.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 id="included-graphs-title" class="expandable-title" data-expand-for=".included-graphs">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
+                                    <div class="included-graphs expandable">
+                                        <% for (var i=0; i<fusion.graphs.length; i++) { %>
+                                            <div class="included-graph description-action highlight" data-highlight-id="graph" data-highlight-val="<%= fusion.graphs[i].name %>">
+                                                <% var graph_colour = hexToRgbA(fusion.graphs[i].colour, 0.55); %>    
+                                                <% if (fusion.graphs[i].owner == user.email) { %>
+                                                    <form action="/fusion/removeGraph" method="post" class="">
+                                                        <div class="description"><%= fusion.graphs[i].owner %> / <span class="graph_name" style="background-color: <%= graph_colour %>;"><%= fusion.graphs[i].name %></span></div>
+                                                        <div class="action"><button><span class="glyphicon glyphicon-remove"></span></button></div>
+                                                        <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
+                                                        <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
+                                                        <input type="text" name="graph_name" value="<%= fusion.graphs[i].name %>" required hidden>
+                                                    </form>
+                                                <% } else { %>
+                                                    <div class="description"><%= fusion.graphs[i].owner %> / <div style="fill: <%= fusion.graphs[i].colour %>;"><%= fusion.graphs[i].colour %></div> / <%= fusion.graphs[i].name %></div>
+                                                    <div class="action empty"></div>
+                                                <% } %>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 class="expandable-title" data-expand-for=".included-people">People
+                                        <span class="glyphicon glyphicon-chevron-up"></span>
+                                        <span class="glyphicon glyphicon-chevron-down"></span>
+                                    </h4>
+                                    <div class="included-people expandable">
+                                        <% for (var i=0; i<people.length; i++) { %>
+                                            <div class="included-person highlight" data-highlight-id="owner" data-highlight-val="<%= people[i].owner %>">
+                                                <%= people[i].owner %>
+                                            </div>
+                                        <% } %>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h4 id="included-graphs-title" class="expandable-title" data-expand-for=".included-graphs">Graphs <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
-                                <div class="included-graphs expandable">
-                                    <% for (var i=0; i<fusion.graphs.length; i++) { %>
-                                        <div class="included-graph description-action highlight" data-highlight-id="graph" data-highlight-val="<%= fusion.graphs[i].name %>">
-                                            <% var graph_colour = hexToRgbA(fusion.graphs[i].colour, 0.55); %>    
-                                            <% if (fusion.graphs[i].owner == user.email) { %>
-                                                <form action="/fusion/removeGraph" method="post" class="">
-                                                    <div class="description"><%= fusion.graphs[i].owner %> / <span class="graph_name" style="background-color: <%= graph_colour %>;"><%= fusion.graphs[i].name %></span></div>
-                                                    <div class="action"><button><span class="glyphicon glyphicon-remove"></span></button></div>
-                                                    <input type="text" name="fusion_id" value="<%= fusion.id %>" required hidden>
-                                                    <input type="text" name="graph_id" value="<%= fusion.graphs[i].id %>" required hidden>
-                                                    <input type="text" name="graph_name" value="<%= fusion.graphs[i].name %>" required hidden>
-                                                </form>
-                                            <% } else { %>
-                                                <div class="description"><%= fusion.graphs[i].owner %> / <div style="fill: <%= fusion.graphs[i].colour %>;"><%= fusion.graphs[i].colour %></div> / <%= fusion.graphs[i].name %></div>
-                                                <div class="action empty"></div>
-                                            <% } %>
-                                        </div>
-                                    <% } %>
-                                </div>
-                            </div> 
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h4 class="expandable-title" data-expand-for=".included-people">People
-                                    <span class="glyphicon glyphicon-chevron-up"></span>
-                                    <span class="glyphicon glyphicon-chevron-down"></span>
-                                </h4>
-                                <div class="included-people expandable">
-                                    <% for (var i=0; i<people.length; i++) { %>
-                                        <div class="included-person highlight" data-highlight-id="owner" data-highlight-val="<%= people[i].owner %>">
-                                            <%= people[i].owner %>
-                                        </div>
-                                    <% } %>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                </div>
-            </div> <!-- END GRAPH CONTAINER ROW -->
-        </div> <!-- end container-fluid -->
+                </div> <!-- END GRAPH CONTAINER ROW -->
+            </div> <!-- END MAIN -->
+        </div> <!-- end container -->
         <%- include forms %>
     </body>
 

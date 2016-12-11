@@ -13,64 +13,66 @@
     <body>
         <%- include ../partials/nav %>
         <div class="mask"></div>
-        <div class="container-fluid main">
-            <div class="row"> <!-- PLOT HEADER ROW -->
-                <div class="col-md-12 plot-header">
-                    <div class="name">
-                        <%= graph.name %>
+        <div class="container"> <!-- CONTAINER FLUID --> 
+            <div class="main"> <!-- MAIN -->
+                <div class="row"> <!-- PLOT HEADER ROW -->
+                    <div class="col-md-12 plot-header">
+                        <div class="name">
+                            <%= graph.name %>
+                        </div>
+                        <div class="buttons">
+                            <div class="action">
+                                <button id="btn-add-point">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    <span> Point</span>
+                                </button>
+                            </div>
+                            <div class="action">
+                                <button id="btn-delete-graph">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span> Delete</span>
+                                </button>
+                            </div>
+                            <div class="action">
+                                <input type="text" id="colour-picker">
+                            </div>
+                        </div>   
+                        <% if (message) { %>
+                            <h4 id="msg"><%= message %></h4>
+                        <% } %> 
                     </div>
-                    <div class="buttons">
-                        <div class="action">
-                            <button id="btn-add-point">
-                                <span class="glyphicon glyphicon-plus"></span>
-                                <span> Point</span>
-                            </button>
-                        </div>
-                        <div class="action">
-                            <button id="btn-delete-graph">
-                                <span class="glyphicon glyphicon-remove"></span>
-                                <span> Delete</span>
-                            </button>
-                        </div>
-                        <div class="action">
-                            <input type="text" id="colour-picker">
-                        </div>
-                    </div>   
-                    <% if (message) { %>
-                        <h4 id="msg"><%= message %></h4>
-                    <% } %> 
-                </div>
-            </div> <!-- END PLOT HEADER ROW -->
-            <div class="row"> <!-- GRAPH CONTAINER ROW -->
-                <div id="graph-time-options" class="col-md-12 options-group">
-                    <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
-                </div>
-                <div class="date">
-                    <button id="backward" class="btn btn-default">&lt;</button>
-                    <h3 id="date">Sunday duh</h3>
-                    <button id="forward" class="btn btn-default">&gt;</button>
-                </div>
-                <div class="col-md-9">
-                    <div id="graph-container"></div>
-                </div>
-                <div class="col-md-3">
-                    <div class="graph-sidebar">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h4 id="tooltip-title" class="expandable-title" data-expand-for="#tooltip">Selected point: <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
-                                <div id="tooltip" class="expandable" data-expand-by="tooltip-title">
-                                    <div id="tooltip-text">No selected point.</div>
-                                    <div id="remove-point">
-                                        <div class="action">
-                                            <button class="btn-remove-point">Remove</button>
+                </div> <!-- END PLOT HEADER ROW -->
+                <div class="row"> <!-- GRAPH CONTAINER ROW -->
+                    <div id="graph-time-options" class="col-md-12 options-group">
+                        <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
+                    </div>
+                    <div class="date">
+                        <button id="backward" class="btn btn-default">&lt;</button>
+                        <h3 id="date">Sunday duh</h3>
+                        <button id="forward" class="btn btn-default">&gt;</button>
+                    </div>
+                    <div class="col-md-9">
+                        <div id="graph-container"></div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="graph-sidebar">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 id="tooltip-title" class="expandable-title" data-expand-for="#tooltip">Selected point: <span class="glyphicon glyphicon-chevron-up"></span><span class="glyphicon glyphicon-chevron-down"></span></h4>
+                                    <div id="tooltip" class="expandable" data-expand-by="tooltip-title">
+                                        <div id="tooltip-text">No selected point.</div>
+                                        <div id="remove-point">
+                                            <div class="action">
+                                                <button class="btn-remove-point">Remove</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div> <!-- END GRAPH CONTAINER ROW -->
+                </div> <!-- END GRAPH CONTAINER ROW -->
+            </div> <!-- END MAIN -->
         </div> <!-- end container-fluid -->
         <%- include forms %>
     </body>

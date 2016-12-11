@@ -5,34 +5,40 @@
     </head>
     <body>
         <%- include('partials/nav.ejs') %>
-        <div class="container container-fluid main">
-            <div class="signup-form-container">
-                <h4 id="msg"><%= message %></h4>
-                <form class="signup-form" action="/signup" method="post">
-                    <div class="form-group form-group-half">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Name">
-                    </div>
-                    <div class="form-group form-group-half">
-                        <label for="last-name">Last Name</label>
-                        <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" class="form-control" name="email" id="email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label for"confirm-password">Confirm Password</label>
-                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
-                    </div>
-                    <button id="signup" class="btn btn-default">Create account</button>
-                </form>
-            </div>
-        </div>
+        <div class="container">
+            <div class="main container-fluid signup">
+                <div class="signup-form-container">
+                    <h4 id="msg"><%= message %></h4>
+                    <form class="signup-form" action="/signup" method="post">
+                        <div class="form-group-row">
+                            <div class="form-group form-group-half">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Name">
+                            </div>
+                            <div class="form-group form-group-half">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+                        </div>
+                        <div class="form-group-row">
+                            <div class="form-group form-group-half">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                            </div>
+                            <div class="form-group form-group-half">
+                                <label for"confirm-password">Confirm Password</label>
+                                <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <button id="signup" class="btn btn-default">Create account</button>
+                    </form>
+                </div>
+            </div> <!-- END MAIN -->
+        </div><!-- END CONTAINER -->
     </body>
 
     <script>

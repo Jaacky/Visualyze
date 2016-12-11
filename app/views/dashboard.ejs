@@ -14,57 +14,59 @@
     <body>
         <%- include('partials/nav.ejs') %>
         <div class="mask"></div>
-        <div class="container container-fluid main">
-            <div class="row"> <!-- welcome row -->
-                <h2>Welcome, <%= user.email %></h2>
-                <div class="col-sm-6">
-                    <% if (message) { %>
-                        <h4><%= message %></h4>
-                    <% } %>
-                </div>
-            </div> <!-- end welcome row -->
-            <div class="row"> <!-- plots row -->
-                <div class="col-lg-6"> <!-- graphs col -->
-                    <div class="dashboard-title-container">
-                        <h3>Graphs</h3>
-                        <button id="new-graph" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
-                    </div>
-                    <div class="plot-btn-container">
-                        <% if (user.plots.graphs.length == 0) { %>
-                            <h4>No graphs</h4>
-                        <% } else { %>
-                            <% for (var i=0; i<user.plots.graphs.length; i++) { %>
-                                <a href="/graph/<%= user.plots.graphs[i].id %>">
-                                    <div class="btn-plot">
-                                        <%= user.plots.graphs[i].name %>
-                                    </div>
-                                </a>
-                            <% } %>
+        <div class="container"> <!-- CONTAINER -->
+            <div class="container-fluid main">
+                <div class="row"> <!-- welcome row -->
+                    <h2>Welcome, <%= user.email %></h2>
+                    <div class="col-sm-6">
+                        <% if (message) { %>
+                            <h4><%= message %></h4>
                         <% } %>
                     </div>
-                </div> <!-- end graphs col -->
+                </div> <!-- end welcome row -->
+                <div class="row"> <!-- plots row -->
+                    <div class="col-lg-6"> <!-- graphs col -->
+                        <div class="dashboard-title-container">
+                            <h3>Graphs</h3>
+                            <button id="new-graph" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
+                        </div>
+                        <div class="plot-btn-container">
+                            <% if (user.plots.graphs.length == 0) { %>
+                                <h4>No graphs</h4>
+                            <% } else { %>
+                                <% for (var i=0; i<user.plots.graphs.length; i++) { %>
+                                    <a href="/graph/<%= user.plots.graphs[i].id %>">
+                                        <div class="btn-plot">
+                                            <%= user.plots.graphs[i].name %>
+                                        </div>
+                                    </a>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    </div> <!-- end graphs col -->
 
-                <div class="col-lg-6"> <!-- fusions col -->
-                    <div class="dashboard-title-container">
-                        <h3>Fusions</h3>
-                        <button id="new-fusion" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
-                    </div>
-                    <div class="plot-btn-container">
-                        <% if (user.plots.fusions.length == 0) { %>
-                            <h4>No fusions</h4>
-                        <% } else { %>
-                            <% for (var i=0; i<user.plots.fusions.length; i++) { %>
-                                <a href="/fusion/<%= user.plots.fusions[i].id %>">
-                                    <div class="btn-plot">
-                                        <%= user.plots.fusions[i].name %>
-                                    </div>
-                                </a>
+                    <div class="col-lg-6"> <!-- fusions col -->
+                        <div class="dashboard-title-container">
+                            <h3>Fusions</h3>
+                            <button id="new-fusion" class="btn btn-default new-plot-btn"><span class="glyphicon glyphicon-plus"></span></button>
+                        </div>
+                        <div class="plot-btn-container">
+                            <% if (user.plots.fusions.length == 0) { %>
+                                <h4>No fusions</h4>
+                            <% } else { %>
+                                <% for (var i=0; i<user.plots.fusions.length; i++) { %>
+                                    <a href="/fusion/<%= user.plots.fusions[i].id %>">
+                                        <div class="btn-plot">
+                                            <%= user.plots.fusions[i].name %>
+                                        </div>
+                                    </a>
+                                <% } %>
                             <% } %>
-                        <% } %>
-                    </div>
-                </div> <!-- end fusions col -->
-            </div> <!-- end plots row -->
-        </div> <!-- end container-fluid -->
+                        </div>
+                    </div> <!-- end fusions col -->
+                </div> <!-- end plots row -->
+            </div> <!-- END MAIN -->
+        </div> <!-- end container -->
 
         <div id="new-plot-form" class="mask-overlay">
             <h4 id="plot-form-title"></h4>
