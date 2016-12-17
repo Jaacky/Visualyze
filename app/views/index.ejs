@@ -52,10 +52,9 @@
                 $("nav").removeClass("active");
             }
         });
-        console.log(attraction_track_points);
-        console.log(attraction_track_options);
+
         const g = new scatterPlot("attraction-track-graph", 
-            attraction_track_points,
+            attraction_track_points.slice(0, 1),
             attraction_track_options
         );
 
@@ -72,6 +71,27 @@
                 .concat(attraction_track_points_3),
             attraction_track_options
         );
+
+        // var total_sample_points = 7;
+        // var sample_counter = 1;
+        // function change(pause) {
+        //     setTimeout(function() {
+        //         g.update(attraction_track_points.slice(0, sample_counter));
+        //         var ptime;
+        //         if (sample_counter >= total_sample_points) {
+        //             sample_counter = 1;
+        //             ptime = 5000;
+        //         } else {
+        //             sample_counter += 1;
+        //             ptime = 1250;
+        //         }
+        //         change(ptime);
+        //     }, pause)
+        // }
+        // change(1250);
+
+        var gLoop = mkLooper(g, attraction_track_points);
+        gLoop.fx(1250);
         $(window).resize(function() {
             g.update();
             f.update();

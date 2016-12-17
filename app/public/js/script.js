@@ -96,3 +96,25 @@ function hexToRgbA(hex, opacity=1){
     }
     throw new Error('Bad Hex');
 }
+
+function mkLooper(plot, pts) {
+    var self = {};
+    self.counter = 2; // Starting at 2 because the initial state already has 1 point
+
+    // Pause, update graph, pause, update graph, ...
+    self.fx = function(initial_pause) {
+        setTimeout(function() {
+            plot.update(pts.slice(0, self.counter));
+            var ptime;
+            if (self.counter >= pts.length) {
+                self.counter = 1;
+                ptime = 5000;
+            } else {
+                self.counter +=1;
+                ptime = 1250;
+            }
+            self.fx(ptime);
+        }, initial_pause);
+    };
+    return self;
+}
