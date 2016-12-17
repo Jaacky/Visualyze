@@ -24,7 +24,7 @@ a:hover, a:focus {
     font-family: 'Roboto';
     font-weight: 300;
     letter-spacing: 5px;
-    font-weight: 700;
+    font-weight: 300;
 }
 
 .mask {
@@ -179,8 +179,8 @@ nav.active .nav-border {
 }
 
 .nav-brand a {
-    font-size: 3rem;
     font-size: 2rem;
+    font-weight: 700;
 }
 
 .nav-menu {
@@ -376,7 +376,6 @@ body > .container {
 
 .main.login, .main.signup {
     padding: 45px;
-    margin-top: 45px;
     border-radius: 4px;
 }
 
@@ -425,11 +424,11 @@ body > .container {
     background-color: rgba(0,0,0,0.35);
 }
 
-.landing-text-container .brand {
+.landing-text .brand {
     font-size: 5rem;
 }
 
-.landing-text-container .sub {
+.landing-text .sub {
     font-size: 1.75rem;
     font-weight: 300;
 }
@@ -848,8 +847,17 @@ circle.selected {
 
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
-    .landing-text-container .brand {
+    .landing-text {
+        line-height: 1;
+        padding: 60px;
+    }
+    
+    .landing-text .brand {
         font-size: 7rem;
+    }
+
+    .landing-text .sub {
+        margin-top: 10px;
     }
 
     .landing .btn-signup {
@@ -862,6 +870,10 @@ circle.selected {
 @media only screen and (min-width : 992px) {
     body {
         background-color:rgba(225, 225, 225, 1);
+    }
+
+    #nav-contact {
+        display: none;
     }
     
     .nav-header {
@@ -1001,8 +1013,12 @@ circle.selected {
         color: black;
     }
 
-    .landing-text-container .brand {
+    .landing-text .brand {
         font-size: 10rem;
+    }
+
+    .landing-text .sub {
+        font-size: 2rem;
     }
 
     .landing .btn-signup {
@@ -1016,6 +1032,10 @@ circle.selected {
         box-shadow: 1px 1px 3px black;
         width: 31%;
         margin-left: 2%;
+    }
+
+    .main.login, .main.signup {
+        margin-top: 45px;
     }
 
     .date #backward {
