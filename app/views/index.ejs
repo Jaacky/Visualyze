@@ -59,9 +59,9 @@
         );
 
         const f = new scatterPlot("attraction-track-fusion",
-            attraction_track_points
-                .concat(attraction_track_points_1)
-                .concat(attraction_track_points_2),
+            [attraction_track_points[0]]
+                .concat([attraction_track_points_1[0]])
+                .concat([attraction_track_points_2[0]]),
             attraction_track_options
         );
 
@@ -92,6 +92,10 @@
 
         var gLoop = mkLooper(g, attraction_track_points);
         gLoop.fx(1250);
+
+        var fLoop = mkLooper(f, [attraction_track_points, attraction_track_points_1, attraction_track_points_2]);
+        fLoop.fx(1250);
+        
         $(window).resize(function() {
             g.update();
             f.update();

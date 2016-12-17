@@ -97,16 +97,42 @@ function hexToRgbA(hex, opacity=1){
     throw new Error('Bad Hex');
 }
 
+
+/*
+    Returns an object that has current counter and fx
+    Call fx to start the animation loop through data points
+*/
 function mkLooper(plot, pts) {
     var self = {};
     self.counter = 2; // Starting at 2 because the initial state already has 1 point
 
+    var reset_condition, pts_handler;
+    if (pts[0].constructor === Array) {
+        reset_condition = pts[0].length;
+        pts_handler = function(counter) {
+            // Return each pts-set sliced to counter 
+            var temp = pts.map(function(set) {
+                return set.slice(0, counter);
+            });
+            // Combine each sliced pts-set into 1 set
+            var temp1 = [].concat.apply([], temp);
+            return temp1;
+        };
+    } else {
+        reset_condition = pts.length;
+        pts_handler = function(counter) {
+            return pts.slice(0, counter);
+        };
+    }
+
     // Pause, update graph, pause, update graph, ...
     self.fx = function(initial_pause) {
         setTimeout(function() {
-            plot.update(pts.slice(0, self.counter));
+            // plot.update(pts.slice(0, self.counter));
+            plot.update(pts_handler(self.counter));
             var ptime;
-            if (self.counter >= pts.length) {
+            // if (self.counter >= pts.length) {
+            if (self.counter >= reset_condition) {
                 self.counter = 1;
                 ptime = 5000;
             } else {
