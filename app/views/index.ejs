@@ -21,14 +21,39 @@
         <div class="container-fluid attraction-container">
             <div class="container">
                 <div class="row">
+                    <h2>Track your stats</h2>
                     <div class="col-md-4 attraction">
-                        <h2>Track your stats</h2>
-                        <div id="attraction-track-graph" class="attraction-graph"></div>
+                        <h2>Kate</h2>
+                        <div id="attraction-track-kate" class="attraction-graph"></div>
                     </div>
                     <div class="col-md-4 attraction">
-                        <h2>Fuse your graphs</h2>
+                        <h2>Bob</h2>
+                        <div id="attraction-track-bob" class="attraction-graph"></div>
+                    </div>
+                    <div class="col-md-4 attraction">
+                        <h2>Joe</h2>
+                        <div id="attraction-track-joe" class="attraction-graph"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <h2>Progress together</h2>
+                    <div class="col-md-4 attraction">
+                        <h2>Create a fusion</h2>
+                    </div>
+                    <div class="col-md-4 attraction">
+                        <h2>Add your friends</h2>
+                        <h3 class="animated slowAnimated infinite fadeIn">+ Kate</h3>
+                        <h3 class="animated slowAnimated infinite slideInRight">+ Bob</h3>
+                        <h3 class="animated slowAnimated infinite rotateInUpLeft">+ Joe</h3>
+                    </div>
+                    <div class="col-md-4 attraction">
+                        <h2>Progress together</h2>
                         <div id="attraction-track-fusion" class="attraction-graph"></div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-4 attraction">
                         <h2>Add your friends!</h2>
                         <div id="attraction-track-compete" class="attraction-graph"></div>
@@ -53,10 +78,26 @@
             }
         });
 
-        const g = new scatterPlot("attraction-track-graph", 
+        const gKate = new scatterPlot("attraction-track-kate", 
             attraction_track_points.slice(0, 1),
             attraction_track_options
         );
+        var kateLoop = mkLooper(gKate, attraction_track_points);
+        kateLoop.fx(1250);
+
+        const gBob = new scatterPlot("attraction-track-bob",
+            attraction_track_points_1.slice(0, 1),
+            attraction_track_options
+        );
+        var bobLoop = mkLooper(gBob, attraction_track_points_1);
+        bobLoop.fx(1250);
+
+        const gJoe = new scatterPlot("attraction-track-joe",
+            attraction_track_points_2.slice(0, 1),
+            attraction_track_options
+        );
+        var joeLoop = mkLooper(gJoe, attraction_track_points_2);
+        joeLoop.fx(1250);
 
         const f = new scatterPlot("attraction-track-fusion",
             [attraction_track_points[0]]
@@ -89,9 +130,6 @@
         //     }, pause)
         // }
         // change(1250);
-
-        var gLoop = mkLooper(g, attraction_track_points);
-        gLoop.fx(1250);
 
         var fLoop = mkLooper(f, [attraction_track_points, attraction_track_points_1, attraction_track_points_2]);
         fLoop.fx(1250);

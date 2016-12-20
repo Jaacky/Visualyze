@@ -84,6 +84,10 @@ scatterPlot.prototype.setProperties = function() {
 
     this.yAxisFormat = d3.axisLeft(this.y)
         .tickSizeOuter(0);
+
+    this.line = d3.line()
+        .x(function(d) { return self.x( new Date(d.date) ); })
+        .y(function(d) { return self.y(d.value); });
 }
 
 scatterPlot.prototype.draw = function() {
@@ -153,6 +157,10 @@ scatterPlot.prototype.draw = function() {
         .style("cursor", "pointer");
     
     circle.exit().remove();
+
+    // this.vis.append("path")
+    //     .attr("class", "line")
+    //     .attr("d", self.line(this.points));
 
     this.xAxis.selectAll("*").remove();
     this.xAxis

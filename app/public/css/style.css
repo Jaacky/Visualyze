@@ -419,13 +419,15 @@ body > .container {
 
 .landing-text {
     display: inline-block;
-    border: 2px solid white;
+    /*border: 2px solid white;
     padding: 5px 15px;
-    background-color: rgba(0,0,0,0.35);
+    background-color: rgba(0,0,0,0.35);*/
 }
 
 .landing-text .brand {
     font-size: 5rem;
+    font-weight: 700;
+    letter-spacing: 12px;
 }
 
 .landing-text .sub {
@@ -1015,6 +1017,7 @@ circle.selected {
 
     .landing-text .brand {
         font-size: 10rem;
+        font-size: 8rem;
     }
 
     .landing-text .sub {
@@ -1099,6 +1102,13 @@ circle.selected {
     animation-fill-mode: both;
 }
 
+.slowAnimated {
+    -webkit-animation-duration: 1.25s;
+    animation-duration: 1.25s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
 @-webkit-keyframes mySlideInDown {
   from {
     -webkit-transform: translate3d(0, -25%, 0);
@@ -1129,3 +1139,14 @@ circle.selected {
   -webkit-animation-name: mySlideInDown;
   animation-name: mySlideInDown;
 }
+
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+/*line {
+    fill: none;
+
+}*/
