@@ -10,15 +10,39 @@
             <div class="mask"></div>
             <div class="container container-fluid">
                 <div class="row landing-text-container">
-                    <div class="landing-text">
-                        <div class="brand">Visualyze</div>
-                        <div class="sub">Progress. Together.</div>
-                    </div>
+                    <!--<div class="landing-text">-->
+                        <!--<div class="brand">Visualyze</div>
+                        <div class="sub">Progress. Together.</div>-->
+                        <!--<div id="landing-graph" class="landing-graph"></div>-->
+                    <!--</div>-->
                 </div>
-            <div class="btn-signup"><a href="/signup">Create your account</a></div>
+                <div class="row landing-graph-container">
+                    <h3>Bench press (lbs)</h3>
+                    <div id="landing-graph" class="landing-graph"></div>
+                </div>
+                <div class="btn-signup landing-action" style=""><a href="/signup">Sign up now</a></div>
+                <!-- Begin MailChimp Signup Form -->
+                <div id="mc_embed_signup" class="landing-action" style="display: none;">
+                    <form action="//xyz.us14.list-manage.com/subscribe/post?u=bfa7abeac9e808ce1359001f8&amp;id=cff1579e66" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                        <div id="mc_embed_signup_scroll">
+                            <div class="beta-form-title">Receive 2 free months of Team-tier at launch!</div>
+                            <div class="mc-field-group">
+                                <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address">
+                                <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+                            </div>
+                            <div id="mce-responses" class="clear">
+                                <div class="response" id="mce-error-response" style="display:none"></div>
+                                <div class="response" id="mce-success-response" style="display:none"></div>
+                            </div>
+                            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_bfa7abeac9e808ce1359001f8_cff1579e66" tabindex="-1" value=""></div>
+                        </div>
+                    </form>
+                </div>
+                <!-- End mailchimp signup -->
             </div> 
         </div>
-        <div class="container-fluid attraction-container">
+        <!--<div class="container-fluid attraction-container">
             <div class="container">
                 <div class="row">
                     <h2>Track your stats</h2>
@@ -45,8 +69,6 @@
                     <div class="col-md-4 attraction">
                         <h2>Add your friends</h2>
                         <h3 class="animated slowAnimated infinite fadeIn">+ Kate</h3>
-                        <h3 class="animated slowAnimated infinite slideInRight">+ Bob</h3>
-                        <h3 class="animated slowAnimated infinite rotateInUpLeft">+ Joe</h3>
                     </div>
                     <div class="col-md-4 attraction">
                         <h2>Progress together</h2>
@@ -58,15 +80,10 @@
                         <h2>Add your friends!</h2>
                         <div id="attraction-track-compete" class="attraction-graph"></div>
                     </div>
-                    <!--<div class="col-md-3 attraction">
-                        <h2>Create a fusion of graphs</h2>
-                        <h2>Add your friends to a fusion, track and compete together!</h2>
-                        <div><img class="attraction-graphic" src="/img/landing.jpeg" alt=""></div>
-                    </div>-->
                 </div>
             </div>
-        </div>
-        <%- include('partials/footer.ejs') %>
+        </div>-->
+        <!--<%- include('partials/footer.ejs') %>-->
     </body>
     <%- include sampleData %>
     <script>
@@ -78,40 +95,40 @@
             }
         });
 
-        const gKate = new scatterPlot("attraction-track-kate", 
-            attraction_track_points.slice(0, 1),
-            attraction_track_options
-        );
-        var kateLoop = mkLooper(gKate, attraction_track_points);
-        kateLoop.fx(1250);
+        // const gKate = new scatterPlot("attraction-track-kate", 
+        //     attraction_track_points.slice(0, 1),
+        //     attraction_track_options
+        // );
+        // var kateLoop = mkLooper(gKate, attraction_track_points);
+        // kateLoop.fx(1250);
 
-        const gBob = new scatterPlot("attraction-track-bob",
-            attraction_track_points_1.slice(0, 1),
-            attraction_track_options
-        );
-        var bobLoop = mkLooper(gBob, attraction_track_points_1);
-        bobLoop.fx(1250);
+        // const gBob = new scatterPlot("attraction-track-bob",
+        //     attraction_track_points_1.slice(0, 1),
+        //     attraction_track_options
+        // );
+        // var bobLoop = mkLooper(gBob, attraction_track_points_1);
+        // bobLoop.fx(1250);
 
-        const gJoe = new scatterPlot("attraction-track-joe",
-            attraction_track_points_2.slice(0, 1),
-            attraction_track_options
-        );
-        var joeLoop = mkLooper(gJoe, attraction_track_points_2);
-        joeLoop.fx(1250);
+        // const gJoe = new scatterPlot("attraction-track-joe",
+        //     attraction_track_points_2.slice(0, 1),
+        //     attraction_track_options
+        // );
+        // var joeLoop = mkLooper(gJoe, attraction_track_points_2);
+        // joeLoop.fx(1250);
 
-        const f = new scatterPlot("attraction-track-fusion",
-            [attraction_track_points[0]]
-                .concat([attraction_track_points_1[0]])
-                .concat([attraction_track_points_2[0]]),
-            attraction_track_options
-        );
+        // const f = new scatterPlot("attraction-track-fusion",
+        //     [attraction_track_points[0]]
+        //         .concat([attraction_track_points_1[0]])
+        //         .concat([attraction_track_points_2[0]]),
+        //     attraction_track_options
+        // );
 
-        const c = new scatterPlot("attraction-track-compete",
-            attraction_track_points
-                .concat(attraction_track_points_1)
-                .concat(attraction_track_points_3),
-            attraction_track_options
-        );
+        // const c = new scatterPlot("attraction-track-compete",
+        //     attraction_track_points
+        //         .concat(attraction_track_points_1)
+        //         .concat(attraction_track_points_3),
+        //     attraction_track_options
+        // );
 
         // var total_sample_points = 7;
         // var sample_counter = 1;
@@ -131,14 +148,29 @@
         // }
         // change(1250);
 
-        var fLoop = mkLooper(f, [attraction_track_points, attraction_track_points_1, attraction_track_points_2]);
-        fLoop.fx(1250);
+        // var fLoop = mkLooper(f, [attraction_track_points, attraction_track_points_1, attraction_track_points_2]);
+        // fLoop.fx(1250);
         
-        $(window).resize(function() {
-            g.update();
-            f.update();
-            c.update();
-        });
+        // $(window).resize(function() {
+        //     g.update();
+        //     f.update();
+        //     c.update();
+        // });
+
+
+        var landing_graph_options = {
+            xmax: moment().startOf('day').add(7, "d").toDate(),
+            xmin: moment().startOf('day').toDate(),
+            mode: "week",
+            numTimeTicks: d3.timeDay.every(1),
+            timeFormat: d3.timeFormat("%b %d"),
+            cy: 225,
+            sample: true
+        };
+        const gLanding = new scatterPlot("landing-graph", 
+            attraction_track_points,
+            landing_graph_options
+        );
 
     </script>
 </html>

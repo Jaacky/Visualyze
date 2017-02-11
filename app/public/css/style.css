@@ -20,6 +20,39 @@ a:hover, a:focus {
     text-decoration: none;
 }
 
+#mc_embed_signup {
+    width: 75%;
+}
+
+#mc_embed_signup .mc-field-group {
+    font-size: 0;
+}
+
+#mc_embed_signup .mc-field-group input {
+    font-size: 1.5rem;
+    display: inline-block;
+}
+
+#mc_embed_signup .mc-field-group input.email {
+    width: 65%;
+    padding: 8px 12px;
+    color: black;
+}
+
+#mc_embed_signup .mc-field-group input.button {
+    width: 35%;
+    padding: 8px 0px;
+    border: 2px solid white;
+    background-color: transparent;
+    font-weight: 700;
+    font-family: 'Roboto';
+}
+
+.beta-form-title {
+    font-size: 1.6rem;
+    text-align: center;
+}
+
 .brand {
     font-family: 'Roboto';
     font-weight: 300;
@@ -389,7 +422,7 @@ body > .container {
     background-size: cover;
     position: relative;
     color: white;
-    height: 90vh;
+    height: 100vh;
 }
 
 .landing .mask {
@@ -415,6 +448,7 @@ body > .container {
     text-align: center;
     text-transform: uppercase;
     font-family: 'Roboto';
+    display: none;
 }
 
 .landing-text {
@@ -425,7 +459,7 @@ body > .container {
 }
 
 .landing-text .brand {
-    font-size: 5rem;
+    font-size: 3.5rem;
     font-weight: 700;
     letter-spacing: 12px;
 }
@@ -435,11 +469,47 @@ body > .container {
     font-weight: 300;
 }
 
-.landing .btn-signup {
+.landing-graph-container {
+    position: relative;
+    z-index: 1;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+    text-align: center;
+    color: black;
+    font-family: 'Roboto';
+    /*background-color: rgba(255,255,255,0.6);*/
+    background-color: white;
+    padding: 5px 0;
+    margin: 10px;
+
+    box-shadow: 0px 0px 5px black;
+    border-radius: 4px;
+    max-width: 350px;
+    left: 50%;
+    -webkit-transform: translateY(-50%) translateX(-54%);
+    -moz-transform: translateY(-50%) translateX(-54%);
+    -o-transform: translateY(-50%) translateX(-54%);
+    transform: translateY(-50%) translateX(-54%);
+}
+
+.landing-graph-container h3 {
+    margin-top: 10px;
+}
+
+.landing-graph {
+    width: 80%;
+    display: inline-block;
+}
+
+.landing .landing-action {
     position: absolute;
     z-index: 1;
     top: 95%;
-    top: 90%;
+    /*top: 90%;*/
     left: 50%;
 
     -webkit-transform: translateX(-50%) translateY(-100%);
@@ -469,6 +539,7 @@ body > .container {
     width: 80%;
     display: inline-block;
 }
+
 /* END LANDING */
 
 /* LOGIN AND SIGN UP */
@@ -615,15 +686,18 @@ body > .container {
     vertical-align: middle;
 }
 
-.date #backward {
+.btn-date {
     margin-top: 10px;
-    margin-right: 5px;
+    padding: 4px 10px;
+}
+
+/*.date #backward {
+    margin-top: 10px;
 }
 
 .date #forward {
     margin-top: 10px;
-    margin-left: 5px;
-}
+}*/
 
 .input-btn-group {
     font-size: 0px;
@@ -843,8 +917,23 @@ circle.selected {
 
 /*}*/ /* end min-width: 320px */
 
+
+@media only screen and (min-width : 420px) {
+    .landing-text .brand {
+        font-size: 4.5rem;
+    }
+}
+
+
+@media only screen and (min-width : 525px) {
+    .landing-text .brand {
+        font-size: 5.5rem;
+    }
+}
+
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
+
 }
 
 /* Small Devices, Tablets */
@@ -855,7 +944,7 @@ circle.selected {
     }
     
     .landing-text .brand {
-        font-size: 7rem;
+        font-size: 9rem;
     }
 
     .landing-text .sub {
@@ -865,6 +954,17 @@ circle.selected {
     .landing .btn-signup {
         font-size: 2rem;
         top: 95%
+    }
+
+    .btn-date {
+        padding: 6px 12px;
+    }
+    .date #backward {
+        margin-right: 5px;
+    }
+
+    .date #forward {
+        margin-left: 5px;
     }
 }
 
@@ -1140,11 +1240,11 @@ circle.selected {
   animation-name: mySlideInDown;
 }
 
-path {
+/*path {
     stroke: steelblue;
     stroke-width: 2;
     fill: none;
-}
+}*/
 
 /*line {
     fill: none;
