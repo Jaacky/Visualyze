@@ -7,6 +7,7 @@
     "start": "node ./bin/www_visualyze"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "body-parser": "^1.15.2",
     "connect-flash": "^0.1.1",
     "debug": "*",
@@ -21,8 +22,10 @@
     "socket.io": "^1.5.1"
   },
   "dependencies": {
+    "babel-preset-env": "^1.1.4",
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
-    "helmet": "^3.1.0"
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1"
   }
 }
