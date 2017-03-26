@@ -50,7 +50,7 @@
                 </div> <!-- END PLOT HEADER ROW -->
                 <div class="row"> <!-- GRAPH CONTAINER ROW -->
                     <div id="graph-time-options" class="col-md-12 options-group">
-                        <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time active">Month</button><button class="btn btn-graph-time">Week</button>
+                        <button class="btn btn-graph-time">Year</button><button class="btn btn-graph-time">Month</button><button class="btn btn-graph-time active">Week</button>
                     </div>
                     <div class="date">
                         <button id="backward" class="btn btn-default btn-date">&lt;</button>
@@ -119,11 +119,11 @@
 
     <script>
         var current = moment();
-        setDate(current, "month");
+        setDate(current, "week");
 
         const g = new scatterPlot("graph-container", 
-            ds.getPoints("month", moment(current)), 
-            ds.getOptions("month", moment(current))
+            ds.getPoints("week", moment(current)), 
+            ds.getOptions("week", moment(current))
         );
         // var socket = io();
 

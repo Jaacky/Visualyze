@@ -43,7 +43,8 @@ const setDate = function(time, mode) {
             timeToDisplay = time.format("MMMM YYYY");
             break;
         case "week":
-            timeToDisplay = time.format("wo") + " week of " + time.format("YYYY");
+            // timeToDisplay = time.format("wo") + " week of " + time.format("YYYY");
+            timeToDisplay = "Week " + time.format("w") + ", " + time.format("YYYY");
             break;
         default:
             throw "Invalid use of function setDate";
