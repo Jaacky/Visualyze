@@ -93,31 +93,6 @@ scatterPlot.prototype.setProperties = function() {
         .y(function(d) { return self.y(d.value); });
 }
 
-// scatterPlot.prototype.addLine = function() {
-//     var self = this;
-//     pts = getLine(self.points);
-//     console.log(pts);
-//     var line = d3.line()
-//         .x(function(d) { console.log(new Date(d.date)); return self.x(new Date(d.date)); })
-//         .y(function(d) { console.log(self.y(d.value)); return self.y(d.value); });
-
-//     createPath(this.points);
-//     var lines = this.vis.selectAll(".graph-line").data(this.points);
-//     // console.log(lines);
-//     lines.enter().append("path")
-//         .attr("class", "hello")
-//         .attr("fill", "none")
-//         .attr("stroke", function(d) { return hexToRgbA(d.colour, 0.55); })
-//         .attr("stroke-width", 2)
-//         .attr("d", line);
-
-//     lines
-//         .attr("fill", "none")
-//         .attr("stroke", function(d) { return hexToRgbA(d.colour, 0.55); })
-//         .attr("stroke-width", 2)
-//         .attr("d", line);
-// }
-
 scatterPlot.prototype.draw = function() {
     var self = this;
     var circle = this.vis.selectAll("circle").data([].concat.apply([], this.points));
@@ -314,14 +289,4 @@ function getLine(points, type) {
         i = j;
     }
     return pts;
-}
-
-function createPath(points) {
-    if (points.length > 2) { 
-        for (i=1; i<points.length-1; i++) {
-
-        }
-    } else {
-        return points;
-    }
 }
