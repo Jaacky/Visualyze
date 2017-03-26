@@ -1,10 +1,14 @@
-function Dataset(data) {
-    this.data = data.sort(compareDate);
+function Dataset(data, fusion) {
+    for (i=0; i<data.length; i++) {
+        data[i].sort(compareDate);
+    }
+    this.data = data;
+
 }
 
 function GraphDataset(graph) {
     var points = graph.points.map(function(pt) { pt.owner = graph.owner; pt.graph = graph.name; return pt; });
-    Dataset.call(this, points);
+    Dataset.call(this, [points], true);
 }
 
 GraphDataset.prototype = Object.create(Dataset.prototype);
@@ -18,9 +22,9 @@ function FusionDataset(fusion) {
     var points = [];
     for (var i=0; i<fusion.graphs.length; i++) {
         graph = fusion.graphs[i];
-        points = points.concat(graph.points.map(function(pt) { pt.owner = graph.owner; pt.graph = graph.name; return pt; }));
+        points.push(graph.points.map(function(pt) { pt.owner = graph.owner; pt.graph = graph.name; return pt; }));
     }
-    Dataset.call(this, points);    
+    Dataset.call(this, points, true);    
 }
 
 FusionDataset.prototype = Object.create(Dataset.prototype);
@@ -97,9 +101,15 @@ Dataset.prototype.getYearSet = function(date, conversion) {
         return pt;
     }
     if (conversion) {
-        return loop(this.data, condition, converter);
+        // return loop(this.data, condition, converter);
+        return this.data.map(function(subpts) {
+            return loop(subpts, condition, converter);
+        });
     } else {
-        return loop(this.data, condition, false);
+        // return loop(this.data, condition, false);
+        return this.data.map(function(subpts) {
+            return loop(subpts, condition, false);
+        });
     }
 }
 
@@ -114,9 +124,15 @@ Dataset.prototype.getMonthSet = function(date, conversion) {
         return pt;
     }
     if (conversion) {
-        return loop(this.getYearSet(date, false), condition, converter);
+        // return loop(this.getYearSet(date, false), condition, converter);
+        return this.data.map(function(subpts) {
+            return loop(this.getYearSet(date, false), condition, false);
+        });
     } else {
-        return loop(this.data, condition, false);
+        // return loop(this.data, condition, false);
+        return this.data.map(function(subpts) {
+            return loop(subpts, condition, false);
+        });
     }
 }
 
@@ -131,9 +147,15 @@ Dataset.prototype.getWeekSet = function(date, conversion) {
         return pt;
     }
     if (conversion) {
-        return loop(this.getMonthSet(date, false), condition, converter);
+        // return loop(this.getMonthSet(date, false), condition, converter);
+        return this.data.map(function(subpts) {
+            return loop(this.getMonthSet(date, false), condition, false);
+        });
     } else {
-        return loop(this.data, condition, false);
+        // return loop(this.data, condition, false);
+        return this.data.map(function(subpts) {
+            return loop(subpts, condition, false);
+        });
     }
 }
 

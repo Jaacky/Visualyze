@@ -3,7 +3,6 @@ var Graph = function(container, points, options) {
     this.chart = document.getElementById(container);
     this.options = options;
     this.points = points;
-    // console.log(this.points);
     this.highlight = {};
 }
 
@@ -52,7 +51,6 @@ scatterPlot.prototype.setProperties = function() {
         So then this.cy will be whatever vertical space is left between the top of the graph and the bottom of the window
         AT THE FIRST LOAD
     */
-    // console.log(self.options);
     
     this.padding = {
         "top": 10,
@@ -76,8 +74,10 @@ scatterPlot.prototype.setProperties = function() {
         .domain([this.options.xmin, this.options.xmax])
         .range([0, this.size.width]);
 
+
+    var yMax = d3.max(this.points, function(subpts) { return d3.max(subpts, function(d) { console.log(d); return d.value; }); });
     this.y = d3.scaleLinear()
-        .domain([0, d3.max(this.points, function(d) { return d.value; }) + 10])
+        .domain([0, yMax])
         .range([this.size.height, 0]);
 
     this.xAxisFormat = d3.axisBottom(this.x)
@@ -120,13 +120,15 @@ scatterPlot.prototype.setProperties = function() {
 
 scatterPlot.prototype.draw = function() {
     var self = this;
-    var circle = this.vis.selectAll("circle").data(this.points);
+    var circle = this.vis.selectAll("circle").data([].concat.apply([], this.points));
 
+    
     circle.enter().append("circle")
         .attr("cx", function(d) { return self.x( new Date(d.date) ); })
         .attr("cy", function(d) { return self.y(d.value); })
         .attr("r", 5)
         .style("fill", function(d) {
+            console.log(this.points);
             if (Object.keys(self.highlight).length) {
                 if (d[self.highlight.id] == self.highlight.val) {
                     return hexToRgbA(d.colour, 0.9);
@@ -186,25 +188,27 @@ scatterPlot.prototype.draw = function() {
     
     circle.exit().remove();
 
-    var linePts = getLine(this.points, 'avg');
-    // console.log(self.points, linePts);
     var line = d3.line()
         .x(function(d) { return self.x(new Date(d.date)); })
         .y(function(d) { return self.y(d.value); })
         .curve(d3.curveMonotoneX);
-
-    this.vis.selectAll(".line").remove();
     
-    if (linePts.length > 0) {
-        this.vis.append("path")
-            .datum(linePts)
-            .attr("class", "line")
-            .attr("fill", "none")
-            .attr("stroke", function(d) { console.log(d); return hexToRgbA(d[0].colour, 0.55) })
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("stroke-width", 2)
-            .attr("d", line);
+    this.vis.selectAll(".line").remove();
+
+    for (i=0; i<this.points.length; i++) {
+        var linePts = getLine(this.points[i], 'avg');
+        
+        if (linePts.length > 0) {
+            this.vis.append("path")
+                .datum(linePts)
+                .attr("class", "line")
+                .attr("fill", "none")
+                .attr("stroke", function(d) { console.log(d); return hexToRgbA(d[0].colour, 0.55) })
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 2)
+                .attr("d", line);
+        }
     }
 
     this.xAxis.selectAll("*").remove();

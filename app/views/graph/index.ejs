@@ -86,8 +86,7 @@
 
         var current = moment();
         setDate(current, "week");
-        console.log($("#date").data("date"));
-        
+
         const g = new scatterPlot("graph-container", 
             ds.getPoints("week", moment(current)), 
             ds.getOptions("week", moment(current))
