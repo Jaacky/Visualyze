@@ -1,5 +1,5 @@
 function Dataset(data) {
-    this.data = data;
+    this.data = data.sort(compareDate);
 }
 
 function GraphDataset(graph) {
@@ -135,4 +135,17 @@ Dataset.prototype.getWeekSet = function(date, conversion) {
     } else {
         return loop(this.data, condition, false);
     }
+}
+
+function compareDate(d1, d2) {
+    // console.log(d1, d2);
+    date1 = new Date(d1.date)
+    date2 = new Date(d2.date)
+    if ( date1.getTime() > date2.getTime() ) {
+        return 1;
+    } 
+    if ( date1.getTime() < date2.getTime() ) {
+        return -1;
+    }
+    return 0; 
 }
