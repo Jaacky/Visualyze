@@ -84,6 +84,14 @@ module.exports = function(app, db, passport, auth) {
         );
     });
 
+    router.get('/profile', auth, function(req, res, next) {
+        res.render('profile',
+            {
+                title_addon: "Profile",
+                user: req.user,
+            });
+    });
+
     router.get('/requests', auth, function(req, res, next) {
         res.render('requests', {
             title_addon: "Requests",
@@ -101,16 +109,27 @@ module.exports = function(app, db, passport, auth) {
     });
 
     router.post('/friends/request', auth, function(req, res) {
-        db.addFriendRequest(req.body.requester, req.body.requested, function(valid) {
-            if (valid) {
-                req.flash('message', 'Sent friend request to ' + req.body.requested);
-                res.redirect('/dashboard');
-            } else {
-                var msg = req.body.requested + " has already requested to be your friend.";
-                req.flash('message', msg);
-                res.redirect('/dashboard');
-            }
-        });
+        if (req.user.email != req.body.requester) {
+            console.log("ruid != rbrequester", req.user.id, req.body.requester);
+            req.flash('message', "Invalid friend request, please try again.");
+            res.redirect('/dashboard');
+        } else if (req.user.email == req.body.requester) {
+            req.flash('message', "You cannot add yourself.");
+            res.redirect('/dashboard');
+        } else {
+            db.addFriendRequest(req.body.requester, req.body.requested, function(valid, err) {
+                if (valid) {
+                    req.flash('message', 'Sent friend request to ' + req.body.requested);
+                    res.redirect('/dashboard');
+                } else {
+                    var msg;
+                    if (err == 1) msg = "You have already sent a friend request to " + req.body.requested; 
+                    else if (err == 2) msg = req.body.requested + " has already requested to be your friend.";
+                    req.flash('message', msg);
+                    res.redirect('/dashboard');
+                }
+            });
+        }
     });
 
     router.post('/friends/accept', auth, function(req, res) {

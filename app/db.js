@@ -495,7 +495,8 @@ const addFriendRequest = function(requester, requested, cb) {
                 + "VALUES($1, $2)";
 
     var checkString = "SELECT * FROM friendship_requests "
-                + "WHERE requester = $1 AND requested = $2";
+                + "WHERE (requester = $1 AND requested = $2) " 
+                + "OR (requester = $2 AND requested = $1)";
                 
 
     var insertFriendRequest = new pgp.ParameterizedQuery(insertString);
@@ -512,7 +513,14 @@ const addFriendRequest = function(requester, requested, cb) {
                         console.log("insert friend request err", err);
                     });
             } else { // there is already a pending request the other way around
-                cb(false);
+                if (requests[0].requester == requester) { // Already sent a friend request
+                    cb(false, 1);
+                } else if (requests[0].requested == requester) { // Already have an incoming friend request from the person you're trying to add
+                    cb(false, 2);
+                } else {
+                    exit(-1);
+                }
+                // cb(false);
             }
         })
         .catch(function(err) {
