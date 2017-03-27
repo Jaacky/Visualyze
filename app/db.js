@@ -494,13 +494,29 @@ const addFriendRequest = function(requester, requested, cb) {
     var insertString = "INSERT INTO friendship_requests(requester, requested) "
                 + "VALUES($1, $2)";
 
+    var checkString = "SELECT * FROM friendship_requests "
+                + "WHERE requester = $1 AND requested = $2";
+                
+
     var insertFriendRequest = new pgp.ParameterizedQuery(insertString);
-    db.none(insertString, [requester, requested])
-        .then(function() {
-            cb();
+    var checkFriendRequest = new pgp.ParameterizedQuery(checkString);
+    console.log(requester, requested);
+    db.any(checkFriendRequest, [requested, requester])
+        .then(function(requests) {
+            if (requests.length == 0) { // there is no pending request the other way around
+                db.none(insertString, [requester, requested])
+                    .then(function() {
+                        cb(true);
+                    })
+                    .catch(function(err) {
+                        console.log("insert friend request err", err);
+                    });
+            } else { // there is already a pending request the other way around
+                cb(false);
+            }
         })
         .catch(function(err) {
-            console.log("insert friend request err", err);
+            console.log("check friend request err", err);
         });
 };
 

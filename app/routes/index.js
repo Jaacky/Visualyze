@@ -101,9 +101,15 @@ module.exports = function(app, db, passport, auth) {
     });
 
     router.post('/friends/request', auth, function(req, res) {
-        db.addFriendRequest(req.body.requester, req.body.requested, function() {
-            req.flash('message', 'Sent friend request to ' + req.body.requested);
-            res.redirect('/dashboard');
+        db.addFriendRequest(req.body.requester, req.body.requested, function(valid) {
+            if (valid) {
+                req.flash('message', 'Sent friend request to ' + req.body.requested);
+                res.redirect('/dashboard');
+            } else {
+                var msg = req.body.requested + " has already requested to be your friend.";
+                req.flash('message', msg);
+                res.redirect('/dashboard');
+            }
         });
     });
 
